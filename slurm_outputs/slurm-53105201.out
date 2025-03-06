@@ -1,0 +1,36 @@
+['', 'orange', 'lblecha', 'IllustrisTNG', 'Runs', 'TNG50-1', 'output']
+simName='TNG50-1'
+snapshot scale factors in /orange/lblecha/IllustrisTNG/Runs/TNG50-1:
+[0.04751386 0.06254232 0.07704034 0.08350282 0.09093728 0.09625777
+ 0.09997661 0.10582597 0.11096103 0.11634526 0.12141409 0.12491542
+ 0.13348287 0.14263794 0.1460576  0.15314485 0.16057599 0.1667797
+ 0.17653754 0.18422877 0.19316822 0.1996827  0.21236949 0.22267443
+ 0.2334794  0.24949284 0.25668768 0.26787083 0.2795412  0.29034102
+ 0.30155808 0.31172794 0.32224077 0.33310814 0.344342   0.35427208
+ 0.36448853 0.37499959 0.38398999 0.39506344 0.40071935 0.41423335
+ 0.42416436 0.43433346 0.44474635 0.45325613 0.46412269 0.47300321
+ 0.48205365 0.49127726 0.50067736 0.51268081 0.52002058 0.52997065
+ 0.54011111 0.55044559 0.55832602 0.56900902 0.57715521 0.5881985
+ 0.59661941 0.60803512 0.61674002 0.62556955 0.63452548 0.64666649
+ 0.65592445 0.66531496 0.6748399  0.68450121 0.69430083 0.70424076
+ 0.71432298 0.72454955 0.73492252 0.74192021 0.75254187 0.76331559
+ 0.77058363 0.78532797 0.7928056  0.80415576 0.81566841 0.82343493
+ 0.8352236  0.84718103 0.8552476  0.86749171 0.87575168 0.88828933
+ 0.90100647 0.90958556 0.92260759 0.93139235 0.94472658 0.95372195
+ 0.96737586 0.97658689 0.99056814 1.        ]
+3734 subhalos meet criteria: minNdm=100, minNgas=100,minNstar=100, minNbh=1
+Total number of subhalos in snap 99: 5688113. ncheck=np.int64(100).
+Output filepath: /orange/lblecha/IllustrisTNG/Runs/TNG50-1/output/galaxy-mergers_TNG50-1_gas-100_dm-100_star-100_bh-001.hdf5
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/merger_file_runs/merger_file_from_sublink_trees.py", line 684, in <module>
+    writeMergerFile(savePath,basePath, snapNum, minNdm=minNdm, minNgas=minNgas, 
+  File "/home/pranavsatheesh/host_galaxies/merger_file_runs/merger_file_from_sublink_trees.py", line 387, in writeMergerFile
+    with h5py.File(f"{savePath}/{outfilename}",'w') as mf:
+  File "/blue/lblecha/pranavsatheesh/.conda/envs/hfrl/lib/python3.10/site-packages/h5py/_hl/files.py", line 561, in __init__
+    fid = make_fid(name, mode, userblock_size, fapl, fcpl, swmr=swmr)
+  File "/blue/lblecha/pranavsatheesh/.conda/envs/hfrl/lib/python3.10/site-packages/h5py/_hl/files.py", line 241, in make_fid
+    fid = h5f.create(name, h5f.ACC_TRUNC, fapl=fapl, fcpl=fcpl)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/h5f.pyx", line 122, in h5py.h5f.create
+PermissionError: [Errno 13] Unable to synchronously create file (unable to open file: name = '/orange/lblecha/IllustrisTNG/Runs/TNG50-1/output/galaxy-mergers_TNG50-1_gas-100_dm-100_star-100_bh-001.hdf5', errno = 13, error message = 'Permission denied', flags = 13, o_flags = 242)

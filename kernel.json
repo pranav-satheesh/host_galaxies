@@ -1,0 +1,6 @@
+{
+    "argv": ["/usr/bin/python3", "-m", "ipykernel_launcher", "-f", "{connection_file}"],
+    "display_name": "HF_Deep_RL",
+    "language": "python"
+  }
+  
