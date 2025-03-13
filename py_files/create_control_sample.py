@@ -7,6 +7,7 @@ class ControlSampleGenerator:
         self.pop = population
         self.z_tol_default = z_tol_default
         self.Mstar_dex_tol_default = Mstar_dex_tol_default
+
         self.control_sample = {
             "idx": np.array([], dtype=int),
             "subhalo_ids": [],
@@ -17,8 +18,8 @@ class ControlSampleGenerator:
             "MBH": [],
             "Mdot": [],
             "SFR": [],
-            "z_tol": [],
-            "Mstar_dex_tol": []
+            "z_tol": np.array([], dtype=float),
+            "Mstar_dex_tol": np.array([], dtype=float)
         }
 
     def generate_control_sample(self):
@@ -48,8 +49,10 @@ class ControlSampleGenerator:
             self.control_sample["MBH"].append(self.pop['non_merging_population']["MBH"][idxs])
             self.control_sample["Mdot"].append(self.pop['non_merging_population']["Mdot"][idxs])
             self.control_sample["SFR"].append(self.pop['non_merging_population']["SFR"][idxs])
-            self.control_sample["z_tol"].append(z_tol)
-            self.control_sample["Mstar_dex_tol"].append(Mstar_dex_tol)
+            self.control_sample["z_tol"]=np.append(self.control_sample["z_tol"],z_tol)
+            self.control_sample["Mstar_dex_tol"]=np.append(self.control_sample["Mstar_dex_tol"],Mstar_dex_tol)
+            #self.control_sample["z_tol"].append(z_tol)
+            #self.control_sample["Mstar_dex_tol"].append(Mstar_dex_tol)
 
         return self.control_sample
 

@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 290, in <module>
+    pop_gen = population_generator(merger_file_1bh,basePath,minN_values)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 32, in __init__
+    self.all_merging_population,self.major_merger_population,self.non_merging_population = self.generate_population(snap_list)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 71, in generate_population
+    major_indices = merger_indices[self.major_merger_mask[merger_indices]]
+TypeError: only integer scalar arrays can be converted to a scalar index

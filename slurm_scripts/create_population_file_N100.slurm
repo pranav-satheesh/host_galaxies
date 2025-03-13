@@ -1,6 +1,6 @@
 #!/bin/sh
 
-#SBATCH --qos=lblecha-b
+#SBATCH --qos=lblecha
 #SBATCH -J population_sort
 #SBATCH -n 1
 #SBATCH -N 1
@@ -17,10 +17,12 @@ conda activate hfrl
 
 basePath=/orange/lblecha/IllustrisTNG/Runs/TNG50-1/output
 codePath=/home/pranavsatheesh/host_galaxies/py_files
-merger_file_path=/home/pranavsatheesh/host_galaxies/merger_file_runs
+merger_file_path=/home/pranavsatheesh/host_galaxies/data/merger_files
+pop_file_path=/home/pranavsatheesh/host_galaxies/data/population_files
+
 minNdm=100
 minNgas=100
 minNstar=100
 minNbh=1
 
-python ${codePath}/population_sort_by_mergers.py $basePath $merger_file_path $minNdm $minNgas $minNstar $minNbh
+python ${codePath}/population_sort_by_mergers.py $basePath $merger_file_path $pop_file_path $minNdm $minNgas $minNstar $minNbh

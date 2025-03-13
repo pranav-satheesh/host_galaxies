@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/create_control_sample.py", line 94, in <module>
+    control_generator.write_control_sample(control_sample_file_loc)
+  File "/home/pranavsatheesh/host_galaxies/py_files/create_control_sample.py", line 61, in write_control_sample
+    with h5py.File(control_sample_file, 'w') as f:
+  File "/blue/lblecha/pranavsatheesh/.conda/envs/hfrl/lib/python3.10/site-packages/h5py/_hl/files.py", line 561, in __init__
+    fid = make_fid(name, mode, userblock_size, fapl, fcpl, swmr=swmr)
+  File "/blue/lblecha/pranavsatheesh/.conda/envs/hfrl/lib/python3.10/site-packages/h5py/_hl/files.py", line 241, in make_fid
+    fid = h5f.create(name, h5f.ACC_TRUNC, fapl=fapl, fcpl=fcpl)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/h5f.pyx", line 122, in h5py.h5f.create
+BlockingIOError: [Errno 11] Unable to synchronously create file (unable to lock file, errno = 11, error message = 'Resource temporarily unavailable')

@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 324, in <module>
+    pop_gen = population_generator(merger_file_1bh,basePath,minN_values)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 35, in __init__
+    self.all_merging_population,self.major_merger_population,self.non_merging_population = self.generate_population(snap_list)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 87, in generate_population
+    self.update_population_dict(all_merging_population, subhalos, subhalo_ids_merging, snap, redshifts[i])
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 180, in update_population_dict
+    population["SubhaloPos"] = np.concatenate((population["SubhaloPos"], subhalos['SubhaloPos'][subhalo_ids]))
+ValueError: all the input arrays must have same number of dimensions, but the array at index 0 has 1 dimension(s) and the array at index 1 has 2 dimension(s)
