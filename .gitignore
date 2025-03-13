@@ -26,3 +26,6 @@ Thumbs.db
 *.ntvs*
 *.njsproj
 *.sln
+
+# Ignore all HDF5 files
+*.hdf5
