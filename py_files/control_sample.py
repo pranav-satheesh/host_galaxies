@@ -29,6 +29,8 @@ class control_samples:
             self.control_indices = self.find_control_sample_indices(self.pop)
             self.strore_control_indices()
 
+        self.control_sample_ids = np.array(self.control_indices).flatten()
+        
     def find_control_sample_indices(self,pop):
         merging_points = np.column_stack((pop['merging_population']['z'], np.log10(pop['merging_population']['Mstar'])))
         non_merging_points = np.column_stack((pop['non_merging_population']['z'], np.log10(pop['non_merging_population']['Mstar'])))
@@ -104,7 +106,9 @@ class control_samples:
 
         return fig,ax
 
-    
+    def sSFR_compute(self):
+        self.sSFR_merging_pop = self.pop['merging_population']['SFR'][:]/self.pop['merging_population']['Mstar'][:]
+        self.sSFR_control_pop = self.pop['non_merging_population']['SFR'][:][self.control_sample_ids]/self.pop['non_merging_population']['Mstar'][:][self.control_sample_ids]
 
 
     
