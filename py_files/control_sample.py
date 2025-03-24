@@ -14,8 +14,18 @@ plt.style.use('science')
 
 
 #default values
-plt.rcParams.update({'font.size': 25})
-plt.rcParams.update({'xtick.labelsize': 15, 'ytick.labelsize': 15})
+# plt.rcParams.update({'font.size': 25})
+# plt.rcParams.update({'xtick.labelsize': 15, 'ytick.labelsize': 15})
+
+
+# plt.rcParams.update({
+#             'lines.linewidth': 3,
+#             'axes.labelsize': 25,
+#             'axes.titlesize': 25,
+#             'xtick.labelsize': 25,
+#             'ytick.labelsize': 25,
+#             'legend.fontsize': 20
+#         })
 
 class control_samples:
 
@@ -30,6 +40,7 @@ class control_samples:
             self.strore_control_indices()
 
         self.control_sample_ids = np.array(self.control_indices).flatten()
+        self.compute_population_properties()
         
     def find_control_sample_indices(self,pop):
         merging_points = np.column_stack((pop['merging_population']['z'], np.log10(pop['merging_population']['Mstar'])))
@@ -76,6 +87,17 @@ class control_samples:
     def strore_control_indices(self):
         np.savetxt(self.control_idx_file,self.control_indices,dtype=int)
 
+    def set_plot_style(self, linewidth=3, titlesize=20,labelsize=25,ticksize=20,legendsize=20):
+        """Set matplotlib rcParams for consistent plot style."""
+        plt.rcParams.update({
+            'lines.linewidth': linewidth,
+            'axes.labelsize': labelsize,
+            'axes.titlesize': titlesize,
+            'xtick.labelsize': ticksize,
+            'ytick.labelsize': ticksize,
+            'legend.fontsize': legendsize
+        })
+
     def match_z_Mstar_plot(self,fig_loc,Mstar_binsize = 0.5,Mstar_min = 7,Mstar_max = 12,z_binsize = 0.6,z_min = 0,z_max = 5):
 
         Nbins_Ms = int((Mstar_max-Mstar_min)/Mstar_binsize)
@@ -100,40 +122,243 @@ class control_samples:
         ax[1].set_xlabel("$\log(M_{\star}/M_{\odot})$",fontsize=25)
 
         fig_name = fig_loc+"control-pm-z-Mstar-match.pdf"
-
+        fig.show()
         fig.savefig(fig_name)
         print("Figure saved in %s"%(fig_name))
 
         return fig,ax
 
-    def sSFR_compute(self):
-        self.sSFR_merging_pop = self.pop['merging_population']['SFR'][:]/self.pop['merging_population']['Mstar'][:]
-        self.sSFR_control_pop = self.pop['non_merging_population']['SFR'][:][self.control_sample_ids]/self.pop['non_merging_population']['Mstar'][:][self.control_sample_ids]
+    def compute_population_properties(self):
 
+        self.Mstar_merging_pop = self.pop['merging_population']['Mstar'][:]
+        self.Mstar_control_pop = self.pop['non_merging_population']['Mstar'][:][self.control_sample_ids]
 
+        self.MBH_merging_pop = self.pop['merging_population']['MBH'][:]
+        self.MBH_control_pop = self.pop['non_merging_population']['MBH'][:][self.control_sample_ids]
+
+        self.SFR_merging_pop = self.pop['merging_population']['SFR'][:]
+        self.SFR_control_pop = self.pop['non_merging_population']['SFR'][:][self.control_sample_ids]
+
+        self.z_merging_pop = self.pop['merging_population']['z'][:]
+        self.z_control_pop = self.pop['non_merging_population']['z'][:][self.control_sample_ids]
+
+        self.Mgas_merging_pop = self.pop['merging_population']['Mgas'][:]
+        self.Mgas_control_pop = self.pop['non_merging_population']['Mgas'][:][self.control_sample_ids]
+
+        self.Mdot_merging_pop = self.pop['merging_population']['Mdot'][:]
+        self.Mdot_control_pop = self.pop['non_merging_population']['Mdot'][:][self.control_sample_ids]
+
+        self.sSFR_merging_pop = self.SFR_merging_pop/self.Mstar_merging_pop
+        self.sSFR_control_pop = self.SFR_control_pop/self.Mstar_control_pop
+
+        self.fgas_merging_pop = self.Mgas_merging_pop/(self.Mgas_merging_pop+self.Mstar_merging_pop)
+        self.fgas_control_pop = self.Mgas_control_pop/(self.Mgas_control_pop+self.Mstar_control_pop)
+
+        #sSFR averages
+        print("The average sSFR for merging galaxies is %1.3e"%(np.mean(self.sSFR_merging_pop)))
+        print("The average sSFR for non-merging galaxies is %1.3e"%(np.mean(self.sSFR_control_pop)))
+        print("The sSFR enhancement in post mergers is %1.3f"%(np.mean(self.sSFR_merging_pop)/np.mean(self.sSFR_control_pop)))
+
+        #Mgas averages
+        print("The average Mgas for merging galaxies is %1.3e" % (np.mean(self.Mgas_merging_pop)))
+        print("The average Mgas for non-merging galaxies is %1.3e" % (np.mean(self.Mgas_control_pop)))
+        print("The Mgas enhancement in post mergers is %1.3f" % (np.mean(self.Mgas_merging_pop) / np.mean(self.Mgas_control_pop)))
+        
+        # fgas averages
+        print("The average fgas for merging galaxies is %1.3e" % (np.mean(self.fgas_merging_pop)))
+        print("The average fgas for non-merging galaxies is %1.3e" % (np.mean(self.fgas_control_pop)))
+        print("The fgas enhancement in post mergers is %1.3f" % (np.mean(self.fgas_merging_pop) / np.mean(self.fgas_control_pop)))
+        
+        # Mdot averages
+        print("The average Mdot for merging galaxies is %1.3e" % (np.mean(self.Mdot_merging_pop)))
+        print("The average Mdot for non-merging galaxies is %1.3e" % (np.mean(self.Mdot_control_pop)))
+        print("The Mdot enhancement in post mergers is %1.3f" % (np.mean(self.Mdot_merging_pop) / np.mean(self.Mdot_control_pop)))
+
+        return None
+
+    def plot_PM_and_control_histograms(self, bin_settings=None):
+    # Default bin settings if none are provided
+        if bin_settings is None:
+            bin_settings = {
+            'sSFR': {'binsize': 0.6, 'bin_min': -14, 'bin_max': -7},
+            'Mgas': {'binsize': 0.7, 'bin_min': 5, 'bin_max': 14},
+            'fgas': {'binsize': 0.05, 'bin_min': 0, 'bin_max': 1},
+            'Mdot': {'binsize': 0.5, 'bin_min': -8, 'bin_max': 1},
+            }
+
+        properties = {
+            'sSFR': (np.log10(self.sSFR_merging_pop[self.sSFR_merging_pop>0]), np.log10(self.sSFR_control_pop[self.sSFR_control_pop>0])),
+            'Mgas': (np.log10(self.Mgas_merging_pop), np.log10(self.Mgas_control_pop)),
+            'fgas': (self.fgas_merging_pop, self.fgas_control_pop),
+            'Mdot': (np.log10(self.Mdot_merging_pop[self.Mdot_merging_pop>0]), np.log10(self.Mdot_control_pop[self.Mdot_control_pop>0]))
+        }
+
+        properties_xlabel = {
+            'sSFR': r"$\log_{10}(\mathrm{sSFR}[\mathrm{yr}^{-1}])$",
+            'Mgas': r"$\log_{10}(M_{\mathrm{gas}}[M_{\odot}])$",
+            'fgas': r"$f_{\mathrm{gas}}$",
+            'Mdot': r"$\log_{10}(\dot{M}_{\mathrm{BH}}[M_{\odot}\, \mathrm{yr}^{-1}])$"
+            }
+        
+        self.set_plot_style()
+        fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+        axes = axes.flatten()
+
+        for i, (prop_name, (prop_merging, prop_control)) in enumerate(properties.items()):
     
-def control_idxs(control_file_idx_name):
-    control_file_loc = "/home/pranavsatheesh/host_galaxies/data/control_files/"
-    control_idx_file = control_file_loc + control_file_idx_name
+            binsize = bin_settings[prop_name].get('binsize')
+            bin_min = bin_settings[prop_name].get('bin_min')
+            bin_max = bin_settings[prop_name].get('bin_max')
+            bins = np.arange(bin_min, bin_max + binsize, binsize)
+        
+            # Plot histograms
+            axes[i].hist(prop_merging, bins=bins,color='dodgerblue', label='PM', density=True,histtype="step", linewidth=2)
+            axes[i].hist(prop_control, bins=bins,color='orange', label='Control', density=True,histtype="step", linewidth=2)
+            axes[i].set_xlabel(properties_xlabel[prop_name])
+            axes[i].set_ylabel('Density')
+            axes[i].legend()
+        
+        fig.tight_layout()
+        #fig.show()
+        return axes,fig
 
-    return np.loadtxt(control_idx_file)
+        self.z_bins = np.linspace(z_min, z_max, int((z_max - z_min) / z_binsize))
+
+    def plot_sSFR_evolution(self,z_min=0,z_max=5,z_binsize=0.3):
+        # Initialize lists to store the results
+
+        Nbins_z = int((z_max - z_min) / z_binsize)
+        z_bins = np.linspace(z_min, z_max, Nbins_z)
+
+        #avg_logSFR_control = []
+        avg_sSFR_control = []
+        std_sSFR_control = []
+
+        #avg_logSFR_merger = []
+        avg_sSFR_merger = []
+        std_sSFR_merger = []
+
+        # Loop through redshift bins
+        for i in range(len(z_bins) - 1):
+            # Create masks for merging and control populations within each redshift bin
+            merger_z_mask = (self.z_merging_pop > z_bins[i]) & (self.z_merging_pop < z_bins[i+1])
+            control_z_mask = (self.z_control_pop > z_bins[i]) & (self.z_control_pop < z_bins[i+1])
+
+            sSFR_merging_pop_filtered = self.sSFR_merging_pop[merger_z_mask]
+            sSFR_control_pop_filtered = self.sSFR_control_pop[control_z_mask]
+
+            avg_sSFR_merger.append(np.mean(sSFR_merging_pop_filtered))
+            std_sSFR_merger.append(np.std(sSFR_merging_pop_filtered))
+
+            avg_sSFR_control.append(np.mean(sSFR_control_pop_filtered))
+            std_sSFR_control.append(np.std(sSFR_control_pop_filtered))
+        
+        self.avg_sSFR_merger = np.array(avg_sSFR_merger)
+        self.std_sSFR_merger = np.array(std_sSFR_merger)
+
+        self.avg_sSFR_control = np.array(avg_sSFR_control)
+        self.std_sSFR_control = np.array(std_sSFR_control)
+
+        self.Q_sSFR = self.avg_sSFR_merger / self.avg_sSFR_control
+        # Plot the results
+        fig, ax = plt.subplots(2, 1, figsize=(6, 5))
+        ax[0].plot(z_bins[:-1] + z_binsize / 2, np.log10(self.avg_sSFR_merger[self.avg_sSFR_merger>0]), label='Control', color="orange", linewidth=2)
+        ax[0].plot(z_bins[:-1] + z_binsize / 2, np.log10(self.avg_sSFR_control[self.avg_sSFR_control>0]), label='PM', color='dodgerblue', linewidth=2)
+        ax[0].legend()
+        ax[0].set_xlabel('z')
+        ax[0].set_ylabel(r'$\log_{10}\langle sSFR \; [\mathrm{yr}^{-1}]\rangle$')
+        ax[1].plot(z_bins[:-1] + z_binsize / 2, self.Q_sSFR)
+        ax[1].set_xlabel('z')
+        ax[1].set_ylabel('Q(sSFR)')
+        ax[1].set_ylim(0, 4)
+
+        # Final layout adjustments
+        fig.tight_layout()
+
+        return fig,ax
+
+    def plot_mdot_evolution(self, z_min=0, z_max=5, z_binsize=0.3):
+        # Initialize lists to store the results
+
+        Nbins_z = int((z_max - z_min) / z_binsize)
+        z_bins = np.linspace(z_min, z_max, Nbins_z)
+
+        #avg_logMdot_control = []
+        avg_Mdot_control = []
+        std_Mdot_control = []
+
+        #avg_logMdot_merger = []
+        avg_Mdot_merger = []
+        std_Mdot_merger = []
+
+        # Loop through redshift bins
+        for i in range(len(z_bins) - 1):
+            # Create masks for merging and control populations within each redshift bin
+            merger_z_mask = (self.z_merging_pop > z_bins[i]) & (self.z_merging_pop < z_bins[i+1])
+            control_z_mask = (self.z_control_pop > z_bins[i]) & (self.z_control_pop < z_bins[i+1])
+
+            # Get the Mdot for each population
+            Mdot_merging_pop_filtered = self.Mdot_merging_pop[merger_z_mask]
+            Mdot_control_pop_filtered = self.Mdot_control_pop[control_z_mask]
+
+            avg_Mdot_merger.append(np.mean(Mdot_merging_pop_filtered))
+            std_Mdot_merger.append(np.std(Mdot_merging_pop_filtered))
+
+            #avg_logMdot_control.append(np.mean(log_Mdot_control_filtered))
+            avg_Mdot_control.append(np.mean(Mdot_control_pop_filtered))
+            std_Mdot_control.append(np.std(Mdot_control_pop_filtered))
 
 
-def check_control_z_Mstar_match(control_idx_file,Mstar_binsize=0.5,Mstar_min=7,Mstar_max=12,z_binsize=0.6,z_min=0,z_max=5):
+        #avg_logMdot_merger = np.array(avg_logMdot_merger)
+        self.avg_Mdot_merger = np.array(avg_Mdot_merger)
+        self.std_Mdot_merger = np.array(std_Mdot_merger)
 
-    Nbins_Ms = int((Mstar_max-Mstar_min)/Mstar_binsize)
-    Mstar_bins = np.linspace(Mstar_min,Mstar_max,Nbins_Ms)
+        #avg_logMdot_control = np.array(avg_logMdot_control)
+        self.avg_Mdot_control = np.array(avg_Mdot_control)
+        self.std_Mdot_control = np.array(std_Mdot_control)
 
-    Nbins_z = int((z_max - z_min) / z_binsize)
-    z_bins = np.linspace(z_min, z_max, Nbins_z)
+        self.Q_Mdot = self.avg_Mdot_merger / self.avg_Mdot_control
+        
+        # Plot the results
+        fig, ax = plt.subplots(2, 1, figsize=(6, 5))
+        ax[0].plot(z_bins[:-1] + z_binsize / 2, np.log10(self.avg_Mdot_control[self.avg_Mdot_control>0]), label='Control', color="orange", linewidth=2)
+        ax[0].plot(z_bins[:-1] + z_binsize / 2, np.log10(self.avg_Mdot_merger[self.avg_Mdot_merger>0]), label='PM', color='dodgerblue', linewidth=2)
+        ax[0].legend()
+        ax[0].set_xlabel('z')
+        ax[0].set_ylabel(r'$\log_{10}\langle \dot{M}_{\mathrm{BH}} \; [M_{\odot} \, \mathrm{yr}^{-1}]\rangle$')
 
-    fig, ax = plt.subplots(1, 2, figsize=(10, 4))
-    ax[0].hist(control_z_avg, bins=z_bins, histtype="step", color="black", label="control")
-    ax[0].hist(pop['merging_population']['z'], bins=z_bins, histtype="step", label="mergers", color="orange", linestyle="--")
-    ax[0].set_xlabel("z", fontsize=25)
-    ax[0].set_ylabel("N", fontsize=25)
+        ax[1].plot(z_bins[:-1] + z_binsize / 2, self.Q_Mdot)
+        ax[1].set_xlabel('z')
+        ax[1].set_ylabel('Q($\dot{M}_{\mathrm{BH}}$)')
+        ax[1].set_ylim(0, 5)
 
-    fig, ax = plt.subplots(1, 2, figsize=(10, 4))
+        # Final layout adjustments
+        fig.tight_layout()
+
+        return fig, ax
+
+# def control_idxs(control_file_idx_name):
+#     control_file_loc = "/home/pranavsatheesh/host_galaxies/data/control_files/"
+#     control_idx_file = control_file_loc + control_file_idx_name
+
+#     return np.loadtxt(control_idx_file)
+
+
+# def check_control_z_Mstar_match(control_idx_file,Mstar_binsize=0.5,Mstar_min=7,Mstar_max=12,z_binsize=0.6,z_min=0,z_max=5):
+
+#     Nbins_Ms = int((Mstar_max-Mstar_min)/Mstar_binsize)
+#     Mstar_bins = np.linspace(Mstar_min,Mstar_max,Nbins_Ms)
+
+#     Nbins_z = int((z_max - z_min) / z_binsize)
+#     z_bins = np.linspace(z_min, z_max, Nbins_z)
+
+#     fig, ax = plt.subplots(1, 2, figsize=(10, 4))
+#     ax[0].hist(control_z_avg, bins=z_bins, histtype="step", color="black", label="control")
+#     ax[0].hist(pop['merging_population']['z'], bins=z_bins, histtype="step", label="mergers", color="orange", linestyle="--")
+#     ax[0].set_xlabel("z", fontsize=25)
+#     ax[0].set_ylabel("N", fontsize=25)
+
+#     fig, ax = plt.subplots(1, 2, figsize=(10, 4))
 
 
 # class ControlSampleGenerator:
