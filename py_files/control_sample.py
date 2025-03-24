@@ -262,8 +262,8 @@ class control_samples:
         self.Q_sSFR = self.avg_sSFR_merger / self.avg_sSFR_control
         # Plot the results
         fig, ax = plt.subplots(2, 1, figsize=(6, 5))
-        ax[0].plot(z_bins[:-1] + z_binsize / 2, np.log10(self.avg_sSFR_merger[self.avg_sSFR_merger>0]), label='Control', color="orange", linewidth=2)
-        ax[0].plot(z_bins[:-1] + z_binsize / 2, np.log10(self.avg_sSFR_control[self.avg_sSFR_control>0]), label='PM', color='dodgerblue', linewidth=2)
+        ax[0].plot(z_bins[:-1] + z_binsize / 2, np.log10(self.avg_sSFR_merger[self.avg_sSFR_merger>0]), label='Control', color="orange")
+        ax[0].plot(z_bins[:-1] + z_binsize / 2, np.log10(self.avg_sSFR_control[self.avg_sSFR_control>0]), label='PM', color='dodgerblue')
         ax[0].legend()
         ax[0].set_xlabel('z')
         ax[0].set_ylabel(r'$\log_{10}\langle sSFR \; [\mathrm{yr}^{-1}]\rangle$')
@@ -321,8 +321,8 @@ class control_samples:
         
         # Plot the results
         fig, ax = plt.subplots(2, 1, figsize=(6, 5))
-        ax[0].plot(z_bins[:-1] + z_binsize / 2, np.log10(self.avg_Mdot_control[self.avg_Mdot_control>0]), label='Control', color="orange", linewidth=2)
-        ax[0].plot(z_bins[:-1] + z_binsize / 2, np.log10(self.avg_Mdot_merger[self.avg_Mdot_merger>0]), label='PM', color='dodgerblue', linewidth=2)
+        ax[0].plot(z_bins[:-1] + z_binsize / 2, np.log10(self.avg_Mdot_control[self.avg_Mdot_control>0]), label='Control', color="orange")
+        ax[0].plot(z_bins[:-1] + z_binsize / 2, np.log10(self.avg_Mdot_merger[self.avg_Mdot_merger>0]), label='PM', color='dodgerblue')
         ax[0].legend()
         ax[0].set_xlabel('z')
         ax[0].set_ylabel(r'$\log_{10}\langle \dot{M}_{\mathrm{BH}} \; [M_{\odot} \, \mathrm{yr}^{-1}]\rangle$')
