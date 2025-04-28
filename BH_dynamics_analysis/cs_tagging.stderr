@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "get_subhalo_properties_of_mergers.py", line 250, in <module>
+    xpos_details = details.get('xpos')[:]
+TypeError: 'NoneType' object is not subscriptable

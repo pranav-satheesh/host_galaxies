@@ -5,6 +5,12 @@ import h5py
 import sys
 from scipy.spatial import cKDTree
 
+import sys
+sys.path.append('../BH_dynamics_analysis')
+sys.path.append('/home/pranavsatheesh/arepo_package/')
+import arepo_package as arepo
+
+
 
 MSOL = 1.988409870698051e+33
 h = 0.6774
@@ -143,7 +149,8 @@ class population_generator:
         Nstar = subhalos['SubhaloLenType'][:, 4]
         Nbh = subhalos['SubhaloLenType'][:, 5]
         subhalo_ids = np.arange(len(Ngas))
-        particle_cut_mask = (Ngas >= self.minN_values[1]) & (Ndm >= self.minN_values[0]) & (Nstar >= self.minN_values[2]) & (Nbh >= 0)
+        #particle_cut_mask = (Ngas >= self.minN_values[1]) & (Ndm >= self.minN_values[0]) & (Nstar >= self.minN_values[2]) & (Nbh >= 0)
+        particle_cut_mask = (Ngas >= self.minN_values[1]) & (Ndm >= self.minN_values[0]) & (Nstar >= self.minN_values[2]) & (Nbh >= self.minN_values[3])
 
         #applying the condition that the nearest neighbour sep rsep >2 for non interacting galaxies
 
@@ -187,7 +194,7 @@ class population_generator:
           
     def save_population_to_file(self, filepath):
         """Save all cases (all merging and non-merging populations) to file."""
-        outfilename = filepath + f"/population_sort_gas-{minN_values[0]:03d}_dm-{minN_values[1]:03d}_star-{minN_values[2]:03d}_bh-{minN_values[3]:03d}_w_rsep_cut.hdf5"
+        outfilename = filepath + f"/population_sort_gas-{minN_values[0]:03d}_dm-{minN_values[1]:03d}_star-{minN_values[2]:03d}_bh-{minN_values[3]:03d}_w_rsep_cut_1bh.hdf5"
 
         with h5py.File(outfilename, 'w') as f:
             all_merge_grp = f.create_group('merging_population')
@@ -205,124 +212,160 @@ class population_generator:
         print(f"All-cases population saved to {outfilename}")
 
 
-# def generate_population(basePath, snap_population, snaps_galaxy_mergers,subhaloidxs_galaxy_mergers, minN_values):
+class population_generator_for_brahma:
 
-#     #basePath is the path to the simulation directory
-#     #snap_population is the array of snapshots to consider. The minimum value will be the snapshot where the max redshift for gaalxy mergers is reached
-#     #snaps_galaxy_mergers is the array of snapshots where galaxy mergers occur
-#     #subhaloidxs_galaxy_mergers is the array of subhalo indices where galaxy mergers occur
-#     #minN_values is the array of minimum values for the number of particles in each component (DM, gas, stars, BH)
+    def __init__(self,basePath,merger_file_name):
 
-#     redshifts = np.array([il.groupcat.loadHeader(basePath, snap)['Redshift'].item() for snap in snap_population])
-    
-#     merging_population = {
-#         "snap": np.array([], dtype=int),
-#         "z": np.array([], dtype=float),
-#         "subhalo_ids": np.array([], dtype=int),
-#         "Mstar": np.array([], dtype=float),
-#         "Mgas": np.array([], dtype=float),
-#         "MBH": np.array([], dtype=float),
-#         "Mdot": np.array([], dtype=float),
-#         "SFR": np.array([], dtype=float)
-#     }
-    
-#     non_merging_population = {
-#         "snap": np.array([], dtype=int),
-#         "z": np.array([], dtype=float),
-#         "subhalo_ids": np.array([], dtype=int),
-#         "Mstar": np.array([], dtype=float),
-#         "Mgas": np.array([], dtype=float),
-#         "MBH": np.array([], dtype=float),
-#         "Mdot": np.array([], dtype=float),
-#         "SFR": np.array([], dtype=float)
-#     }
+        self.basePath = basePath
+        self.h = arepo.get_cosmology(basePath)[2]  #h parameter associated with this run
+        
+        bh_merger_properties = np.load(basePath + merger_file_name,allow_pickle=True)[0]
+        true_merger_flag = np.array(bh_merger_properties['merger_flag'])==1
+        print("The number of BH mergers in this run is %d"%(np.sum(true_merger_flag)))
+        self.N_mergers = np.sum(true_merger_flag)
 
-#     # Iterate over all snapshots
- 
-#     for i,snap in enumerate(snap_population):
-#         subhalos = il.groupcat.loadSubhalos(basePath, snap, fields=['SubhaloLenType', 'SubhaloMassType', 'SubhaloBHMass', 'SubhaloBHMdot', 'SubhaloSFR'])
-#         Ngas = subhalos['SubhaloLenType'][:, 0]
-#         Ndm = subhalos['SubhaloLenType'][:, 1]
-#         Nstar = subhalos['SubhaloLenType'][:, 4]
-#         Nbh = subhalos['SubhaloLenType'][:, 5]
-#         subhalo_ids = np.arange(len(Ngas))
-#         subhalo_ids = subhalo_ids[(Ngas >= minN_values[1]) & (Ndm >= minN_values[0]) & (Nstar >= minN_values[2]) & (Nbh >= 0)]
+        brahma_merger_data = {}
 
-#         subhalo_ids_merging = subhaloidxs_galaxy_mergers[np.where(snaps_galaxy_mergers == snap)]
-#         subhalo_ids_non_merging = np.setdiff1d(subhalo_ids, subhalo_ids_merging)
+        for key in bh_merger_properties.keys():
+            brahma_merger_data[key] = np.array(bh_merger_properties[key])[true_merger_flag]
 
-#         # if len(subhalo_ids_merging) != 0:
-#         #     merging_population["snap"] = np.append(merging_population["snap"], snap)
-#         #     merging_population["z"] = np.append(merging_population["z"], redshifts[i])
-       
-#         merging_population["snap"] = np.append(merging_population["snap"], snap*np.ones(len(subhalo_ids_merging)))
-#         merging_population["z"] = np.append(merging_population["z"], redshifts[i]*np.ones(len(subhalo_ids_merging)))  
-#         merging_population["subhalo_ids"] = np.concatenate((merging_population["subhalo_ids"], subhalo_ids_merging))
-#         merging_population["Mstar"] = np.concatenate((merging_population["Mstar"], subhalos['SubhaloMassType'][subhalo_ids_merging, 4]))
-#         merging_population["Mgas"] = np.concatenate((merging_population["Mgas"], subhalos['SubhaloMassType'][subhalo_ids_merging, 0]))
-#         merging_population["MBH"] = np.concatenate((merging_population["MBH"], subhalos['SubhaloBHMass'][subhalo_ids_merging]))
-#         merging_population["Mdot"] = np.concatenate((merging_population["Mdot"], subhalos['SubhaloBHMdot'][subhalo_ids_merging]))
-#         merging_population["SFR"] = np.concatenate((merging_population["SFR"], subhalos['SubhaloSFR'][subhalo_ids_merging]))
+        self.brahma_merger_data = brahma_merger_data
+        self.z_bh_mergers = brahma_merger_data['remnant_redshift']
 
-#         non_merging_population["snap"] = np.append(non_merging_population["snap"], snap*np.ones(len(subhalo_ids_non_merging)))
-#         non_merging_population["z"] = np.append(non_merging_population["z"], redshifts[i]*np.ones(len(subhalo_ids_non_merging)))
-#         non_merging_population["subhalo_ids"] = np.concatenate((non_merging_population["subhalo_ids"], subhalo_ids_non_merging))
-#         non_merging_population["Mstar"] = np.concatenate((non_merging_population["Mstar"], subhalos['SubhaloMassType'][subhalo_ids_non_merging, 4]))
-#         non_merging_population["Mgas"] = np.concatenate((non_merging_population["Mgas"], subhalos['SubhaloMassType'][subhalo_ids_non_merging, 0]))
-#         non_merging_population["MBH"] = np.concatenate((non_merging_population["MBH"], subhalos['SubhaloBHMass'][subhalo_ids_non_merging]))
-#         non_merging_population["Mdot"] = np.concatenate((non_merging_population["Mdot"], subhalos['SubhaloBHMdot'][subhalo_ids_non_merging]))
-#         non_merging_population["SFR"] = np.concatenate((non_merging_population["SFR"], subhalos['SubhaloSFR'][subhalo_ids_non_merging]))
+        #get the snapshots for the BH mergers (remnant subhalo)
+        self.snaps_bh_mergers = []
+        snap_list, z_list=arepo.get_snapshot_redshift_correspondence(basePath)
+        self.snap_list = snap_list
+        self.z_list = z_list
 
-#     merging_population['Mstar'] = merging_population['Mstar']*1e10/h
-#     merging_population['Mgas'] = merging_population['Mgas']*1e10/h
-#     merging_population['MBH'] = merging_population['MBH']*1e10/h
-#     merging_population['Mdot'] = merging_population['Mdot']*(1e10/h)/(0.978*1e9/h)
+        for remnant_z in self.z_bh_mergers:
+            idx = np.where(z_list == remnant_z)[0]
+            self.snaps_bh_mergers.append(snap_list[idx][0])
+        
+        self.merging_population,self.non_merging_population = self.generate_population()
 
-#     non_merging_population['Mstar'] = non_merging_population['Mstar']*1e10/h
-#     non_merging_population['Mgas'] = non_merging_population['Mgas']*1e10/h
-#     non_merging_population['MBH'] = non_merging_population['MBH']*1e10/h
-#     non_merging_population['Mdot'] = non_merging_population['Mdot']*(1e10/h)/(0.978*1e9/h)
 
-#     return merging_population, non_merging_population
+    def generate_population(self):
 
-# def apply_redshift_cuts(population, snapshot_to_redshift, z_min, z_max):
-#     # Get the indices of snapshots within the redshift range
-#     valid_snapshots = [snap for snap, z in snapshot_to_redshift.items() if z_min < z < z_max]
-#     valid_indices = np.isin(population["snap"], valid_snapshots)
-    
-#     # Filter the population based on the valid indices
-#     filtered_population = {key: value[valid_indices] for key, value in population.items()}
-#     return filtered_population
+        merging_population = self.initialize_population_dict(key='M')
+        non_merging_population = self.initialize_population_dict(key='N')
 
-# def write_population_to_file(filepath, basePath, snap_population, snaps_galaxy_mergers, subhaloidxs_galaxy_mergers, minN_values):
-#     merging_population, non_merging_population = generate_population(basePath, snap_population, snaps_galaxy_mergers, subhaloidxs_galaxy_mergers, minN_values)
-#     outfilename = filepath + f"/population_sort_gas-{minN_values[0]:03d}_dm-{minN_values[1]:03d}_star-{minN_values[2]:03d}_bh-{minN_values[3]:03d}.hdf5"
-#     with h5py.File(outfilename, 'w') as f:
-#             merging_group = f.create_group('merging_population')
-#             for key, value in merging_population.items():
-#                 merging_group.create_dataset(key, data=value)
+        fields=['SubhaloLenType', 'SubhaloMassType', 'SubhaloBHMass', 'SubhaloBHMdot', 'SubhaloSFR','SubhaloGasMetallicity','SubhaloStarMetallicity','SubhaloPos','SubhaloHalfmassRadType']
+
+        for i,redshift in enumerate(self.z_list):
+            subhalos = arepo.get_subhalo_property(self.basePath,fields,redshift,postprocessed=1)
+            subhalo_ids = np.arange(len(subhalos['SubhaloLenType'][:,0]))
+
+            #find all mergers within this snapshot/redshift
+            merger_indices = np.where(self.brahma_merger_data['remnant_redshift']==redshift)
+            if merger_indices.size > 0:
+                subhalo_ids_merging = self.brahma_merger_data['remnant_SubhaloID'][merger_indices]
+
+            else:
+                subhalo_ids_merging = np.array([], dtype=int)
+
+            #TO-DO: change this to include the subhalo cuts to select only valid subhalos
+            valid_subhalo_ids = subhalo_ids
+            subhalo_ids_non_merging = np.setdiff1d(valid_subhalo_ids, subhalo_ids_merging)
+
+            self.update_population_dict(merging_population, subhalos, subhalo_ids_merging,self.snap_list[i],redshift)
+            #self.update_population_dict(major_merger_population, subhalos, subhalo_ids_merging_major, snap, redshifts[i])
+            self.update_population_dict(non_merging_population, subhalos, subhalo_ids_non_merging,self.snap_list[i],redshift)
+        
+        # Convert units for each population.
+        self.convert_units(merging_population)
+        self.convert_units(non_merging_population)
+
+        return merging_population, non_merging_population
             
-#             non_merging_group = f.create_group('non_merging_population')
-#             for key, value in non_merging_population.items():
-#                 non_merging_group.create_dataset(key, data=value)
+    def initialize_population_dict(self,key="M"):
 
-#     print(f"Population saved to {outfilename}")
+        if(key=="M"): #for merging population
+            return {
+                "snap": np.array([], dtype=int),
+                "z": np.array([], dtype=float),
+                "subhalo_ids": np.array([], dtype=int),
+                "Mstar": np.array([], dtype=float),
+                "Mgas": np.array([], dtype=float),
+                "MBH": np.array([], dtype=float),
+                #"MBH_1":np.array([], dtype=float),
+                #"MBH_2":np.array([], dtype=float),
+                # "q_merger":np.array([], dtype=float),
+                "Mdot": np.array([], dtype=float),
+                "SFR": np.array([], dtype=float)
+            }
+        else:
+            return {
+                "snap": np.array([], dtype=int),
+                "z": np.array([], dtype=float),
+                "subhalo_ids": np.array([], dtype=int),
+                "Mstar": np.array([], dtype=float),
+                "Mgas": np.array([], dtype=float),
+                "MBH": np.array([], dtype=float),
+                "Mdot": np.array([], dtype=float),
+                "SFR": np.array([], dtype=float)
+            }
 
-#     return None
+    def update_population_dict(self, population, subhalos, subhalo_ids, snap, redshift):
+        if len(subhalo_ids) == 0:
+            return
+        population["snap"] = np.append(population["snap"], snap * np.ones(len(subhalo_ids)))
+        population["z"] = np.append(population["z"], redshift * np.ones(len(subhalo_ids)))
+        population["subhalo_ids"] = np.concatenate((population["subhalo_ids"], subhalo_ids))
+        population["Mstar"] = np.concatenate((population["Mstar"], subhalos['SubhaloMassType'][subhalo_ids, 4]))
+        population["Mgas"] = np.concatenate((population["Mgas"], subhalos['SubhaloMassType'][subhalo_ids, 0]))
+        population["MBH"] = np.concatenate((population["MBH"], subhalos['SubhaloBHMass'][subhalo_ids]))
+        population["Mdot"] = np.concatenate((population["Mdot"], subhalos['SubhaloBHMdot'][subhalo_ids]))
+        population["SFR"] = np.concatenate((population["SFR"], subhalos['SubhaloSFR'][subhalo_ids]))
+
+    def convert_units(self, population):
+        population['Mstar'] *= 1e10 / self.h
+        population['Mgas'] *= 1e10 / self.h
+        population['MBH'] *= 1e10 / self.h
+        population['Mdot'] *= (1e10 / self.h) / (0.978 * 1e9 / self.h)
+          
+    def save_population_to_file(self, filepath):
+        """Save all cases (all merging and non-merging populations) to file."""
+        outfilename = filepath + f"/population_from_brahma.hdf5"
+
+        with h5py.File(outfilename, 'w') as f:
+            all_merge_grp = f.create_group('merging_population')
+            for key, value in self.all_merging_population.items():
+                all_merge_grp.create_dataset(key, data=value)
+            
+            non_merge_grp = f.create_group('non_merging_population')
+            for key, value in self.non_merging_population.items():
+                non_merge_grp.create_dataset(key, data=value)
+            
+            # major_grp = f.create_group('major_merging_population')
+            # for key, value in self.major_merger_population.items():
+            #     major_grp.create_dataset(key, data=value)
+
+        print(f"All-cases population saved to {outfilename}")
 
 if __name__ == "__main__":
 
-    basePath = sys.argv[1]
-    merger_file_path = sys.argv[2]
-    population_file_path = sys.argv[3]
+    if(sys.argv[1] == "brahma"):
+        basePath = sys.argv[2]
+        merger_file_name = sys.argv[3]
+        population_file_path = sys.argv[4]
 
-    minN_values = np.array([int(sys.argv[4]), int(sys.argv[5]), int(sys.argv[6]), int(sys.argv[7])])
+        pop_gen = population_generator_for_brahma(basePath,merger_file_name)
+        pop_gen.save_population_to_file(population_file_path)
+        exit()
 
-    merger_file_1bh = merger_file_path + f'/galaxy-mergers_TNG50-1_gas-{minN_values[0]:03d}_dm-{minN_values[1]:03d}_star-{minN_values[2]:03d}_bh-{minN_values[3]:03d}.hdf5'
+    else:
+        basePath = sys.argv[1]
+        merger_file_path = sys.argv[2]
+        population_file_path = sys.argv[3]
 
-    pop_gen = population_generator(merger_file_1bh,basePath,minN_values)
+        minN_values = np.array([int(sys.argv[4]), int(sys.argv[5]), int(sys.argv[6]), int(sys.argv[7])])
 
-    pop_gen.save_population_to_file(population_file_path)
+        merger_file_1bh = merger_file_path + f'/galaxy-mergers_TNG50-1_gas-{minN_values[0]:03d}_dm-{minN_values[1]:03d}_star-{minN_values[2]:03d}_bh-{minN_values[3]:03d}.hdf5'
+
+        pop_gen = population_generator(merger_file_1bh,basePath,minN_values)
+
+        pop_gen.save_population_to_file(population_file_path)
     
     # fmergers = h5py.File(merger_file_1bh, 'r')
     # subhaloidxs_galaxy_mergers = fmergers["shids_subf"][:,2]

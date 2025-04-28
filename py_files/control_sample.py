@@ -12,6 +12,11 @@ import matplotlib.pyplot as plt
 import scienceplots
 plt.style.use('science')
 
+sys.path.append('../BH_dynamics_analysis')
+sys.path.append('/home/pranavsatheesh/arepo_package/')
+import arepo_package as arepo
+
+
 
 #default values
 # plt.rcParams.update({'font.size': 25})
@@ -27,6 +32,13 @@ plt.style.use('science')
 #             'legend.fontsize': 20
 #         })
 
+
+##TO-DO
+# - Return the relative seperations for merging galaxies and control
+# - Filter out PMs with no BHs in descendent
+# - Filter out controls with a merger in the last 2 Gyr
+
+
 class control_samples:
 
     def __init__(self,population_file,control_file_loc,control_idx_file_name):
@@ -41,6 +53,8 @@ class control_samples:
 
         self.control_sample_ids = np.array(self.control_indices).flatten()
         self.compute_population_properties()
+
+        self.valid_post_merger_masks =  self.MBH_merging_pop!=0
         
     def find_control_sample_indices(self,pop):
         merging_points = np.column_stack((pop['merging_population']['z'], np.log10(pop['merging_population']['Mstar'])))
@@ -85,7 +99,7 @@ class control_samples:
         return control_indices
 
     def strore_control_indices(self):
-        np.savetxt(self.control_idx_file,self.control_indices,dtype=int)
+        np.savetxt(self.control_idx_file, np.array(self.control_indices, dtype=int))
 
     def set_plot_style(self, linewidth=3, titlesize=20,labelsize=25,ticksize=20,legendsize=20):
         """Set matplotlib rcParams for consistent plot style."""
@@ -112,7 +126,7 @@ class control_samples:
         ax[0].hist(self.pop['non_merging_population']['z'][np.sort(control_sample_ids)], bins=z_bins, color="black", histtype="step",linewidth=2,density=True)
         ax[0].hist(self.pop['merging_population']['z'], bins=z_bins, histtype="step",color="Darkorange",linestyle="--",linewidth=2,density=True)
         ax[0].set_xlabel("z",fontsize=25)
-        ax[0].set_ylabel("Density",fontsize=25)
+        ax[0].set_ylabel("pdf",fontsize=25)
         ax[0].set_xticks([0,1,2,3,4,5])
 
         ax[1].hist(np.log10(self.pop['non_merging_population']['Mstar'][np.sort(control_sample_ids)]), bins=Mstar_bins,histtype="step",color="black",label="Control",linewidth=2,density=True)
@@ -181,23 +195,23 @@ class control_samples:
         if bin_settings is None:
             bin_settings = {
             'sSFR': {'binsize': 0.6, 'bin_min': -14, 'bin_max': -7},
-            'Mgas': {'binsize': 0.7, 'bin_min': 5, 'bin_max': 14},
-            'fgas': {'binsize': 0.05, 'bin_min': 0, 'bin_max': 1},
             'Mdot': {'binsize': 0.5, 'bin_min': -8, 'bin_max': 1},
+            'Mgas': {'binsize': 0.7, 'bin_min': 5, 'bin_max': 14},
+            'fgas': {'binsize': 0.05, 'bin_min': 0, 'bin_max': 1}
             }
 
         properties = {
             'sSFR': (np.log10(self.sSFR_merging_pop[self.sSFR_merging_pop>0]), np.log10(self.sSFR_control_pop[self.sSFR_control_pop>0])),
+            'Mdot': (np.log10(self.Mdot_merging_pop[self.Mdot_merging_pop>0]), np.log10(self.Mdot_control_pop[self.Mdot_control_pop>0])),
             'Mgas': (np.log10(self.Mgas_merging_pop), np.log10(self.Mgas_control_pop)),
-            'fgas': (self.fgas_merging_pop, self.fgas_control_pop),
-            'Mdot': (np.log10(self.Mdot_merging_pop[self.Mdot_merging_pop>0]), np.log10(self.Mdot_control_pop[self.Mdot_control_pop>0]))
+            'fgas': (self.fgas_merging_pop, self.fgas_control_pop)
         }
 
         properties_xlabel = {
             'sSFR': r"$\log_{10}(\mathrm{sSFR}[\mathrm{yr}^{-1}])$",
+            'Mdot': r"$\log_{10}(\dot{M}_{\mathrm{BH}}[M_{\odot}\, \mathrm{yr}^{-1}])$",
             'Mgas': r"$\log_{10}(M_{\mathrm{gas}}[M_{\odot}])$",
             'fgas': r"$f_{\mathrm{gas}}$",
-            'Mdot': r"$\log_{10}(\dot{M}_{\mathrm{BH}}[M_{\odot}\, \mathrm{yr}^{-1}])$"
             }
         
         self.set_plot_style()
@@ -215,7 +229,7 @@ class control_samples:
             axes[i].hist(prop_merging, bins=bins,color='dodgerblue', label='PM', density=True,histtype="step", linewidth=2)
             axes[i].hist(prop_control, bins=bins,color='orange', label='Control', density=True,histtype="step", linewidth=2)
             axes[i].set_xlabel(properties_xlabel[prop_name])
-            axes[i].set_ylabel('Density')
+            axes[i].set_ylabel('pdf')
             axes[i].legend()
         
         fig.tight_layout()
@@ -248,10 +262,10 @@ class control_samples:
             sSFR_control_pop_filtered = self.sSFR_control_pop[control_z_mask]
 
             avg_sSFR_merger.append(np.mean(sSFR_merging_pop_filtered))
-            std_sSFR_merger.append(np.std(sSFR_merging_pop_filtered))
+            std_sSFR_merger.append(np.std(sSFR_merging_pop_filtered)/ np.sqrt(len(sSFR_merging_pop_filtered)))
 
             avg_sSFR_control.append(np.mean(sSFR_control_pop_filtered))
-            std_sSFR_control.append(np.std(sSFR_control_pop_filtered))
+            std_sSFR_control.append(np.std(sSFR_control_pop_filtered)/ np.sqrt(len(sSFR_control_pop_filtered)))
         
         self.avg_sSFR_merger = np.array(avg_sSFR_merger)
         self.std_sSFR_merger = np.array(std_sSFR_merger)
@@ -260,14 +274,19 @@ class control_samples:
         self.std_sSFR_control = np.array(std_sSFR_control)
 
         self.Q_sSFR = self.avg_sSFR_merger / self.avg_sSFR_control
+        self.Q_sSFR_SE = self.Q_sSFR * np.sqrt((self.std_sSFR_merger / self.avg_sSFR_merger) ** 2 +(self.std_sSFR_control / self.avg_sSFR_control) ** 2)
         # Plot the results
         fig, ax = plt.subplots(2, 1, figsize=(6, 5))
-        ax[0].plot(z_bins[:-1] + z_binsize / 2, np.log10(self.avg_sSFR_merger[self.avg_sSFR_merger>0]), label='Control', color="orange")
-        ax[0].plot(z_bins[:-1] + z_binsize / 2, np.log10(self.avg_sSFR_control[self.avg_sSFR_control>0]), label='PM', color='dodgerblue')
+        ax[0].plot(z_bins[:-1] + z_binsize / 2, np.log10(self.avg_sSFR_merger[self.avg_sSFR_merger>0]), label='PM', color="dodgerblue")
+        ax[0].fill_between(z_bins[:-1] + z_binsize / 2, np.log10(self.avg_sSFR_merger-self.std_sSFR_merger), np.log10(self.avg_sSFR_merger+self.std_sSFR_merger), alpha=0.3,color='dodgerblue')
+        ax[0].plot(z_bins[:-1] + z_binsize / 2, np.log10(self.avg_sSFR_control[self.avg_sSFR_control>0]), label='control', color='orange')
+        ax[0].fill_between(z_bins[:-1] + z_binsize / 2, np.log10(self.avg_sSFR_control-self.std_sSFR_control), np.log10(self.avg_sSFR_control+self.std_sSFR_control), alpha=0.3,color='orange')
         ax[0].legend()
         ax[0].set_xlabel('z')
         ax[0].set_ylabel(r'$\log_{10}\langle sSFR \; [\mathrm{yr}^{-1}]\rangle$')
-        ax[1].plot(z_bins[:-1] + z_binsize / 2, self.Q_sSFR)
+
+        ax[1].plot(z_bins[:-1] + z_binsize / 2, self.Q_sSFR,color='purple')
+        ax[1].fill_between(z_bins[:-1] + z_binsize / 2, self.Q_sSFR - self.Q_sSFR_SE, self.Q_sSFR + self.Q_sSFR_SE, alpha=0.3,color='purple')
         ax[1].set_xlabel('z')
         ax[1].set_ylabel('Q(sSFR)')
         ax[1].set_ylim(0, 4)
@@ -276,7 +295,7 @@ class control_samples:
         fig.tight_layout()
 
         return fig,ax
-
+    
     def plot_mdot_evolution(self, z_min=0, z_max=5, z_binsize=0.3):
         # Initialize lists to store the results
 
@@ -302,11 +321,11 @@ class control_samples:
             Mdot_control_pop_filtered = self.Mdot_control_pop[control_z_mask]
 
             avg_Mdot_merger.append(np.mean(Mdot_merging_pop_filtered))
-            std_Mdot_merger.append(np.std(Mdot_merging_pop_filtered))
+            std_Mdot_merger.append(np.std(Mdot_merging_pop_filtered)/ np.sqrt(len(Mdot_merging_pop_filtered)))
 
             #avg_logMdot_control.append(np.mean(log_Mdot_control_filtered))
             avg_Mdot_control.append(np.mean(Mdot_control_pop_filtered))
-            std_Mdot_control.append(np.std(Mdot_control_pop_filtered))
+            std_Mdot_control.append(np.std(Mdot_control_pop_filtered)/ np.sqrt(len(Mdot_control_pop_filtered)))
 
 
         #avg_logMdot_merger = np.array(avg_logMdot_merger)
@@ -318,16 +337,22 @@ class control_samples:
         self.std_Mdot_control = np.array(std_Mdot_control)
 
         self.Q_Mdot = self.avg_Mdot_merger / self.avg_Mdot_control
+        self.Q_Mdot_SE = self.Q_Mdot * np.sqrt((self.std_Mdot_merger / self.avg_Mdot_merger) ** 2 +(self.std_Mdot_control / self.avg_Mdot_control) ** 2)
         
         # Plot the results
         fig, ax = plt.subplots(2, 1, figsize=(6, 5))
-        ax[0].plot(z_bins[:-1] + z_binsize / 2, np.log10(self.avg_Mdot_control[self.avg_Mdot_control>0]), label='Control', color="orange")
         ax[0].plot(z_bins[:-1] + z_binsize / 2, np.log10(self.avg_Mdot_merger[self.avg_Mdot_merger>0]), label='PM', color='dodgerblue')
+        ax[0].fill_between(z_bins[:-1] + z_binsize / 2, np.log10(self.avg_Mdot_merger-self.std_Mdot_merger), np.log10(self.avg_Mdot_merger+self.std_Mdot_merger), alpha=0.3,color='dodgerblue')
+        
+        ax[0].plot(z_bins[:-1] + z_binsize / 2, np.log10(self.avg_Mdot_control[self.avg_Mdot_control>0]), label='Control', color="orange")
+        ax[0].fill_between(z_bins[:-1] + z_binsize / 2, np.log10(self.avg_Mdot_control-self.std_Mdot_control), np.log10(self.avg_Mdot_control+self.std_Mdot_control), alpha=0.3,color='orange')
+        
         ax[0].legend()
         ax[0].set_xlabel('z')
         ax[0].set_ylabel(r'$\log_{10}\langle \dot{M}_{\mathrm{BH}} \; [M_{\odot} \, \mathrm{yr}^{-1}]\rangle$')
 
-        ax[1].plot(z_bins[:-1] + z_binsize / 2, self.Q_Mdot)
+        ax[1].plot(z_bins[:-1] + z_binsize / 2, self.Q_Mdot,color='purple')
+        ax[1].fill_between(z_bins[:-1] + z_binsize / 2, self.Q_Mdot - self.Q_Mdot_SE, self.Q_Mdot + self.Q_Mdot_SE, alpha=0.3,color='purple')
         ax[1].set_xlabel('z')
         ax[1].set_ylabel('Q($\dot{M}_{\mathrm{BH}}$)')
         ax[1].set_ylim(0, 5)
@@ -336,6 +361,74 @@ class control_samples:
         fig.tight_layout()
 
         return fig, ax
+
+    def fgas_evolution(self, z_min=0, z_max=5, z_binsize=0.3):
+
+        Nbins_z = int((z_max - z_min) / z_binsize)
+        z_bins = np.linspace(z_min, z_max, Nbins_z)
+
+        avg_fgas_control = []
+        avg_fgas_merger = []
+
+        std_fgas_control = []
+        std_fgas_merger = []
+
+        for i in range(len(z_bins) - 1):
+            # Create masks for merging and control populations within each redshift bin
+            merger_z_mask = (self.z_merging_pop > z_bins[i]) & (self.z_merging_pop < z_bins[i+1])
+            control_z_mask = (self.z_control_pop > z_bins[i]) & (self.z_control_pop < z_bins[i+1])
+
+            fgas_merging_pop_filtered = self.fgas_merging_pop[merger_z_mask]
+            fgas_control_pop_filtered = self.fgas_control_pop[control_z_mask]
+
+            avg_fgas_merger.append(np.mean(fgas_merging_pop_filtered))
+            std_fgas_merger.append(np.std(fgas_merging_pop_filtered)/ np.sqrt(len(fgas_merging_pop_filtered)))
+
+            avg_fgas_control.append(np.mean(fgas_control_pop_filtered))
+            std_fgas_control.append(np.std(fgas_control_pop_filtered)/ np.sqrt(len(fgas_control_pop_filtered)))
+        self.avg_fgas_merger = np.array(avg_fgas_merger)
+        self.std_fgas_merger = np.array(std_fgas_merger)
+        self.avg_fgas_control = np.array(avg_fgas_control)
+        self.std_fgas_control = np.array(std_fgas_control)
+
+        self.Q_fgas = self.avg_fgas_merger / self.avg_fgas_control
+        self.Q_fgas_SE = self.Q_fgas * np.sqrt((self.std_fgas_merger / self.avg_fgas_merger) ** 2 +(self.std_fgas_control / self.avg_fgas_control) ** 2)
+
+        # Plot the results
+        fig, ax = plt.subplots(2, 1, figsize=(6, 5))
+        ax[0].plot(z_bins[:-1] + z_binsize / 2, self.avg_fgas_merger, label='PM', color='dodgerblue')
+        ax[0].fill_between(z_bins[:-1] + z_binsize / 2, self.avg_fgas_merger-self.std_fgas_merger, self.avg_fgas_merger+self.std_fgas_merger, alpha=0.3,color='dodgerblue')
+        ax[0].plot(z_bins[:-1] + z_binsize / 2, self.avg_fgas_control, label='Control', color="orange")
+        ax[0].fill_between(z_bins[:-1] + z_binsize / 2, self.avg_fgas_control-self.std_fgas_control, self.avg_fgas_control+self.std_fgas_control, alpha=0.3,color='orange')
+        ax[0].legend()
+        ax[0].set_xlabel('z')
+        ax[0].set_ylabel(r'$\langle f_{\mathrm{gas}} \rangle$')
+        ax[1].plot(z_bins[:-1] + z_binsize / 2, self.Q_fgas,color='purple')
+        ax[1].fill_between(z_bins[:-1] + z_binsize / 2, self.Q_fgas - self.Q_fgas_SE, self.Q_fgas + self.Q_fgas_SE, alpha=0.3,color='purple')
+        ax[1].set_xlabel('z')
+        ax[1].set_ylabel('Q($f_{\mathrm{gas}}$)')
+        ax[1].set_ylim(0, 5)
+        # Final layout adjustments
+        fig.tight_layout()
+        return fig, ax
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # def control_idxs(control_file_idx_name):
 #     control_file_loc = "/home/pranavsatheesh/host_galaxies/data/control_files/"
