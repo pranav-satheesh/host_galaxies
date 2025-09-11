@@ -1,0 +1,2 @@
+/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_sublink_trees_mod.py:303: RuntimeWarning: divide by zero encountered in scalar divide
+  self.infallMassRatio = np.append(self.infallMassRatio, npinfallMass / fpinfallMass)

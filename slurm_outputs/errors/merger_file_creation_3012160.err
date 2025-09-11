@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_sublink_trees_mod.py", line 852, in <module>
+    writeMergerFile(savePath,basePath, snapNum, minNdm=minNdm, minNgas=minNgas, 
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_sublink_trees_mod.py", line 581, in writeMergerFile
+    mrg = MergerInfo(tree, massPartType=subLinkMassType, verbose=verbose, minNgas=minNgas, 
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_sublink_trees_mod.py", line 157, in __init__
+    self.getMergerInfoSubtree(tree, minMassRatio=self.minMassRatio, massPartType=self.massPartType, 
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_sublink_trees_mod.py", line 332, in getMergerInfoSubtree
+    self = self.getMergerInfoSubtree(tree, minMassRatio=self.minMassRatio, 
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_sublink_trees_mod.py", line 290, in getMergerInfoSubtree
+    fp_maxpast_mass,np_maxpast_mass,fpinfallMass,npinfallMass,fp_mass_history, np_mass_history, fp_snap_history, np_snap_history = find_infall_and_maxpastmass(tree,fpIndex,npIndex)
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_sublink_trees_mod.py", line 409, in find_infall_and_maxpastmass
+    elif first_subs_fp[0]==first_subs_np[1]:
+IndexError: index 1 is out of bounds for axis 0 with size 1

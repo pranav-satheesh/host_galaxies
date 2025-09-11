@@ -35,28 +35,89 @@ import arepo_package as arepo
 
 ##TO-DO
 # - Return the relative seperations for merging galaxies and control
-# - Filter out PMs with no BHs in descendent
-# - Filter out controls with a merger in the last 2 Gyr
-
+# Add a user input to the maximum tolerances allowed for z and Mstar
+# Function to compute KS statistic or Hellinger distances
 
 class control_samples:
 
-    def __init__(self,population_file,control_file_loc,control_idx_file_name):
+    def __init__(self,population_file,control_file_loc,control_name,brahma_key=False):
+
+        
         self.pop = population_file
-        self.control_idx_file = control_file_loc+control_idx_file_name
+        self.control_file_loc = control_file_loc
+        self.control_name = control_name
+        self.control_idx_file = self.control_file_loc + self.control_name+".txt"
+        # self.control_idx_file = self.control_file_loc + "control_indices_for_TNG_%1.2f.txt"%(matching_threshold)
 
         if os.path.exists(self.control_idx_file):
             self.control_indices = np.loadtxt(self.control_idx_file).astype(int)
         else:
-            self.control_indices = self.find_control_sample_indices(self.pop)
-            self.strore_control_indices()
+            self.control_indices,self.tolerances = self.find_control_samples(self.pop)
+            # self.control_indices,self.tolerances = self.find_control_sample_indices(self.pop,matching_threshold)
+            self.store_control_indices()
 
         self.control_sample_ids = np.array(self.control_indices).flatten()
+        #self.compute_population_properties()
+
+        mergers_with_controls_found = self.control_indices[0]!=-1 #these mergers have a valid matching control non merging galaxy
+        mergers_with_MBH_not_zero = self.pop['merging_population']['MBH'][:]!=0
+        mergers_with_Mstar_not_zero = self.pop['merging_population']['Mstar'][:]!=0
+
+        self.valid_control_mask =  mergers_with_controls_found & mergers_with_MBH_not_zero & mergers_with_Mstar_not_zero
+
         self.compute_population_properties()
 
-        self.valid_post_merger_masks =  self.MBH_merging_pop!=0
-        
-    def find_control_sample_indices(self,pop):
+    def find_control_samples(self,pop,max_z_tolerance=0.6,max_Mstar_dex_tolerance=0.6):
+
+        merging_points = np.column_stack((pop['merging_population']['z'], np.log10(pop['merging_population']['Mstar'])))
+        non_merging_points = np.column_stack((pop['non_merging_population']['z'], np.log10(pop['non_merging_population']['Mstar'])))
+
+        tree = cKDTree(non_merging_points)
+        used = np.zeros(len(non_merging_points), dtype=bool)
+        control_indices = []
+        net_tolerances = []
+
+        while True:
+            closest_indices = np.full(len(merging_points), -1)
+            tolerances = []
+            for i in tqdm(range(len(merging_points)), desc="Processing merging points", ncols=100):
+             #find the closest neibhour 
+                dist, min_idx = tree.query(merging_points[i])
+                if(used[min_idx]):
+                    #if the closest neighbouring non merging galaxy is already matched to a merging galaxy, find the next closest one
+                    dists,idxs = tree.query(merging_points[i],k=len(non_merging_points))
+                    min_idx = idxs[np.where(~used[idxs])[0][0]] 
+                #check for tolerance:
+                del_z = np.abs(merging_points[i][0]-non_merging_points[min_idx][0])
+                dex_Mstar = np.abs(np.log10(merging_points[i][1])-np.log10(non_merging_points[min_idx][1]))
+
+                z_tolerance = 0.05
+                Mstar_dex_tolerance = 0.1
+
+                
+                while True:
+                    if(del_z < z_tolerance and dex_Mstar < Mstar_dex_tolerance):
+                        used[min_idx] = True
+                        closest_indices[i] = min_idx
+                        tolerances.append((del_z, dex_Mstar))
+                        break
+                    else:
+                        z_tolerance = z_tolerance*1.5
+                        Mstar_dex_tolerance = Mstar_dex_tolerance*1.5
+
+                        if(z_tolerance>max_z_tolerance or Mstar_dex_tolerance>max_Mstar_dex_tolerance):
+                            closest_indices[i] = -1
+                            break
+
+            control_indices.append(closest_indices)
+            net_tolerances.append(tolerances)
+
+            if np.shape(control_indices)[0]>=1:
+                break
+
+        return control_indices, net_tolerances
+
+    def find_control_sample_indices(self,pop,matching_threshold=0.99):
         merging_points = np.column_stack((pop['merging_population']['z'], np.log10(pop['merging_population']['Mstar'])))
         non_merging_points = np.column_stack((pop['non_merging_population']['z'], np.log10(pop['non_merging_population']['Mstar'])))
 
@@ -93,12 +154,13 @@ class control_samples:
             D_mstar, p_Mstar = ks_2samp(pop['non_merging_population']['Mstar'][np.sort(closest_indices)],pop['merging_population']['Mstar'])
             D_z, p_z = ks_2samp(pop['non_merging_population']['z'][np.sort(closest_indices)],pop['merging_population']['z'])
             print(p_z,p_Mstar,np.shape(control_indices)[0])
-            if p_z < 0.99 or p_Mstar < 0.99 or np.shape(control_indices)[0]>=10:
+            if p_z < matching_threshold or p_Mstar < matching_threshold or np.shape(control_indices)[0]>=10:
+            # if p_z < 0.99 or p_Mstar < 0.99 or np.shape(control_indices)[0]>=10:
                 break # Exit the loop if the conditions are no longer true
 
         return control_indices
 
-    def strore_control_indices(self):
+    def store_control_indices(self):
         np.savetxt(self.control_idx_file, np.array(self.control_indices, dtype=int))
 
     def set_plot_style(self, linewidth=3, titlesize=20,labelsize=25,ticksize=20,legendsize=20):
@@ -112,7 +174,7 @@ class control_samples:
             'legend.fontsize': legendsize
         })
 
-    def match_z_Mstar_plot(self,fig_loc,Mstar_binsize = 0.5,Mstar_min = 7,Mstar_max = 12,z_binsize = 0.6,z_min = 0,z_max = 5):
+    def match_z_Mstar_plot(self,Mstar_binsize = 0.5,Mstar_min = 7,Mstar_max = 12,z_binsize = 0.6,z_min = 0,z_max = 5):
 
         Nbins_Ms = int((Mstar_max-Mstar_min)/Mstar_binsize)
         Mstar_bins = np.linspace(Mstar_min,Mstar_max,Nbins_Ms)
@@ -120,47 +182,47 @@ class control_samples:
         Nbins_z = int((z_max - z_min) / z_binsize)
         z_bins = np.linspace(z_min, z_max, Nbins_z)
 
-        control_sample_ids = np.array(self.control_indices).flatten()
+        # control_sample_ids = np.array(self.control_indices).flatten()
 
         fig,ax = plt.subplots(1,2,figsize=(10,4))
-        ax[0].hist(self.pop['non_merging_population']['z'][np.sort(control_sample_ids)], bins=z_bins, color="black", histtype="step",linewidth=2,density=True)
-        ax[0].hist(self.pop['merging_population']['z'], bins=z_bins, histtype="step",color="Darkorange",linestyle="--",linewidth=2,density=True)
+        ax[0].hist(self.pop['non_merging_population']['z'][:][self.control_indices[self.valid_control_mask]], bins=z_bins, color="black", histtype="step",linewidth=2,density=True)
+        ax[0].hist(self.pop['merging_population']['z'][self.valid_control_mask], bins=z_bins, histtype="step",color="Darkorange",linestyle="--",linewidth=2,density=True)
         ax[0].set_xlabel("z",fontsize=25)
         ax[0].set_ylabel("pdf",fontsize=25)
         ax[0].set_xticks([0,1,2,3,4,5])
 
-        ax[1].hist(np.log10(self.pop['non_merging_population']['Mstar'][np.sort(control_sample_ids)]), bins=Mstar_bins,histtype="step",color="black",label="Control",linewidth=2,density=True)
-        ax[1].hist(np.log10(self.pop['merging_population']['Mstar']),bins=Mstar_bins,histtype="step",label="PM",color="Darkorange",linestyle="--",linewidth=2,density=True)
+        ax[1].hist(np.log10(self.pop['non_merging_population']['Mstar'][:][self.control_indices[self.valid_control_mask]]), bins=Mstar_bins,histtype="step",color="black",label="Control",linewidth=2,density=True)
+        ax[1].hist(np.log10(self.pop['merging_population']['Mstar'][self.valid_control_mask]),bins=Mstar_bins,histtype="step",label="PM",color="Darkorange",linestyle="--",linewidth=2,density=True)
         ax[1].set_xticks([7,8,9,10,11,12])
         ax[1].legend(fontsize=15)
         ax[1].set_xlabel("$\log(M_{\star}/M_{\odot})$",fontsize=25)
 
-        fig_name = fig_loc+"control-pm-z-Mstar-match.pdf"
-        fig.show()
-        fig.savefig(fig_name)
-        print("Figure saved in %s"%(fig_name))
+        #fig_name = fig_loc+"control-pm-z-Mstar-match.pdf"
+        #fig.show()
+        #fig.savefig(fig_name)
+        #print("Figure saved in %s"%(fig_name))
 
         return fig,ax
 
     def compute_population_properties(self):
 
-        self.Mstar_merging_pop = self.pop['merging_population']['Mstar'][:]
-        self.Mstar_control_pop = self.pop['non_merging_population']['Mstar'][:][self.control_sample_ids]
+        self.Mstar_merging_pop = self.pop['merging_population']['Mstar'][:][self.valid_control_mask]
+        self.Mstar_control_pop = self.pop['non_merging_population']['Mstar'][:][self.control_sample_ids[self.valid_control_mask]]
 
-        self.MBH_merging_pop = self.pop['merging_population']['MBH'][:]
-        self.MBH_control_pop = self.pop['non_merging_population']['MBH'][:][self.control_sample_ids]
+        self.MBH_merging_pop = self.pop['merging_population']['MBH'][:][self.valid_control_mask]
+        self.MBH_control_pop = self.pop['non_merging_population']['MBH'][:][self.control_sample_ids[self.valid_control_mask]]
 
-        self.SFR_merging_pop = self.pop['merging_population']['SFR'][:]
-        self.SFR_control_pop = self.pop['non_merging_population']['SFR'][:][self.control_sample_ids]
+        self.SFR_merging_pop = self.pop['merging_population']['SFR'][:][self.valid_control_mask]
+        self.SFR_control_pop = self.pop['non_merging_population']['SFR'][:][self.control_sample_ids[self.valid_control_mask]]
 
-        self.z_merging_pop = self.pop['merging_population']['z'][:]
-        self.z_control_pop = self.pop['non_merging_population']['z'][:][self.control_sample_ids]
+        self.z_merging_pop = self.pop['merging_population']['z'][:][self.valid_control_mask]
+        self.z_control_pop = self.pop['non_merging_population']['z'][:][self.control_sample_ids[self.valid_control_mask]]
 
-        self.Mgas_merging_pop = self.pop['merging_population']['Mgas'][:]
-        self.Mgas_control_pop = self.pop['non_merging_population']['Mgas'][:][self.control_sample_ids]
+        self.Mgas_merging_pop = self.pop['merging_population']['Mgas'][:][self.valid_control_mask]
+        self.Mgas_control_pop = self.pop['non_merging_population']['Mgas'][:][self.control_sample_ids[self.valid_control_mask]]
 
-        self.Mdot_merging_pop = self.pop['merging_population']['Mdot'][:]
-        self.Mdot_control_pop = self.pop['non_merging_population']['Mdot'][:][self.control_sample_ids]
+        self.Mdot_merging_pop = self.pop['merging_population']['Mdot'][:][self.valid_control_mask]
+        self.Mdot_control_pop = self.pop['non_merging_population']['Mdot'][:][self.control_sample_ids[self.valid_control_mask]]
 
         self.sSFR_merging_pop = self.SFR_merging_pop/self.Mstar_merging_pop
         self.sSFR_control_pop = self.SFR_control_pop/self.Mstar_control_pop
@@ -194,9 +256,9 @@ class control_samples:
     # Default bin settings if none are provided
         if bin_settings is None:
             bin_settings = {
-            'sSFR': {'binsize': 0.6, 'bin_min': -14, 'bin_max': -7},
-            'Mdot': {'binsize': 0.5, 'bin_min': -8, 'bin_max': 1},
-            'Mgas': {'binsize': 0.7, 'bin_min': 5, 'bin_max': 14},
+            'sSFR': {'binsize': 0.2, 'bin_min': -14, 'bin_max': -7},
+            'Mdot': {'binsize': 0.2, 'bin_min': -8, 'bin_max': 1},
+            'Mgas': {'binsize': 0.2, 'bin_min': 5, 'bin_max': 14},
             'fgas': {'binsize': 0.05, 'bin_min': 0, 'bin_max': 1}
             }
 
@@ -215,7 +277,7 @@ class control_samples:
             }
         
         self.set_plot_style()
-        fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+        fig, axes = plt.subplots(2, 2, figsize=(9,4))
         axes = axes.flatten()
 
         for i, (prop_name, (prop_merging, prop_control)) in enumerate(properties.items()):
@@ -235,8 +297,6 @@ class control_samples:
         fig.tight_layout()
         #fig.show()
         return axes,fig
-
-        self.z_bins = np.linspace(z_min, z_max, int((z_max - z_min) / z_binsize))
 
     def plot_sSFR_evolution(self,z_min=0,z_max=5,z_binsize=0.3):
         # Initialize lists to store the results
@@ -412,22 +472,61 @@ class control_samples:
         fig.tight_layout()
         return fig, ax
 
+class control_sample_brahma:
+
+    def __init__(self,pop_file_loc,pop_file_name):
+        #note that for brahma, the population file contains the merging and control population unlike the TNG files
+        self.pop = h5py.File(pop_file_loc+pop_file_name, 'r')
+
+        self.N_mergers = len(self.pop['merging_population']['z'])
+
+        valid_cases_count = np.sum(self.pop['control_population']['subhalo_ids'][:]!=-1,axis=1)
+        valid_merger_elements = np.sum(valid_cases_count > 0)
+
+        self.valid_merger_mask = valid_cases_count > 0
+        self.N_filtered_mergers = valid_merger_elements
+
+        print("The number of mergers in the population file is %d"%(self.N_mergers))
+        print("%d mergers are invalid"%(self.N_mergers-valid_merger_elements))
+
+    def match_z_Mstar_plot(self,Mstar_binsize = 0.5,Mstar_min = 7,Mstar_max = 12,z_binsize = 0.6,z_min = 0,z_max = 5):
+
+        Nbins_Ms = int((Mstar_max-Mstar_min)/Mstar_binsize)
+        Mstar_bins = np.linspace(Mstar_min,Mstar_max,Nbins_Ms)
+
+        Nbins_z = int((z_max - z_min) / z_binsize)
+        z_bins = np.linspace(z_min, z_max, Nbins_z)
+
+        #control_sample_ids = np.array(self.control_indices).flatten()
+
+        fig,ax = plt.subplots(1,2,figsize=(10,4))
+
+        merging_z = self.pop['merging_population']['z'][self.valid_merger_mask]
+        control_z = self.pop['control_population']['z'][self.valid_merger_mask,0]
 
 
+        ax[0].hist(control_z, bins=z_bins, color="black", histtype="step",linewidth=2,density=True)
+        ax[0].hist(merging_z, bins=z_bins, histtype="step",color="Darkorange",linestyle="--",linewidth=2,density=True)
+        ax[0].set_xlabel("z",fontsize=25)
+        ax[0].set_ylabel("pdf",fontsize=25)
+        #ax[0].set_xticks([0,1,2,3,4,5])
 
 
+        merging_Mstar = self.pop['merging_population']['Mstar'][self.valid_merger_mask]
+        control_Mstar = self.pop['control_population']['Mstar'][self.valid_merger_mask,0]
 
+        ax[1].hist(np.log10(control_Mstar), bins=Mstar_bins,histtype="step",color="black",label="Control",linewidth=2,density=True)
+        ax[1].hist(np.log10(merging_Mstar),bins=Mstar_bins,histtype="step",label="PM",color="Darkorange",linestyle="--",linewidth=2,density=True)
+        #ax[1].set_xticks([7,8,9,10,11,12])
+        ax[1].legend(fontsize=15)
+        ax[1].set_xlabel("$\log(M_{\star}/M_{\odot})$",fontsize=25)
 
+        #fig_name = fig_loc+"control-pm-z-Mstar-match.pdf"
+        #fig.show()
+        #fig.savefig(fig_name)
+        #print("Figure saved in %s"%(fig_name))
 
-
-
-
-
-
-
-
-
-
+        return fig,ax
 
 
 # def control_idxs(control_file_idx_name):

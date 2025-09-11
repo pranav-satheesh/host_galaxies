@@ -1,5 +1,0 @@
-/tmp/slurmd/job60148117/slurm_script: line 20: populationfile: command not found
-Traceback (most recent call last):
-  File "/home/pranavsatheesh/host_galaxies/py_files/create_control_sample.py", line 57, in <module>
-    pop_file_loc = sys.argv[1]
-IndexError: list index out of range

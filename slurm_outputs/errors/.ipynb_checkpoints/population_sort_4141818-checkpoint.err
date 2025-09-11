@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 509, in <module>
+    pop_gen = population_generator(merger_file_1bh,merger_file_path,basePath,minN_values)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 49, in __init__
+    self.all_merging_population,self.non_merging_population = self.generate_population(snap_list)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 106, in generate_population
+    r_sep_merging = self.get_rsep_for_mergers(subhalos,subhalo_ids_merging)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 245, in get_rsep_for_mergers
+    r_sep = r_subhalos/(stellar_half_mass_radius+stellar_half_mass_radius[nearest_subhalo_ids])
+IndexError: index 1 is out of bounds for axis 0 with size 1

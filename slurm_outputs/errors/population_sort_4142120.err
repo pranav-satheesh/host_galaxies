@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 509, in <module>
+    pop_gen = population_generator(merger_file_1bh,merger_file_path,basePath,minN_values)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 49, in __init__
+    self.all_merging_population,self.non_merging_population = self.generate_population(snap_list)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 130, in generate_population
+    all_merging_population["MBH_final"] = np.append(all_merging_population["MBH_final"], self.M_final[self.major_merger_mask])
+KeyError: 'MBH_final'

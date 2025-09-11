@@ -1,0 +1,9 @@
+
+EnvironmentNameNotFound: Could not find conda environment: holo310
+You can list all discoverable environments with `conda info --envs`.
+
+
+  File "<fstring>", line 1
+    (simName=)
+            ^
+SyntaxError: invalid syntax

@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_brahma_tree.py", line 343, in <module>
+    WriteMergerFile(savePath,basePath, snapNum, minNdm=minNdm, minNgas=minNgas, 
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_brahma_tree.py", line 251, in WriteMergerFile
+    tree_index = np.where((tree_SnapNum==snapnumber)&(tree_SubfindID==isub))[0]
+NameError: name 'tree_SnapNum' is not defined

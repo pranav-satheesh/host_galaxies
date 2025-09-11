@@ -1,0 +1,16 @@
+/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_sublink_trees_mod.py:303: RuntimeWarning: divide by zero encountered in scalar divide
+  self.infallMassRatio = np.append(self.infallMassRatio, npinfallMass / fpinfallMass)
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_sublink_trees_mod.py", line 836, in <module>
+    writeMergerFile(savePath,basePath, snapNum, minNdm=minNdm, minNgas=minNgas, 
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_sublink_trees_mod.py", line 565, in writeMergerFile
+    mrg = MergerInfo(tree, massPartType=subLinkMassType, verbose=verbose, minNgas=minNgas, 
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_sublink_trees_mod.py", line 157, in __init__
+    self.getMergerInfoSubtree(tree, minMassRatio=self.minMassRatio, massPartType=self.massPartType, 
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_sublink_trees_mod.py", line 335, in getMergerInfoSubtree
+    self = self.getMergerInfoSubtree(tree, minMassRatio=self.minMassRatio, 
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_sublink_trees_mod.py", line 293, in getMergerInfoSubtree
+    fp_maxpast_mass,np_maxpast_mass,fpinfallMass,npinfallMass,fp_mass_history, np_mass_history, fp_snap_history, np_snap_history = find_infall_and_maxpastmass(tree,fpIndex,npIndex)
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_sublink_trees_mod.py", line 406, in find_infall_and_maxpastmass
+    print(first_subs_fp[first_mismatch-1],np_masses[first_mismatch])
+TypeError: unsupported operand type(s) for -: 'NoneType' and 'int'

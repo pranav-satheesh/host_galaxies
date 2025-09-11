@@ -1,0 +1,8 @@
+93317
+93317 subhalos meet criteria: minNdm=0, minNgas=0,minNstar=0, minNbh=0
+Total number of subhalos in snap 32: 93310. ncheck=1000.
+Finished writing initial header data to file.
+
+processing sub 0 (0 of 93317 meeting criteria)...
+True
+Ngas=3733169, Ndm=8687658,Nstar=2225790, Nbh=455

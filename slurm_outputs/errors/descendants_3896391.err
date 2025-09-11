@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/find_descendants_of_major_mergers.py", line 102, in <module>
+    merger_descendant_dict = find_descendants_of_mergers(merger_file_name)
+  File "/home/pranavsatheesh/host_galaxies/py_files/find_descendants_of_major_mergers.py", line 42, in find_descendants_of_mergers
+    descendant_subfind_id = fmergers['shids_subf'][major_mergers_mask][i][2]
+IndexError: index 5938 is out of bounds for axis 0 with size 5938

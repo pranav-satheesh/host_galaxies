@@ -1,0 +1,12 @@
+WARNING: fval is not bracketed by func(zmin)=13.768898975874475 Gyr and func(zmax)=0.0004343487652300917 Gyr. This means either there is no solution, or that there is more than one solution between zmin and zmax satisfying fval = func(z). [astropy.cosmology.funcs.optimize]
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/find_descendants_of_major_mergers.py", line 97, in <module>
+    merger_descendant_dict = find_descendants_of_mergers(merger_file_name)
+  File "/home/pranavsatheesh/host_galaxies/py_files/find_descendants_of_major_mergers.py", line 56, in find_descendants_of_mergers
+    target_descendant_z = z_at_value(cosmo.age, (desc_time+2) * u.Gyr).value
+  File "/blue/lblecha/pranavsatheesh/.conda/envs/hfrl/lib/python3.10/site-packages/astropy/cosmology/funcs/optimize.py", line 393, in z_at_value
+    zs[...] = _z_at_scalar_value(
+  File "/blue/lblecha/pranavsatheesh/.conda/envs/hfrl/lib/python3.10/site-packages/astropy/cosmology/funcs/optimize.py", line 117, in _z_at_scalar_value
+    raise CosmologyError(
+astropy.cosmology.core.CosmologyError: Best guess z=1.0001882582735887e-08 is very close to the lower z limit 1e-08.
+Try re-running with a different zmin.

@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/find_descendants_of_major_mergers.py", line 102, in <module>
+    merger_descendant_dict = find_descendants_of_mergers(merger_file_name)
+  File "/home/pranavsatheesh/host_galaxies/py_files/find_descendants_of_major_mergers.py", line 38, in find_descendants_of_mergers
+    for i in range(len(total_major_mergers)):
+TypeError: object of type 'numpy.int64' has no len()

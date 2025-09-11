@@ -1,5 +1,0 @@
-/home/pranavsatheesh/host_galaxies
-c0706a-s2.ufhpc
-Mon Dec 16 13:42:08 EST 2024
-job running
-srun: fatal: SLURM_MEM_PER_CPU, SLURM_MEM_PER_GPU, and SLURM_MEM_PER_NODE are mutually exclusive.

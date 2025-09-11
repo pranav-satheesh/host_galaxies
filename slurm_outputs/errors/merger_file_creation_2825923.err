@@ -1,0 +1,15 @@
+/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_sublink_trees_mod.py:303: RuntimeWarning: divide by zero encountered in scalar divide
+  self.infallMassRatio = np.append(self.infallMassRatio, npinfallMass / fpinfallMass)
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_sublink_trees_mod.py", line 844, in <module>
+    writeMergerFile(savePath,basePath, snapNum, minNdm=minNdm, minNgas=minNgas, 
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_sublink_trees_mod.py", line 700, in writeMergerFile
+    mf.create_dataset('SubhaloMassType', data=allMrgSubhMassType * 1.0e10 / hubbleParam * MSOL) #: [cm]
+  File "/blue/lblecha/pranavsatheesh/.conda/envs/hfrl/lib/python3.10/site-packages/h5py/_hl/group.py", line 183, in create_dataset
+    dsid = dataset.make_new_dset(group, shape, dtype, data, name, **kwds)
+  File "/blue/lblecha/pranavsatheesh/.conda/envs/hfrl/lib/python3.10/site-packages/h5py/_hl/dataset.py", line 165, in make_new_dset
+    dset_id = h5d.create(parent.id, name, tid, sid, dcpl=dcpl, dapl=dapl)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/h5d.pyx", line 136, in h5py.h5d.create
+ValueError: Unable to synchronously create dataset (name already exists)

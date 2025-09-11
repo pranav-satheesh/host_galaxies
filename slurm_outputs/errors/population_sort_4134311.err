@@ -1,0 +1,13 @@
+/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py:201: RuntimeWarning: divide by zero encountered in divide
+  r_sep = r_subhalos/(stellar_half_mass_radius+stellar_half_mass_radius[nearest_subhalo_ids])
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 476, in <module>
+    pop_gen = population_generator(merger_file_1bh,merger_file_path,basePath,minN_values)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 49, in __init__
+    self.all_merging_population,self.non_merging_population = self.generate_population(snap_list)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 83, in generate_population
+    valid_subhalo_mask,valid_sep_mask_all_subhalos,non_merger_descendant_mask_all_subhalos,particle_cut_mask_all_subhalos,r_sep_all_subhalos = self.get_valid_subhalo_ids(subhalos,snap)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 190, in get_valid_subhalo_ids
+    tree = cKDTree(subhalo_pos,boxsize=self.box_length)
+  File "_ckdtree.pyx", line 586, in scipy.spatial._ckdtree.cKDTree.__init__
+ValueError: Negative input data are outside of the periodic box.

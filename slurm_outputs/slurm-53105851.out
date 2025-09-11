@@ -1,5 +1,0 @@
-/tmp/slurmd/job53105851/slurm_script: line 17: savePath: command not found
-Traceback (most recent call last):
-  File "/home/pranavsatheesh/host_galaxies/merger_file_runs/merger_file_from_sublink_trees.py", line 676, in <module>
-    savePath = sys.argv[7]
-IndexError: list index out of range

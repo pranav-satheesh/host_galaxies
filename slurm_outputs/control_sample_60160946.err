@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/home/pranavsatheesh/host_galaxies/py_files/create_control_sample.py", line 84, in <module>
-    control_sample = control_generator.generate_control_sample()
-  File "/home/pranavsatheesh/host_galaxies/py_files/create_control_sample.py", line 52, in generate_control_sample
-    self.control_sample["z_tol"]=np.append(control_sample["z_tol"],z_tol)
-NameError: name 'control_sample' is not defined

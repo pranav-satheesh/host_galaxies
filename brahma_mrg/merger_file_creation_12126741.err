@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_brahma_tree.py", line 343, in <module>
+    WriteMergerFile(savePath,basePath, snapNum, minNdm=minNdm, minNgas=minNgas, 
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_brahma_tree.py", line 176, in WriteMergerFile
+    brahma_snapshots,brahma_redshifts = arepo.get_snapshot_redshift_correspondence(basePath_DF)
+NameError: name 'basePath_DF' is not defined. Did you mean: 'basePath'?

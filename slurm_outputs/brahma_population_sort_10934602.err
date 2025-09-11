@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 503, in <module>
+    pop_gen = population_generator_for_brahma(basePath,runName,merger_file_loc)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 299, in __init__
+    self.h = arepo.get_cosmology(self.basePath)[2]  #h parameter associated with this run
+  File "/home/pranavsatheesh/arepo_package/arepo_package.py", line 158, in get_cosmology
+    snapshot_number=int(name[7:])
+ValueError: invalid literal for int() with base 10: '023_postprocessed'

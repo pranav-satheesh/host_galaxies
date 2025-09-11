@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_brahma_tree.py", line 343, in <module>
+    WriteMergerFile(savePath,basePath, snapNum, minNdm=minNdm, minNgas=minNgas, 
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_brahma_tree.py", line 258, in WriteMergerFile
+    mrg = MergerInfo(full_tree, basePath, index=tree_index, verbose=verbose, minNgas=minNgas, 
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_brahma_tree.py", line 57, in __init__
+    self.getMergerInfoSubtree(tree_index, minMassRatio=self.minMassRatio, getFullTree=getFullTree, minNdm=self.minNdm, 
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_brahma_tree.py", line 73, in getMergerInfoSubtree
+    fpMass = self.get_maxPastMass(fpIndex)
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_brahma_tree.py", line 155, in get_maxPastMass
+    mleaf_idx = tree_index + self.full_tree['MainLeafProgenitorID'][tree_index] - full_tree['SubhaloID'][tree_index]
+NameError: name 'full_tree' is not defined

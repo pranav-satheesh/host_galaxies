@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_brahma_tree.py", line 343, in <module>
+    writeMergerFile(savePath,basePath, snapNum, minNdm=minNdm, minNgas=minNgas, 
+NameError: name 'writeMergerFile' is not defined. Did you mean: 'WriteMergerFile'?

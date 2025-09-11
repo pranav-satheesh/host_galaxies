@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 494, in <module>
+    pop_gen = population_generator(merger_file_1bh,merger_file_path,basePath,minN_values)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 49, in __init__
+    self.all_merging_population,self.non_merging_population = self.generate_population(snap_list)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 83, in generate_population
+    valid_subhalo_mask,r_sep_all_subhalos_w_particle_cut,subhalos_particle_cut_mask = self.get_valid_subhalo_ids(subhalos,snap)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 224, in get_valid_subhalo_ids
+    valid_subhalo_mask[np.where(particle_and_non_merger_descendent_mask)[0][valid_sep_mask]] = True
+IndexError: boolean index did not match indexed array along dimension 0; dimension is 444 but corresponding boolean dimension is 566

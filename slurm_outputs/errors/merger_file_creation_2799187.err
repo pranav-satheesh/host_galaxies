@@ -1,0 +1,4 @@
+  File "<fstring>", line 1
+    (simName=)
+            ^
+SyntaxError: invalid syntax

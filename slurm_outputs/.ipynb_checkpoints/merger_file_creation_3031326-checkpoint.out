@@ -1,0 +1,576 @@
+['', 'orange', 'lblecha', 'IllustrisTNG', 'Runs', 'TNG50-1', 'output']
+simName='TNG50-1'
+snapshot scale factors in /orange/lblecha/IllustrisTNG/Runs/TNG50-1:
+[0.04751386 0.06254232 0.07704034 0.08350282 0.09093728 0.09625777
+ 0.09997661 0.10582597 0.11096103 0.11634526 0.12141409 0.12491542
+ 0.13348287 0.14263794 0.1460576  0.15314485 0.16057599 0.1667797
+ 0.17653754 0.18422877 0.19316822 0.1996827  0.21236949 0.22267443
+ 0.2334794  0.24949284 0.25668768 0.26787083 0.2795412  0.29034102
+ 0.30155808 0.31172794 0.32224077 0.33310814 0.344342   0.35427208
+ 0.36448853 0.37499959 0.38398999 0.39506344 0.40071935 0.41423335
+ 0.42416436 0.43433346 0.44474635 0.45325613 0.46412269 0.47300321
+ 0.48205365 0.49127726 0.50067736 0.51268081 0.52002058 0.52997065
+ 0.54011111 0.55044559 0.55832602 0.56900902 0.57715521 0.5881985
+ 0.59661941 0.60803512 0.61674002 0.62556955 0.63452548 0.64666649
+ 0.65592445 0.66531496 0.6748399  0.68450121 0.69430083 0.70424076
+ 0.71432298 0.72454955 0.73492252 0.74192021 0.75254187 0.76331559
+ 0.77058363 0.78532797 0.7928056  0.80415576 0.81566841 0.82343493
+ 0.8352236  0.84718103 0.8552476  0.86749171 0.87575168 0.88828933
+ 0.90100647 0.90958556 0.92260759 0.93139235 0.94472658 0.95372195
+ 0.96737586 0.97658689 0.99056814 1.        ]
+3734 subhalos meet criteria: minNdm=100, minNgas=100,minNstar=100, minNbh=1
+Total number of subhalos in snap 99: 5688113. ncheck=100.
+Output filepath: /home/pranavsatheesh/host_galaxies/data/merger_files/galaxy-mergers_TNG50-1_gas-100_dm-100_star-100_bh-001.hdf5
+Finished writing initial header data to file.
+
+processing sub 0 (0 of 3734 meeting criteria)...
+Total tree entries for subhalo 0: 10071090
+The sizes of fp_mass_history and np_mass_history are:  36 35
+The sizes of fp_mass_history and np_mass_history are:  29 27
+The sizes of fp_mass_history and np_mass_history are:  22 21
+The sizes of fp_mass_history and np_mass_history are:  25 25
+The sizes of fp_mass_history and np_mass_history are:  33 34
+The sizes of fp_mass_history and np_mass_history are:  18 17
+The sizes of fp_mass_history and np_mass_history are:  28 26
+The sizes of fp_mass_history and np_mass_history are:  34 34
+The sizes of fp_mass_history and np_mass_history are:  28 25
+The sizes of fp_mass_history and np_mass_history are:  21 21
+The sizes of fp_mass_history and np_mass_history are:  28 27
+The sizes of fp_mass_history and np_mass_history are:  36 34
+The sizes of fp_mass_history and np_mass_history are:  26 28
+The sizes of fp_mass_history and np_mass_history are:  35 35
+The sizes of fp_mass_history and np_mass_history are:  41 40
+The sizes of fp_mass_history and np_mass_history are:  37 37
+The sizes of fp_mass_history and np_mass_history are:  29 28
+The sizes of fp_mass_history and np_mass_history are:  25 24
+The sizes of fp_mass_history and np_mass_history are:  46 45
+The sizes of fp_mass_history and np_mass_history are:  32 31
+The sizes of fp_mass_history and np_mass_history are:  22 21
+ # mergers from dup DescendantIDs: 647998, from MergerInfo class: 21
+The sizes of fp_mass_history and np_mass_history are:  36 37
+The sizes of fp_mass_history and np_mass_history are:  26 27
+The sizes of fp_mass_history and np_mass_history are:  23 24
+The sizes of fp_mass_history and np_mass_history are:  32 32
+The sizes of fp_mass_history and np_mass_history are:  21 22
+The sizes of fp_mass_history and np_mass_history are:  34 35
+The sizes of fp_mass_history and np_mass_history are:  46 46
+The sizes of fp_mass_history and np_mass_history are:  38 38
+The sizes of fp_mass_history and np_mass_history are:  29 27
+The sizes of fp_mass_history and np_mass_history are:  28 28
+The sizes of fp_mass_history and np_mass_history are:  21 21
+The sizes of fp_mass_history and np_mass_history are:  23 23
+The sizes of fp_mass_history and np_mass_history are:  18 17
+The sizes of fp_mass_history and np_mass_history are:  22 21
+The sizes of fp_mass_history and np_mass_history are:  47 47
+The sizes of fp_mass_history and np_mass_history are:  31 31
+The sizes of fp_mass_history and np_mass_history are:  29 30
+The sizes of fp_mass_history and np_mass_history are:  45 44
+The sizes of fp_mass_history and np_mass_history are:  34 33
+The sizes of fp_mass_history and np_mass_history are:  43 43
+The sizes of fp_mass_history and np_mass_history are:  61 60
+The sizes of fp_mass_history and np_mass_history are:  27 27
+The sizes of fp_mass_history and np_mass_history are:  41 42
+The sizes of fp_mass_history and np_mass_history are:  57 57
+The sizes of fp_mass_history and np_mass_history are:  31 34
+The sizes of fp_mass_history and np_mass_history are:  27 26
+The sizes of fp_mass_history and np_mass_history are:  41 40
+The sizes of fp_mass_history and np_mass_history are:  38 38
+The sizes of fp_mass_history and np_mass_history are:  38 38
+The sizes of fp_mass_history and np_mass_history are:  32 32
+The sizes of fp_mass_history and np_mass_history are:  35 35
+The sizes of fp_mass_history and np_mass_history are:  36 35
+The sizes of fp_mass_history and np_mass_history are:  64 63
+The sizes of fp_mass_history and np_mass_history are:  43 44
+The sizes of fp_mass_history and np_mass_history are:  24 24
+The sizes of fp_mass_history and np_mass_history are:  54 58
+The sizes of fp_mass_history and np_mass_history are:  47 51
+The sizes of fp_mass_history and np_mass_history are:  29 33
+The sizes of fp_mass_history and np_mass_history are:  28 33
+The sizes of fp_mass_history and np_mass_history are:  99 98
+The sizes of fp_mass_history and np_mass_history are:  29 29
+The sizes of fp_mass_history and np_mass_history are:  56 55
+The sizes of fp_mass_history and np_mass_history are:  29 3
+processing sub 117253 (100 of 3734 meeting criteria)...
+Total tree entries for subhalo 117253: 107829
+The sizes of fp_mass_history and np_mass_history are:  98 1
+The sizes of fp_mass_history and np_mass_history are:  61 60
+The sizes of fp_mass_history and np_mass_history are:  50 48
+The sizes of fp_mass_history and np_mass_history are:  74 74
+The sizes of fp_mass_history and np_mass_history are:  45 45
+The sizes of fp_mass_history and np_mass_history are:  25 24
+The sizes of fp_mass_history and np_mass_history are:  53 53
+The sizes of fp_mass_history and np_mass_history are:  34 35
+The sizes of fp_mass_history and np_mass_history are:  34 34
+The sizes of fp_mass_history and np_mass_history are:  31 30
+The sizes of fp_mass_history and np_mass_history are:  33 30
+The sizes of fp_mass_history and np_mass_history are:  39 38
+The sizes of fp_mass_history and np_mass_history are:  36 35
+The sizes of fp_mass_history and np_mass_history are:  31 33
+The sizes of fp_mass_history and np_mass_history are:  27 28
+The sizes of fp_mass_history and np_mass_history are:  76 75
+The sizes of fp_mass_history and np_mass_history are:  40 2
+The sizes of fp_mass_history and np_mass_history are:  39 40
+The sizes of fp_mass_history and np_mass_history are:  43 43
+The sizes of fp_mass_history and np_mass_history are:  32 33
+The sizes of fp_mass_history and np_mass_history are:  34 33
+The sizes of fp_mass_history and np_mass_history are:  65 69
+The sizes of fp_mass_history and np_mass_history are:  57 2
+The sizes of fp_mass_history and np_mass_history are:  56 59
+The sizes of fp_mass_history and np_mass_history are:  60 59
+The sizes of fp_mass_history and np_mass_history are:  33 33
+The sizes of fp_mass_history and np_mass_history are:  50 50
+The sizes of fp_mass_history and np_mass_history are:  29 28
+The sizes of fp_mass_history and np_mass_history are:  28 27
+The sizes of fp_mass_history and np_mass_history are:  25 24
+The sizes of fp_mass_history and np_mass_history are:  22 21
+The sizes of fp_mass_history and np_mass_history are:  49 50
+The sizes of fp_mass_history and np_mass_history are:  36 36
+The sizes of fp_mass_history and np_mass_history are:  42 41
+The sizes of fp_mass_history and np_mass_history are:  36 36
+The sizes of fp_mass_history and np_mass_history are:  32 32
+The sizes of fp_mass_history and np_mass_history are:  58 58
+processing sub 167413 (200 of 3734 meeting criteria)...
+Total tree entries for subhalo 167413: 8432
+The sizes of fp_mass_history and np_mass_history are:  50 52
+The sizes of fp_mass_history and np_mass_history are:  50 51
+The sizes of fp_mass_history and np_mass_history are:  30 30
+The sizes of fp_mass_history and np_mass_history are:  25 25
+The sizes of fp_mass_history and np_mass_history are:  24 25
+The sizes of fp_mass_history and np_mass_history are:  22 22
+The sizes of fp_mass_history and np_mass_history are:  34 33
+The sizes of fp_mass_history and np_mass_history are:  30 28
+The sizes of fp_mass_history and np_mass_history are:  43 43
+The sizes of fp_mass_history and np_mass_history are:  41 39
+The sizes of fp_mass_history and np_mass_history are:  29 29
+The sizes of fp_mass_history and np_mass_history are:  40 42
+The sizes of fp_mass_history and np_mass_history are:  34 34
+The sizes of fp_mass_history and np_mass_history are:  31 33
+The sizes of fp_mass_history and np_mass_history are:  49 49
+The sizes of fp_mass_history and np_mass_history are:  41 41
+The sizes of fp_mass_history and np_mass_history are:  23 22
+The sizes of fp_mass_history and np_mass_history are:  23 21
+The sizes of fp_mass_history and np_mass_history are:  76 76
+The sizes of fp_mass_history and np_mass_history are:  45 44
+The sizes of fp_mass_history and np_mass_history are:  34 36
+The sizes of fp_mass_history and np_mass_history are:  50 50
+The sizes of fp_mass_history and np_mass_history are:  40 40
+The sizes of fp_mass_history and np_mass_history are:  28 26
+The sizes of fp_mass_history and np_mass_history are:  40 41
+The sizes of fp_mass_history and np_mass_history are:  26 25
+The sizes of fp_mass_history and np_mass_history are:  21 21
+The sizes of fp_mass_history and np_mass_history are:  45 45
+The sizes of fp_mass_history and np_mass_history are:  86 87
+The sizes of fp_mass_history and np_mass_history are:  64 65
+The sizes of fp_mass_history and np_mass_history are:  43 42
+The sizes of fp_mass_history and np_mass_history are:  24 23
+The sizes of fp_mass_history and np_mass_history are:  27 28
+The sizes of fp_mass_history and np_mass_history are:  24 25
+The sizes of fp_mass_history and np_mass_history are:  17 17
+The sizes of fp_mass_history and np_mass_history are:  16 15
+processing sub 242788 (300 of 3734 meeting criteria)...
+Total tree entries for subhalo 242788: 767751
+The sizes of fp_mass_history and np_mass_history are:  67 66
+The sizes of fp_mass_history and np_mass_history are:  20 20
+ # mergers from dup DescendantIDs: 61056, from MergerInfo class: 2
+The sizes of fp_mass_history and np_mass_history are:  25 25
+The sizes of fp_mass_history and np_mass_history are:  66 64
+The sizes of fp_mass_history and np_mass_history are:  36 36
+The sizes of fp_mass_history and np_mass_history are:  25 24
+The sizes of fp_mass_history and np_mass_history are:  25 25
+The sizes of fp_mass_history and np_mass_history are:  23 23
+The sizes of fp_mass_history and np_mass_history are:  55 55
+The sizes of fp_mass_history and np_mass_history are:  41 40
+The sizes of fp_mass_history and np_mass_history are:  31 30
+The sizes of fp_mass_history and np_mass_history are:  64 65
+The sizes of fp_mass_history and np_mass_history are:  34 32
+The sizes of fp_mass_history and np_mass_history are:  34 34
+The sizes of fp_mass_history and np_mass_history are:  77 79
+The sizes of fp_mass_history and np_mass_history are:  41 41
+The sizes of fp_mass_history and np_mass_history are:  59 60
+The sizes of fp_mass_history and np_mass_history are:  86 85
+The sizes of fp_mass_history and np_mass_history are:  50 50
+The sizes of fp_mass_history and np_mass_history are:  32 31
+The sizes of fp_mass_history and np_mass_history are:  28 27
+The sizes of fp_mass_history and np_mass_history are:  30 30
+The sizes of fp_mass_history and np_mass_history are:  28 28
+The sizes of fp_mass_history and np_mass_history are:  29 28
+The sizes of fp_mass_history and np_mass_history are:  27 28
+The sizes of fp_mass_history and np_mass_history are:  47 48
+The sizes of fp_mass_history and np_mass_history are:  38 37
+The sizes of fp_mass_history and np_mass_history are:  32 30
+The sizes of fp_mass_history and np_mass_history are:  23 23
+The sizes of fp_mass_history and np_mass_history are:  33 33
+The sizes of fp_mass_history and np_mass_history are:  32 32
+The sizes of fp_mass_history and np_mass_history are:  25 24
+The sizes of fp_mass_history and np_mass_history are:  19 19
+The sizes of fp_mass_history and np_mass_history are:  32 31
+The sizes of fp_mass_history and np_mass_history are:  31 31
+The sizes of fp_mass_history and np_mass_history are:  34 33
+The sizes of fp_mass_history and np_mass_history are:  27 27
+The sizes of fp_mass_history and np_mass_history are:  74 74
+The sizes of fp_mass_history and np_mass_history are:  31 32
+The sizes of fp_mass_history and np_mass_history are:  45 46
+The sizes of fp_mass_history and np_mass_history are:  64 65
+processing sub 300913 (400 of 3734 meeting criteria)...
+Total tree entries for subhalo 300913: 6391
+The sizes of fp_mass_history and np_mass_history are:  34 32
+The sizes of fp_mass_history and np_mass_history are:  28 26
+The sizes of fp_mass_history and np_mass_history are:  25 24
+The sizes of fp_mass_history and np_mass_history are:  42 36
+The sizes of fp_mass_history and np_mass_history are:  30 30
+The sizes of fp_mass_history and np_mass_history are:  32 31
+The sizes of fp_mass_history and np_mass_history are:  22 21
+The sizes of fp_mass_history and np_mass_history are:  30 30
+The sizes of fp_mass_history and np_mass_history are:  30 29
+The sizes of fp_mass_history and np_mass_history are:  45 45
+The sizes of fp_mass_history and np_mass_history are:  32 32
+The sizes of fp_mass_history and np_mass_history are:  40 40
+The sizes of fp_mass_history and np_mass_history are:  30 30
+The sizes of fp_mass_history and np_mass_history are:  29 28
+The sizes of fp_mass_history and np_mass_history are:  26 27
+The sizes of fp_mass_history and np_mass_history are:  19 18
+The sizes of fp_mass_history and np_mass_history are:  37 38
+The sizes of fp_mass_history and np_mass_history are:  28 27
+The sizes of fp_mass_history and np_mass_history are:  23 23
+The sizes of fp_mass_history and np_mass_history are:  40 40
+The sizes of fp_mass_history and np_mass_history are:  33 33
+The sizes of fp_mass_history and np_mass_history are:  30 30
+The sizes of fp_mass_history and np_mass_history are:  29 29
+The sizes of fp_mass_history and np_mass_history are:  66 64
+The sizes of fp_mass_history and np_mass_history are:  65 67
+The sizes of fp_mass_history and np_mass_history are:  70 71
+The sizes of fp_mass_history and np_mass_history are:  34 35
+The sizes of fp_mass_history and np_mass_history are:  29 30
+The sizes of fp_mass_history and np_mass_history are:  25 25
+The sizes of fp_mass_history and np_mass_history are:  22 22
+The sizes of fp_mass_history and np_mass_history are:  35 36
+The sizes of fp_mass_history and np_mass_history are:  65 65
+The sizes of fp_mass_history and np_mass_history are:  52 52
+The sizes of fp_mass_history and np_mass_history are:  38 38
+The sizes of fp_mass_history and np_mass_history are:  31 31
+The sizes of fp_mass_history and np_mass_history are:  53 50
+The sizes of fp_mass_history and np_mass_history are:  43 43
+The sizes of fp_mass_history and np_mass_history are:  38 37
+The sizes of fp_mass_history and np_mass_history are:  27 28
+The sizes of fp_mass_history and np_mass_history are:  25 25
+The sizes of fp_mass_history and np_mass_history are:  72 73
+The sizes of fp_mass_history and np_mass_history are:  71 72
+The sizes of fp_mass_history and np_mass_history are:  32 30
+The sizes of fp_mass_history and np_mass_history are:  82 83
+processing sub 358614 (500 of 3734 meeting criteria)...
+Total tree entries for subhalo 358614: 4198
+The sizes of fp_mass_history and np_mass_history are:  44 45
+The sizes of fp_mass_history and np_mass_history are:  34 34
+The sizes of fp_mass_history and np_mass_history are:  35 37
+The sizes of fp_mass_history and np_mass_history are:  32 31
+The sizes of fp_mass_history and np_mass_history are:  22 20
+The sizes of fp_mass_history and np_mass_history are:  21 21
+The sizes of fp_mass_history and np_mass_history are:  15 1
+The sizes of fp_mass_history and np_mass_history are:  17 16
+The sizes of fp_mass_history and np_mass_history are:  17 14
+The sizes of fp_mass_history and np_mass_history are:  84 85
+The sizes of fp_mass_history and np_mass_history are:  39 39
+The sizes of fp_mass_history and np_mass_history are:  86 87
+The sizes of fp_mass_history and np_mass_history are:  75 75
+The sizes of fp_mass_history and np_mass_history are:  31 29
+The sizes of fp_mass_history and np_mass_history are:  30 31
+The sizes of fp_mass_history and np_mass_history are:  83 81
+The sizes of fp_mass_history and np_mass_history are:  45 46
+The sizes of fp_mass_history and np_mass_history are:  49 49
+The sizes of fp_mass_history and np_mass_history are:  37 35
+The sizes of fp_mass_history and np_mass_history are:  35 34
+The sizes of fp_mass_history and np_mass_history are:  67 72
+The sizes of fp_mass_history and np_mass_history are:  38 44
+The sizes of fp_mass_history and np_mass_history are:  71 71
+The sizes of fp_mass_history and np_mass_history are:  95 94
+The sizes of fp_mass_history and np_mass_history are:  50 49
+The sizes of fp_mass_history and np_mass_history are:  78 77
+The sizes of fp_mass_history and np_mass_history are:  43 44
+The sizes of fp_mass_history and np_mass_history are:  34 1
+The sizes of fp_mass_history and np_mass_history are:  31 32
+The sizes of fp_mass_history and np_mass_history are:  70 69
+The sizes of fp_mass_history and np_mass_history are:  83 83
+The sizes of fp_mass_history and np_mass_history are:  23 22
+The sizes of fp_mass_history and np_mass_history are:  26 23
+The sizes of fp_mass_history and np_mass_history are:  41 40
+The sizes of fp_mass_history and np_mass_history are:  38 37
+The sizes of fp_mass_history and np_mass_history are:  33 33
+processing sub 402557 (600 of 3734 meeting criteria)...
+Total tree entries for subhalo 402557: 25782
+The sizes of fp_mass_history and np_mass_history are:  45 46
+ # mergers from dup DescendantIDs: 1998, from MergerInfo class: 1
+The sizes of fp_mass_history and np_mass_history are:  64 66
+The sizes of fp_mass_history and np_mass_history are:  64 64
+The sizes of fp_mass_history and np_mass_history are:  28 28
+The sizes of fp_mass_history and np_mass_history are:  27 28
+The sizes of fp_mass_history and np_mass_history are:  53 50
+The sizes of fp_mass_history and np_mass_history are:  24 23
+The sizes of fp_mass_history and np_mass_history are:  27 23
+The sizes of fp_mass_history and np_mass_history are:  58 58
+The sizes of fp_mass_history and np_mass_history are:  52 52
+The sizes of fp_mass_history and np_mass_history are:  28 29
+The sizes of fp_mass_history and np_mass_history are:  44 44
+The sizes of fp_mass_history and np_mass_history are:  28 28
+The sizes of fp_mass_history and np_mass_history are:  94 93
+The sizes of fp_mass_history and np_mass_history are:  27 27
+The sizes of fp_mass_history and np_mass_history are:  50 50
+The sizes of fp_mass_history and np_mass_history are:  33 34
+The sizes of fp_mass_history and np_mass_history are:  84 84
+The sizes of fp_mass_history and np_mass_history are:  50 50
+The sizes of fp_mass_history and np_mass_history are:  32 30
+The sizes of fp_mass_history and np_mass_history are:  24 25
+The sizes of fp_mass_history and np_mass_history are:  70 67
+The sizes of fp_mass_history and np_mass_history are:  42 38
+The sizes of fp_mass_history and np_mass_history are:  41 38
+The sizes of fp_mass_history and np_mass_history are:  53 53
+The sizes of fp_mass_history and np_mass_history are:  44 38
+The sizes of fp_mass_history and np_mass_history are:  40 40
+The sizes of fp_mass_history and np_mass_history are:  28 28
+The sizes of fp_mass_history and np_mass_history are:  58 57
+The sizes of fp_mass_history and np_mass_history are:  48 48
+The sizes of fp_mass_history and np_mass_history are:  24 23
+processing sub 436937 (700 of 3734 meeting criteria)...
+Total tree entries for subhalo 436937: 3087
+The sizes of fp_mass_history and np_mass_history are:  95 96
+The sizes of fp_mass_history and np_mass_history are:  28 29
+The sizes of fp_mass_history and np_mass_history are:  49 49
+The sizes of fp_mass_history and np_mass_history are:  59 61
+The sizes of fp_mass_history and np_mass_history are:  33 32
+The sizes of fp_mass_history and np_mass_history are:  92 93
+The sizes of fp_mass_history and np_mass_history are:  94 94
+The sizes of fp_mass_history and np_mass_history are:  73 74
+The sizes of fp_mass_history and np_mass_history are:  35 35
+The sizes of fp_mass_history and np_mass_history are:  84 83
+The sizes of fp_mass_history and np_mass_history are:  33 32
+The sizes of fp_mass_history and np_mass_history are:  71 71
+The sizes of fp_mass_history and np_mass_history are:  83 83
+The sizes of fp_mass_history and np_mass_history are:  30 29
+The sizes of fp_mass_history and np_mass_history are:  26 27
+The sizes of fp_mass_history and np_mass_history are:  68 67
+The sizes of fp_mass_history and np_mass_history are:  70 70
+The sizes of fp_mass_history and np_mass_history are:  89 89
+The sizes of fp_mass_history and np_mass_history are:  46 44
+The sizes of fp_mass_history and np_mass_history are:  33 34
+The sizes of fp_mass_history and np_mass_history are:  53 54
+The sizes of fp_mass_history and np_mass_history are:  43 45
+The sizes of fp_mass_history and np_mass_history are:  81 80
+The sizes of fp_mass_history and np_mass_history are:  75 75
+The sizes of fp_mass_history and np_mass_history are:  25 24
+The sizes of fp_mass_history and np_mass_history are:  35 35
+The sizes of fp_mass_history and np_mass_history are:  51 53
+The sizes of fp_mass_history and np_mass_history are:  31 32
+The sizes of fp_mass_history and np_mass_history are:  73 72
+The sizes of fp_mass_history and np_mass_history are:  28 25
+The sizes of fp_mass_history and np_mass_history are:  87 89
+The sizes of fp_mass_history and np_mass_history are:  54 55
+The sizes of fp_mass_history and np_mass_history are:  65 64
+The sizes of fp_mass_history and np_mass_history are:  40 40
+The sizes of fp_mass_history and np_mass_history are:  44 42
+processing sub 475619 (800 of 3734 meeting criteria)...
+Total tree entries for subhalo 475619: 118506
+The sizes of fp_mass_history and np_mass_history are:  71 70
+The sizes of fp_mass_history and np_mass_history are:  71 73
+The sizes of fp_mass_history and np_mass_history are:  35 36
+The sizes of fp_mass_history and np_mass_history are:  31 31
+The sizes of fp_mass_history and np_mass_history are:  54 55
+The sizes of fp_mass_history and np_mass_history are:  50 51
+The sizes of fp_mass_history and np_mass_history are:  48 1
+The sizes of fp_mass_history and np_mass_history are:  24 24
+The sizes of fp_mass_history and np_mass_history are:  75 72
+The sizes of fp_mass_history and np_mass_history are:  25 24
+The sizes of fp_mass_history and np_mass_history are:  37 38
+The sizes of fp_mass_history and np_mass_history are:  20 20
+The sizes of fp_mass_history and np_mass_history are:  42 42
+The sizes of fp_mass_history and np_mass_history are:  27 28
+The sizes of fp_mass_history and np_mass_history are:  61 62
+The sizes of fp_mass_history and np_mass_history are:  37 36
+The sizes of fp_mass_history and np_mass_history are:  79 78
+The sizes of fp_mass_history and np_mass_history are:  25 23
+The sizes of fp_mass_history and np_mass_history are:  47 47
+The sizes of fp_mass_history and np_mass_history are:  24 23
+The sizes of fp_mass_history and np_mass_history are:  53 51
+The sizes of fp_mass_history and np_mass_history are:  94 94
+The sizes of fp_mass_history and np_mass_history are:  88 90
+The sizes of fp_mass_history and np_mass_history are:  22 22
+The sizes of fp_mass_history and np_mass_history are:  39 36
+The sizes of fp_mass_history and np_mass_history are:  54 55
+The sizes of fp_mass_history and np_mass_history are:  31 32
+processing sub 503439 (900 of 3734 meeting criteria)...
+Total tree entries for subhalo 503439: 6161
+The sizes of fp_mass_history and np_mass_history are:  42 42
+The sizes of fp_mass_history and np_mass_history are:  45 45
+The sizes of fp_mass_history and np_mass_history are:  84 84
+The sizes of fp_mass_history and np_mass_history are:  68 68
+The sizes of fp_mass_history and np_mass_history are:  74 74
+The sizes of fp_mass_history and np_mass_history are:  38 38
+The sizes of fp_mass_history and np_mass_history are:  76 76
+The sizes of fp_mass_history and np_mass_history are:  53 54
+The sizes of fp_mass_history and np_mass_history are:  51 50
+The sizes of fp_mass_history and np_mass_history are:  55 55
+The sizes of fp_mass_history and np_mass_history are:  55 55
+The sizes of fp_mass_history and np_mass_history are:  39 38
+The sizes of fp_mass_history and np_mass_history are:  39 41
+The sizes of fp_mass_history and np_mass_history are:  35 34
+The sizes of fp_mass_history and np_mass_history are:  36 35
+The sizes of fp_mass_history and np_mass_history are:  41 42
+The sizes of fp_mass_history and np_mass_history are:  82 81
+The sizes of fp_mass_history and np_mass_history are:  70 1
+The sizes of fp_mass_history and np_mass_history are:  69 70
+The sizes of fp_mass_history and np_mass_history are:  42 42
+The sizes of fp_mass_history and np_mass_history are:  34 33
+The sizes of fp_mass_history and np_mass_history are:  82 82
+The sizes of fp_mass_history and np_mass_history are:  83 84
+processing sub 527842 (1000 of 3734 meeting criteria)...
+Total tree entries for subhalo 527842: 8143
+The sizes of fp_mass_history and np_mass_history are:  55 55
+The sizes of fp_mass_history and np_mass_history are:  46 45
+The sizes of fp_mass_history and np_mass_history are:  40 40
+The sizes of fp_mass_history and np_mass_history are:  55 53
+The sizes of fp_mass_history and np_mass_history are:  34 2
+The sizes of fp_mass_history and np_mass_history are:  33 32
+The sizes of fp_mass_history and np_mass_history are:  52 54
+The sizes of fp_mass_history and np_mass_history are:  92 92
+The sizes of fp_mass_history and np_mass_history are:  50 51
+The sizes of fp_mass_history and np_mass_history are:  37 37
+The sizes of fp_mass_history and np_mass_history are:  57 61
+The sizes of fp_mass_history and np_mass_history are:  74 71
+The sizes of fp_mass_history and np_mass_history are:  47 47
+The sizes of fp_mass_history and np_mass_history are:  30 29
+The sizes of fp_mass_history and np_mass_history are:  48 50
+The sizes of fp_mass_history and np_mass_history are:  82 83
+The sizes of fp_mass_history and np_mass_history are:  65 65
+The sizes of fp_mass_history and np_mass_history are:  30 28
+The sizes of fp_mass_history and np_mass_history are:  44 45
+The sizes of fp_mass_history and np_mass_history are:  84 78
+processing sub 553491 (1100 of 3734 meeting criteria)...
+Total tree entries for subhalo 553491: 3367
+The sizes of fp_mass_history and np_mass_history are:  43 44
+The sizes of fp_mass_history and np_mass_history are:  32 32
+The sizes of fp_mass_history and np_mass_history are:  35 34
+The sizes of fp_mass_history and np_mass_history are:  30 30
+The sizes of fp_mass_history and np_mass_history are:  69 70
+The sizes of fp_mass_history and np_mass_history are:  68 67
+The sizes of fp_mass_history and np_mass_history are:  56 56
+The sizes of fp_mass_history and np_mass_history are:  51 50
+The sizes of fp_mass_history and np_mass_history are:  40 40
+The sizes of fp_mass_history and np_mass_history are:  59 58
+The sizes of fp_mass_history and np_mass_history are:  83 82
+The sizes of fp_mass_history and np_mass_history are:  40 40
+The sizes of fp_mass_history and np_mass_history are:  69 68
+The sizes of fp_mass_history and np_mass_history are:  80 82
+The sizes of fp_mass_history and np_mass_history are:  28 26
+The sizes of fp_mass_history and np_mass_history are:  39 41
+The sizes of fp_mass_history and np_mass_history are:  89 90
+The sizes of fp_mass_history and np_mass_history are:  58 58
+The sizes of fp_mass_history and np_mass_history are:  42 42
+The sizes of fp_mass_history and np_mass_history are:  66 64
+The sizes of fp_mass_history and np_mass_history are:  60 60
+The sizes of fp_mass_history and np_mass_history are:  53 60
+processing sub 573413 (1200 of 3734 meeting criteria)...
+Total tree entries for subhalo 573413: 26039
+The sizes of fp_mass_history and np_mass_history are:  47 48
+ # mergers from dup DescendantIDs: 2008, from MergerInfo class: 1
+The sizes of fp_mass_history and np_mass_history are:  56 50
+The sizes of fp_mass_history and np_mass_history are:  55 55
+The sizes of fp_mass_history and np_mass_history are:  61 61
+The sizes of fp_mass_history and np_mass_history are:  28 1
+The sizes of fp_mass_history and np_mass_history are:  94 92
+The sizes of fp_mass_history and np_mass_history are:  45 46
+The sizes of fp_mass_history and np_mass_history are:  78 77
+The sizes of fp_mass_history and np_mass_history are:  77 75
+The sizes of fp_mass_history and np_mass_history are:  58 57
+The sizes of fp_mass_history and np_mass_history are:  47 45
+The sizes of fp_mass_history and np_mass_history are:  58 58
+The sizes of fp_mass_history and np_mass_history are:  72 72
+The sizes of fp_mass_history and np_mass_history are:  91 89
+The sizes of fp_mass_history and np_mass_history are:  56 58
+The sizes of fp_mass_history and np_mass_history are:  64 64
+The sizes of fp_mass_history and np_mass_history are:  55 52
+processing sub 590014 (1300 of 3734 meeting criteria)...
+Total tree entries for subhalo 590014: 3991
+The sizes of fp_mass_history and np_mass_history are:  94 97
+The sizes of fp_mass_history and np_mass_history are:  43 42
+The sizes of fp_mass_history and np_mass_history are:  85 87
+The sizes of fp_mass_history and np_mass_history are:  40 39
+The sizes of fp_mass_history and np_mass_history are:  51 50
+The sizes of fp_mass_history and np_mass_history are:  95 96
+The sizes of fp_mass_history and np_mass_history are:  69 68
+The sizes of fp_mass_history and np_mass_history are:  46 47
+The sizes of fp_mass_history and np_mass_history are:  63 63
+The sizes of fp_mass_history and np_mass_history are:  28 28
+processing sub 604855 (1400 of 3734 meeting criteria)...
+Total tree entries for subhalo 604855: 14435
+The sizes of fp_mass_history and np_mass_history are:  93 92
+The sizes of fp_mass_history and np_mass_history are:  65 66
+The sizes of fp_mass_history and np_mass_history are:  97 91
+The sizes of fp_mass_history and np_mass_history are:  92 91
+processing sub 618707 (1500 of 3734 meeting criteria)...
+Total tree entries for subhalo 618707: 16245
+The sizes of fp_mass_history and np_mass_history are:  29 31
+The sizes of fp_mass_history and np_mass_history are:  78 8
+The sizes of fp_mass_history and np_mass_history are:  77 78
+The sizes of fp_mass_history and np_mass_history are:  70 70
+processing sub 630290 (1600 of 3734 meeting criteria)...
+Total tree entries for subhalo 630290: 16308
+The sizes of fp_mass_history and np_mass_history are:  86 86
+The sizes of fp_mass_history and np_mass_history are:  72 70
+processing sub 641754 (1700 of 3734 meeting criteria)...
+Total tree entries for subhalo 641754: 12457
+The sizes of fp_mass_history and np_mass_history are:  60 60
+The sizes of fp_mass_history and np_mass_history are:  50 50
+The sizes of fp_mass_history and np_mass_history are:  90 89
+processing sub 651450 (1800 of 3734 meeting criteria)...
+Total tree entries for subhalo 651450: 4813
+The sizes of fp_mass_history and np_mass_history are:  36 35
+The sizes of fp_mass_history and np_mass_history are:  59 58
+The sizes of fp_mass_history and np_mass_history are:  78 78
+The sizes of fp_mass_history and np_mass_history are:  72 1
+The sizes of fp_mass_history and np_mass_history are:  66 67
+The sizes of fp_mass_history and np_mass_history are:  48 47
+processing sub 660564 (1900 of 3734 meeting criteria)...
+Total tree entries for subhalo 660564: 15226
+The sizes of fp_mass_history and np_mass_history are:  92 92
+processing sub 669418 (2000 of 3734 meeting criteria)...
+Total tree entries for subhalo 669418: 9520
+The sizes of fp_mass_history and np_mass_history are:  92 93
+processing sub 677786 (2100 of 3734 meeting criteria)...
+Total tree entries for subhalo 677786: 4549
+processing sub 685739 (2200 of 3734 meeting criteria)...
+Total tree entries for subhalo 685739: 6121
+The sizes of fp_mass_history and np_mass_history are:  81 83
+processing sub 693304 (2300 of 3734 meeting criteria)...
+Total tree entries for subhalo 693304: 8337
+The sizes of fp_mass_history and np_mass_history are:  75 74
+processing sub 699798 (2400 of 3734 meeting criteria)...
+Total tree entries for subhalo 699798: 10886
+processing sub 705909 (2500 of 3734 meeting criteria)...
+Total tree entries for subhalo 705909: 7692
+processing sub 711236 (2600 of 3734 meeting criteria)...
+Total tree entries for subhalo 711236: 6437
+The sizes of fp_mass_history and np_mass_history are:  81 81
+ # mergers from dup DescendantIDs: 512, from MergerInfo class: 1
+processing sub 717017 (2700 of 3734 meeting criteria)...
+Total tree entries for subhalo 717017: 8277
+processing sub 722070 (2800 of 3734 meeting criteria)...
+Total tree entries for subhalo 722070: 7231
+processing sub 727308 (2900 of 3734 meeting criteria)...
+Total tree entries for subhalo 727308: 7265
+processing sub 732068 (3000 of 3734 meeting criteria)...
+Total tree entries for subhalo 732068: 6131
+processing sub 736408 (3100 of 3734 meeting criteria)...
+Total tree entries for subhalo 736408: 4149
+processing sub 740702 (3200 of 3734 meeting criteria)...
+Total tree entries for subhalo 740702: 6267
+processing sub 744991 (3300 of 3734 meeting criteria)...
+Total tree entries for subhalo 744991: 5464
+processing sub 749473 (3400 of 3734 meeting criteria)...
+Total tree entries for subhalo 749473: 5769
+processing sub 754802 (3500 of 3734 meeting criteria)...
+Total tree entries for subhalo 754802: 3831
+processing sub 762663 (3600 of 3734 meeting criteria)...
+Total tree entries for subhalo 762663: 4383
+processing sub 802087 (3700 of 3734 meeting criteria)...
+Total tree entries for subhalo 802087: 1733
+allMrgSubhID shape: (467, 3)
+Finished processing merger trees for 5688113 subhalos in snap 99.
+Found 467 mergers.

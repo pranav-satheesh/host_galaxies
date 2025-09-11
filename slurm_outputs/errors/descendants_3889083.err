@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/find_descendants_of_major_mergers.py", line 16, in <module>
+    redshifts = np.array([il.groupcat.loadHeader(basePath, snap)['Redshift'].item() for snap in snap_list])
+  File "/home/pranavsatheesh/host_galaxies/py_files/find_descendants_of_major_mergers.py", line 16, in <listcomp>
+    redshifts = np.array([il.groupcat.loadHeader(basePath, snap)['Redshift'].item() for snap in snap_list])
+NameError: name 'basePath' is not defined
