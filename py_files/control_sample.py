@@ -480,12 +480,14 @@ class control_sample_brahma:
         self.pop = pop_file
         self.N_mergers = len(self.pop['merging_population']['z'])
 
-        self.control_indices = self.find_control_samples()
-        print("Number of cases where a close enough match is not found within the acceptable tolerance:",np.sum(self.control_indices[0]==-1))
+        #self.control_indices = self.find_control_samples()
+        self.merger_control_index_pairs = self.find_control_samples_strict()
+
+        print("Number of cases where a close enough match is not found within the acceptable tolerance:",np.sum(np.array(self.merger_control_index_pairs)[:,1]==-1))
 
         mergers_with_MBH_not_zero = self.pop['merging_population']['MBH'] != 0 
         mergers_with_Mstar_not_zero = self.pop['merging_population']['Mstar'] != 0
-        mergers_with_controls_found = self.control_indices[0] != -1
+        mergers_with_controls_found = np.array(self.merger_control_index_pairs)[:,1] != -1
         self.valid_control_mask = mergers_with_MBH_not_zero & mergers_with_Mstar_not_zero & mergers_with_controls_found
 
         self.N_mergers_w_controls = np.sum(self.valid_control_mask)
@@ -548,7 +550,39 @@ class control_sample_brahma:
 
         return control_indices
 
-    def match_z_Mstar_plot(self,Mstar_binsize = 0.5,Mstar_min = 7,Mstar_max = 12,z_binsize = 0.6,z_min = 0,z_max = 5):
+    def find_control_samples_strict(self):
+
+        all_mrgr_z = np.unique(self.pop['merging_population']['z'][:]) #all unique redshifts where BHs/galaxies are merging
+        merging_pop_Mstar = self.pop['merging_population']['Mstar'][:]
+        non_merging_pop_Mstar = self.pop['non_merging_population']['Mstar'][:]
+
+        merger_control_index_pairs = []
+        used = np.zeros(len(non_merging_pop_Mstar),dtype=bool)
+
+        for z_i in tqdm(all_mrgr_z,"processing each merger redshifts for controls"):
+            zi_merger_ix = np.where(self.pop['merging_population']['z']==z_i)[0]
+            zi_nonmrgr_ix = np.where(self.pop['non_merging_population']['z']==z_i)[0]
+            zi_nonmerger_ix = zi_nonmrgr_ix[used[zi_nonmrgr_ix]==False]
+
+            merger_Mstars = self.pop['merging_population']['Mstar'][zi_merger_ix]
+            nonmerger_Mstars = self.pop['non_merging_population']['Mstar'][zi_nonmerger_ix]
+
+            for Mstar_merger_i in merger_Mstars:
+                 closest_non_merger_ix = np.argmin(np.abs(nonmerger_Mstars - Mstar_merger_i))
+                 mass_diff = np.abs(np.log(nonmerger_Mstars[closest_non_merger_ix]) - np.log(Mstar_merger_i))
+                
+                 if mass_diff < 0.1:
+                     
+                     merger_index = np.where(merging_pop_Mstar==Mstar_merger_i)[0][0]
+                     non_merger_index = np.where(non_merging_pop_Mstar==nonmerger_Mstars[closest_non_merger_ix])[0][0]
+                     merger_control_index_pairs.append([merger_index,non_merger_index])
+                     used[non_merger_index] = True #mark this non-merging galaxy as used
+                 else:
+                     merger_control_index_pairs.append([merger_index,-1]) #no suitable control found
+
+        return merger_control_index_pairs
+
+    def match_z_Mstar_plot(self,Mstar_binsize = 0.5,Mstar_min = 7,Mstar_max = 12,z_binsize = 0.8,z_min = 0,z_max = 15):
 
         Nbins_Ms = int((Mstar_max-Mstar_min)/Mstar_binsize)
         Mstar_bins = np.linspace(Mstar_min,Mstar_max,Nbins_Ms)
@@ -560,22 +594,17 @@ class control_sample_brahma:
 
         fig,ax = plt.subplots(1,2,figsize=(10,4))
 
-        merging_z = self.pop['merging_population']['z'][:][self.valid_control_mask]
-        control_z = self.pop['non_merging_population']['z'][:][self.control_indices[0][self.valid_control_mask]]
-
-
-        ax[0].hist(control_z, bins=z_bins, color="black", histtype="step",linewidth=2,density=True)
-        ax[0].hist(merging_z, bins=z_bins, histtype="step",color="Darkorange",linestyle="--",linewidth=2,density=True)
+        # merging_z = self.pop['merging_population']['z'][:][self.valid_control_mask]
+        # control_z = self.pop['non_merging_population']['z'][:][self.control_indices[0][self.valid_control_mask]]
+        ax[0].hist(self.z_control_pop, bins=z_bins, color="black", histtype="step",linewidth=2,density=True)
+        ax[0].hist(self.z_merging_pop, bins=z_bins, histtype="step",color="Darkorange",linestyle="--",linewidth=2,density=True)
         ax[0].set_xlabel("z",fontsize=25)
         ax[0].set_ylabel("pdf",fontsize=25)
         #ax[0].set_xticks([0,1,2,3,4,5])
-
-
-        merging_Mstar = self.pop['merging_population']['Mstar'][:][self.valid_control_mask]
-        control_Mstar = self.pop['non_merging_population']['Mstar'][:][self.control_indices[0][self.valid_control_mask]]
-    
-        ax[1].hist(np.log10(control_Mstar), bins=Mstar_bins,histtype="step",color="black",label="Control",linewidth=2,density=True)
-        ax[1].hist(np.log10(merging_Mstar),bins=Mstar_bins,histtype="step",label="PM",color="Darkorange",linestyle="--",linewidth=2,density=True)
+        # merging_Mstar = self.pop['merging_population']['Mstar'][:][self.valid_control_mask]
+        # control_Mstar = self.pop['non_merging_population']['Mstar'][:][self.control_indices[0][self.valid_control_mask]]
+        ax[1].hist(np.log10(self.Mstar_control_pop), bins=Mstar_bins,histtype="step",color="black",label="Control",linewidth=2,density=True)
+        ax[1].hist(np.log10(self.Mstar_merging_pop),bins=Mstar_bins,histtype="step",label="PM",color="Darkorange",linestyle="--",linewidth=2,density=True)
         #ax[1].set_xticks([7,8,9,10,11,12])
         ax[1].legend(fontsize=15)
         ax[1].set_xlabel("$\log(M_{\star}/M_{\odot})$",fontsize=25)
@@ -600,35 +629,62 @@ class control_sample_brahma:
 
     def compute_population_properties(self,verbose=False):
 
-        self.Mstar_merging_pop = self.pop['merging_population']['Mstar'][:][self.valid_control_mask]
-        self.Mstar_control_pop = self.pop['non_merging_population']['Mstar'][:][self.control_indices[0][self.valid_control_mask]]
+        self.z_merging_pop = self.pop['merging_population']['z'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
+        self.z_control_pop = self.pop['non_merging_population']['z'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]
 
-        self.MBH_merging_pop = self.pop['merging_population']['MBH'][:][self.valid_control_mask]
-        self.MBH_control_pop = self.pop['non_merging_population']['MBH'][:][self.control_indices[0][self.valid_control_mask]]
+        self.Mstar_merging_pop = self.pop['merging_population']['Mstar'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
+        self.Mstar_control_pop = self.pop['non_merging_population']['Mstar'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]
 
-        self.SFR_merging_pop = self.pop['merging_population']['SFR'][:][self.valid_control_mask]
-        self.SFR_control_pop = self.pop['non_merging_population']['SFR'][:][self.control_indices[0][self.valid_control_mask]]
+        self.MBH_merging_pop = self.pop['merging_population']['MBH'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
+        self.MBH_control_pop = self.pop['non_merging_population']['MBH'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]
 
-        self.z_merging_pop = self.pop['merging_population']['z'][:][self.valid_control_mask]
-        self.z_control_pop = self.pop['non_merging_population']['z'][:][self.control_indices[0][self.valid_control_mask]]
-                                                                        
-        self.Mgas_half_merging_pop = self.pop['merging_population']['Mgas-half'][:][self.valid_control_mask]
-        self.Mgas_half_control_pop = self.pop['non_merging_population']['Mgas-half'][:][self.control_indices[0][self.valid_control_mask]]
+        self.SFR_merging_pop = self.pop['merging_population']['SFR'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
+        self.SFR_control_pop = self.pop['non_merging_population']['SFR'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]
 
-        self.Mdot_merging_pop = self.pop['merging_population']['Mdot'][:][self.valid_control_mask]
-        self.Mdot_control_pop = self.pop['non_merging_population']['Mdot'][:][self.control_indices[0][self.valid_control_mask]]
+        self.Mdot_merging_pop = self.pop['merging_population']['Mdot'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
+        self.Mdot_control_pop = self.pop['non_merging_population']['Mdot'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]   
 
-        self.Mgas_merging_pop = self.pop['merging_population']['Mgas'][:][self.valid_control_mask]
-        self.Mgas_control_pop = self.pop['non_merging_population']['Mgas'][:][self.control_indices[0][self.valid_control_mask]]
-
-        self.Mstar_half_merging_pop = self.pop['merging_population']['Mstar-half'][:][self.valid_control_mask]
-        self.Mstar_half_control_pop = self.pop['non_merging_population']['Mstar-half'][:][self.control_indices[0][self.valid_control_mask]]
-        
         self.sSFR_merging_pop = self.SFR_merging_pop/self.Mstar_merging_pop
         self.sSFR_control_pop = self.SFR_control_pop/self.Mstar_control_pop
 
-        self.fgas_merging_pop = self.Mgas_half_merging_pop/(self.Mgas_half_merging_pop+self.Mstar_half_merging_pop)
-        self.fgas_control_pop = self.Mgas_half_control_pop/(self.Mgas_half_control_pop+self.Mstar_half_control_pop)
+        self.Mgas_merging_pop = self.pop['merging_population']['Mgas'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
+        self.Mgas_control_pop = self.pop['non_merging_population']['Mgas'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]
+
+        self.fgas_merging_pop = self.Mgas_merging_pop/(self.Mgas_merging_pop+self.Mstar_merging_pop)
+        self.fgas_control_pop = self.Mgas_control_pop/(self.Mgas_control_pop+self.Mstar_control_pop)
+
+        self.sBHAR_merging_pop = self.Mdot_merging_pop/self.MBH_merging_pop
+        self.sBHAR_control_pop = self.Mdot_control_pop/self.MBH_control_pop
+
+        # self.Mstar_merging_pop = self.pop['merging_population']['Mstar'][:][self.valid_control_mask]
+        # self.Mstar_control_pop = self.pop['non_merging_population']['Mstar'][:][self.control_indices[0][self.valid_control_mask]]
+
+        # self.MBH_merging_pop = self.pop['merging_population']['MBH'][:][self.valid_control_mask]
+        # self.MBH_control_pop = self.pop['non_merging_population']['MBH'][:][self.control_indices[0][self.valid_control_mask]]
+
+        # self.SFR_merging_pop = self.pop['merging_population']['SFR'][:][self.valid_control_mask]
+        # self.SFR_control_pop = self.pop['non_merging_population']['SFR'][:][self.control_indices[0][self.valid_control_mask]]
+
+        # self.z_merging_pop = self.pop['merging_population']['z'][:][self.valid_control_mask]
+        # self.z_control_pop = self.pop['non_merging_population']['z'][:][self.control_indices[0][self.valid_control_mask]]
+                                                                        
+        # self.Mgas_half_merging_pop = self.pop['merging_population']['Mgas-half'][:][self.valid_control_mask]
+        # self.Mgas_half_control_pop = self.pop['non_merging_population']['Mgas-half'][:][self.control_indices[0][self.valid_control_mask]]
+
+        # self.Mdot_merging_pop = self.pop['merging_population']['Mdot'][:][self.valid_control_mask]
+        # self.Mdot_control_pop = self.pop['non_merging_population']['Mdot'][:][self.control_indices[0][self.valid_control_mask]]
+
+        # self.Mgas_merging_pop = self.pop['merging_population']['Mgas'][:][self.valid_control_mask]
+        # self.Mgas_control_pop = self.pop['non_merging_population']['Mgas'][:][self.control_indices[0][self.valid_control_mask]]
+
+        # self.Mstar_half_merging_pop = self.pop['merging_population']['Mstar-half'][:][self.valid_control_mask]
+        # self.Mstar_half_control_pop = self.pop['non_merging_population']['Mstar-half'][:][self.control_indices[0][self.valid_control_mask]]
+        
+        # self.sSFR_merging_pop = self.SFR_merging_pop/self.Mstar_merging_pop
+        # self.sSFR_control_pop = self.SFR_control_pop/self.Mstar_control_pop
+
+        # self.fgas_merging_pop = self.Mgas_half_merging_pop/(self.Mgas_half_merging_pop+self.Mstar_half_merging_pop)
+        # self.fgas_control_pop = self.Mgas_half_control_pop/(self.Mgas_half_control_pop+self.Mstar_half_control_pop)
 
         if verbose:
         #sSFR averages
@@ -700,7 +756,7 @@ class control_sample_brahma:
             #fig.show()
             return axes,fig
     
-    def plot_sSFR_evolution(self,z_min=0,z_max=5,z_binsize=0.3):
+    def plot_sSFR_evolution(self,z_min=0,z_max=8,z_binsize=1):
             # Initialize lists to store the results
 
             Nbins_z = int((z_max - z_min) / z_binsize)
@@ -758,6 +814,63 @@ class control_sample_brahma:
 
             return fig,ax
     
+    def plot_sBHAR_evolution(self,z_min=0,z_max=8,z_binsize=1):
+        z_min = 0
+        z_max = 8
+        z_binsize = 1
+
+        Nbins_z = int((z_max - z_min) / z_binsize)
+        z_bins = np.linspace(z_min, z_max, Nbins_z)
+
+        avg_sBHAR_control = []
+        std_sBHAR_control = []
+
+        avg_sBHAR_merger = []
+        std_sBHAR_merger = []
+
+        # Loop through redshift bins
+        for i in range(len(z_bins) - 1):
+            # Create masks for merging and control populations within each redshift bin
+            merger_z_mask = (self.z_merging_pop > z_bins[i]) & (self.z_merging_pop < z_bins[i + 1])
+            control_z_mask = (self.z_control_pop > z_bins[i]) & (self.z_control_pop < z_bins[i + 1])
+
+            sBHAR_merging_pop_filtered = self.sBHAR_merging_pop[merger_z_mask]
+            sBHAR_control_pop_filtered = self.sBHAR_control_pop[control_z_mask]
+
+            avg_sBHAR_merger.append(np.mean(sBHAR_merging_pop_filtered))
+            std_sBHAR_merger.append(np.std(sBHAR_merging_pop_filtered) / np.sqrt(len(sBHAR_merging_pop_filtered)))
+
+            avg_sBHAR_control.append(np.mean(sBHAR_control_pop_filtered))
+            std_sBHAR_control.append(np.std(sBHAR_control_pop_filtered) / np.sqrt(len(sBHAR_control_pop_filtered)))
+
+            avg_sBHAR_merger = np.array(avg_sBHAR_merger)
+            std_sBHAR_merger = np.array(std_sBHAR_merger)
+
+            avg_sBHAR_control = np.array(avg_sBHAR_control)
+            std_sBHAR_control = np.array(std_sBHAR_control)
+
+            Q_sBHAR = avg_sBHAR_merger / avg_sBHAR_control
+            Q_sBHAR_SE = Q_sBHAR * np.sqrt((std_sBHAR_merger / avg_sBHAR_merger) ** 2 + (std_sBHAR_control / avg_sBHAR_control) ** 2)
+
+            # Plot the results
+            fig, ax = plt.subplots(2, 1, figsize=(6, 5))
+            ax[0].plot(z_bins[:-1] + z_binsize / 2, np.log10(avg_sBHAR_merger[avg_sBHAR_merger > 0]), label='PM', color="dodgerblue")
+            ax[0].fill_between(z_bins[:-1] + z_binsize / 2, np.log10(avg_sBHAR_merger - std_sBHAR_merger), np.log10(avg_sBHAR_merger + std_sBHAR_merger), alpha=0.3, color='dodgerblue')
+            ax[0].plot(z_bins[:-1] + z_binsize / 2, np.log10(avg_sBHAR_control[avg_sBHAR_control > 0]), label='control', color='orange')
+            ax[0].fill_between(z_bins[:-1] + z_binsize / 2, np.log10(avg_sBHAR_control - std_sBHAR_control), np.log10(avg_sBHAR_control + std_sBHAR_control), alpha=0.3, color='orange')
+            ax[0].legend()
+            ax[0].set_xlabel('z')
+            ax[0].set_ylabel(r'$\log_{10}\langle sBHAR \rangle$')
+
+            ax[1].plot(z_bins[:-1] + z_binsize / 2, Q_sBHAR, color='purple')
+            ax[1].fill_between(z_bins[:-1] + z_binsize / 2, Q_sBHAR - Q_sBHAR_SE, Q_sBHAR + Q_sBHAR_SE, alpha=0.3, color='purple')
+            ax[1].set_xlabel('z')
+            ax[1].set_ylabel('Q(sBHAR)')
+            ax[1].set_ylim(0, 4)
+
+            # Final layout adjustments
+            fig.tight_layout()
+
     def plot_mdot_evolution(self, z_min=0, z_max=5, z_binsize=0.3):
         # Initialize lists to store the results
 
@@ -824,9 +937,10 @@ class control_sample_brahma:
 
         return fig, ax
 
+def load_pop_file(basePath,pop_file_path,minN_values):
 
-
-def load_pop_file(pop_file_path,minN_values):
-    pop_file_name = pop_file_path+'population_sort'+'_gas-'+f'{minN_values[0]:03d}'+'_dm-'+f'{minN_values[1]:03d}'+'_star-'+f'{minN_values[2]:03d}'+'_bh-'+f'{minN_values[3]:03d}'+'_brahma.hdf5'
+    simName = basePath.split('/')[-2]
+    pop_file_name = pop_file_path+ f"{simName}_population_sort_gas-{minN_values[0]:03d}_dm-{minN_values[1]:03d}_star-{minN_values[2]:03d}_bh-{minN_values[3]:03d}_brahma.hdf5"
+    #pop_file_name = pop_file_path+'population_sort'+'_gas-'+f'{minN_values[0]:03d}'+'_dm-'+f'{minN_values[1]:03d}'+'_star-'+f'{minN_values[2]:03d}'+'_bh-'+f'{minN_values[3]:03d}'+'_brahma.hdf5'
     return h5py.File(pop_file_name,'r')
 

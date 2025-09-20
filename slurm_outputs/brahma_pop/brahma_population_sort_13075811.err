@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 541, in <module>
+    pop_gen = population_generator_for_brahma(basePath,merger_file_path)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 308, in __init__
+    self.unique_merger_snap = np.unique(self.mrg_file['snaps'][:,2])
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "/blue/lblecha/pranavsatheesh/.conda/envs/hfrl/lib/python3.10/site-packages/h5py/_hl/group.py", line 357, in __getitem__
+    oid = h5o.open(self.id, self._e(name), lapl=self._lapl)
+  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
+  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
+  File "h5py/h5o.pyx", line 257, in h5py.h5o.open
+KeyError: "Unable to synchronously open object (object 'snaps' doesn't exist)"

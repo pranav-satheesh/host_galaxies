@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_brahma_tree.py", line 343, in <module>
+    WriteMergerFile(savePath,basePath, snapNum, minNdm=minNdm, minNgas=minNgas, 
+  File "/home/pranavsatheesh/host_galaxies/py_files/merger_file_from_brahma_tree.py", line 176, in WriteMergerFile
+    brahma_snapshots,brahma_redshifts = arepo.get_snapshot_redshift_correspondence(basePath)
+  File "/home/pranavsatheesh/arepo_package/arepo_package.py", line 33, in get_snapshot_redshift_correspondence
+    output_file_names=os.listdir(output_path)
+FileNotFoundError: [Errno 2] No such file or directory: '/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/output_ratio10_SFMFGM5_seed5.00_bFOF/'

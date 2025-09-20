@@ -234,7 +234,7 @@ class population_generator:
             return np.array([])
         
         else:
-            subhalo_pos_mergers = subhalos['SubhaloPos'][subhalo_ids_merging]
+            subhalo_pos_mergers = subhalos['SubhaloPos'][subhalo_ids_merging]/h #ckpc
 
             tree = cKDTree(subhalo_pos_mergers, boxsize=self.box_length)
             distances, nearest_neighbors = tree.query(subhalo_pos_mergers,k=2)
@@ -242,7 +242,7 @@ class population_generator:
             nearest_subhalo_ids = nearest_neighbors[:,-1]
             r_subhalos = distances[:,-1]
 
-            stellar_half_mass_radius = subhalos['SubhaloHalfmassRadType'][:,4]/h
+            stellar_half_mass_radius = subhalos['SubhaloHalfmassRadType'][:,4]/h #ckpc
 
             r_sep = r_subhalos/(stellar_half_mass_radius[subhalo_ids_merging]+stellar_half_mass_radius[nearest_subhalo_ids])
 
@@ -294,7 +294,7 @@ class population_generator_for_brahma:
     def __init__(self,basePath,merger_file_path):
         
         self.basePath = basePath
-        self.h = il.groupcat.loadHeader(self.basePath,0)['HubbleParam']
+        self.h = il_brahma.groupcat.loadHeader(self.basePath,0)['HubbleParam']
         self.runName = basePath.split('/')[-1]
         #self.runName = runname
         self.merger_file_path = merger_file_path
@@ -345,7 +345,7 @@ class population_generator_for_brahma:
         self.merging_pop = self.initialize_population_dict(key='M')
         self.non_merging_pop = self.initialize_population_dict(key='N')
 
-        fields=['SubhaloLenType', 'SubhaloMassType','SubhaloMass', 'SubhaloBHMass', 'SubhaloBHMdot', 'SubhaloSFR','SubhaloGasMetallicity','SubhaloStarMetallicity','SubhaloPos','SubhaloHalfmassRadType','SubhaloMassInHalfRadType']
+        fields=['SubhaloLenType', 'SubhaloMassType','SubhaloMass', 'SubhaloBHMass', 'SubhaloBHMdot', 'SubhaloSFR','SubhaloGasMetallicity','SubhaloStarMetallicity','SubhaloPos','SubhaloHalfmassRadType','SubhaloMassInHalfRadType','SubhaloMassInRadType','SubhaloStellarPhotometrics']
 
         for i in tqdm(range(len(self.unique_merger_z)), desc="Processing unique merger redshifts"):
 
@@ -405,38 +405,14 @@ class population_generator_for_brahma:
                 "Msubhalo": []
             }
 
-    # def find_closest_matches(self,merging_Mstar,non_merging_Mstar,Mstar_tolerance=0.1):
-        
-    #     # Ensure inputs are numpy arrays
-    #     # merging_Mstar = np.array(merging_Mstar)
-    #     # non_merging_Mstar = np.array(non_merging_Mstar)
-        
-    #     # Create a KDTree for the non-merging population
-    #     tree = cKDTree(non_merging_Mstar.reshape(-1, 1))
-
-    #     # Find the indices of the first 5 closest matches
-    #     distances, indices = tree.query(merging_Mstar.reshape(-1, 1), k=5)
-
-    #     closest_matches_Mstar = non_merging_Mstar[indices]
-
-    #     # Compute log10 differences
-    #     log_Mstar_merging = np.log10(merging_Mstar).reshape(-1, 1)
-    #     log_Mstar_matches = np.log10(closest_matches_Mstar)
-    #     dex_diff = np.abs(log_Mstar_merging - log_Mstar_matches)
-
-    #     within_tolerance = dex_diff <= Mstar_tolerance
-
-    #     closest_indices_filtered = np.where(within_tolerance, indices, -1)
-
-    #     return closest_indices_filtered
-
     def update_merger_details(self,subhalos,subhalo_ids_merging,redshift,snapnum):
 
         self.merging_pop["subhalo_ids"] = np.concatenate((self.merging_pop["subhalo_ids"], subhalo_ids_merging))
         self.merging_pop["snap"] = np.append(self.merging_pop["snap"], snapnum*np.ones(len(subhalo_ids_merging)))
         self.merging_pop["z"] = np.append(self.merging_pop["z"], redshift*np.ones(len(subhalo_ids_merging)))
         self.merging_pop["Mstar"] = np.concatenate((self.merging_pop["Mstar"], subhalos['SubhaloMassType'][:,4][subhalo_ids_merging]))
-        self.merging_pop["Mgas"] = np.concatenate((self.merging_pop["Mgas"], subhalos['SubhaloMassType'][:,0][subhalo_ids_merging]))
+        # self.merging_pop["Mgas"] = np.concatenate((self.merging_pop["Mgas"], subhalos['SubhaloMassType'][:,0][subhalo_ids_merging]))
+        self.merging_pop["Mgas"] = np.concatenate((self.merging_pop["Mgas"], subhalos['SubhaloMassInRadType'][:,0][subhalo_ids_merging]))
         self.merging_pop["MBH"] = np.concatenate((self.merging_pop["MBH"], subhalos['SubhaloBHMass'][subhalo_ids_merging]))
         self.merging_pop["Mdot"] = np.concatenate((self.merging_pop["Mdot"], subhalos['SubhaloBHMdot'][subhalo_ids_merging]))
         self.merging_pop["SFR"] = np.concatenate((self.merging_pop["SFR"], subhalos['SubhaloSFR'][subhalo_ids_merging]))
@@ -450,65 +426,29 @@ class population_generator_for_brahma:
             self.non_merging_pop["snap"] = np.append(self.non_merging_pop["snap"], snapnum*np.ones(len(subhalo_ids_non_merging)))
             self.non_merging_pop["z"] = np.append(self.non_merging_pop["z"], redshift*np.ones(len(subhalo_ids_non_merging)))
             self.non_merging_pop["Mstar"] = np.concatenate((self.non_merging_pop["Mstar"], subhalos['SubhaloMassType'][:,4][subhalo_ids_non_merging]))
-            self.non_merging_pop["Mgas"] = np.concatenate((self.non_merging_pop["Mgas"], subhalos['SubhaloMassType'][:,0][subhalo_ids_non_merging]))
+            #self.non_merging_pop["Mgas"] = np.concatenate((self.non_merging_pop["Mgas"], subhalos['SubhaloMassType'][:,0][subhalo_ids_non_merging]))
+            self.non_merging_pop["Mgas"] = np.concatenate((self.non_merging_pop["Mgas"], subhalos['SubhaloMassInRadType'][:,0][subhalo_ids_non_merging]))
             self.non_merging_pop["MBH"] = np.concatenate((self.non_merging_pop["MBH"], subhalos['SubhaloBHMass'][subhalo_ids_non_merging]))
             self.non_merging_pop["Mdot"] = np.concatenate((self.non_merging_pop["Mdot"], subhalos['SubhaloBHMdot'][subhalo_ids_non_merging]))
             self.non_merging_pop["SFR"] = np.concatenate((self.non_merging_pop["SFR"], subhalos['SubhaloSFR'][subhalo_ids_non_merging]))
             self.non_merging_pop["Mstar-half"]=np.concatenate((self.non_merging_pop["Mstar-half"], subhalos['SubhaloMassInHalfRadType'][:,4][subhalo_ids_non_merging]))
             self.non_merging_pop["Mgas-half"] = np.concatenate((self.non_merging_pop["Mgas-half"], subhalos['SubhaloMassInHalfRadType'][:,0][subhalo_ids_non_merging]))
-            self.non_merging_pop["Msubhalo"] = np.concatenate((self.non_merging_pop["Msubhalo"], subhalos['SubhaloMass'][subhalo_ids_non_merging]))
-
-    # def update_control_details(self,subhalos,closest_idxs,subhalo_ids_non_merging,redshift,snapnum):
-        
-    #     subhalo_ids_matches = []
-    #     Mstar_matches = []
-    #     z_matches = []
-    #     snap_matches = []
-    #     Mgas_matches = []
-    #     MBH_matches = []
-    #     Mdot_matches = []
-    #     SFR_matches = []
-        
-    #     for match_ixs in closest_idxs:
-    #         subhalo_ids_matches_ixs = np.where(match_ixs != -1, subhalo_ids_non_merging[match_ixs], -1)
-    #         Mstar_matches_ixs = np.where(match_ixs != -1, subhalos['SubhaloMassType'][:,4][subhalo_ids_non_merging[match_ixs]]  * 1e10 /h, -1)
-    #         Mgas_matches_ixs = np.where(match_ixs != -1, subhalos['SubhaloMassType'][:,0][subhalo_ids_non_merging[match_ixs]]  * 1e10 /h, -1)
-    #         MBH_matches_ixs = np.where(match_ixs != -1, subhalos['SubhaloBHMass'][subhalo_ids_non_merging[match_ixs]]  * 1e10 /h, -1)
-    #         Mdot_matches_ixs = np.where(match_ixs != -1, subhalos['SubhaloBHMdot'][subhalo_ids_non_merging[match_ixs]]  * (1e10 / h) / (0.978 * 1e9 /h), -1)
-    #         SFR_matches_ixs = np.where(match_ixs != -1, subhalos['SubhaloSFR'][subhalo_ids_non_merging[match_ixs]], -1)
-
-    #         z_matches.append(redshift*np.ones(len(subhalo_ids_matches_ixs)))
-    #         snap_matches.append(snapnum*np.ones(len(subhalo_ids_matches_ixs)))
-    #         subhalo_ids_matches.append(subhalo_ids_matches_ixs)
-    #         Mstar_matches.append(Mstar_matches_ixs)
-    #         Mgas_matches.append(Mgas_matches_ixs)
-    #         MBH_matches.append(MBH_matches_ixs)
-    #         Mdot_matches.append(Mdot_matches_ixs)
-    #         SFR_matches.append(SFR_matches_ixs)
-
-    #     self.control_pop["subhalo_ids"].extend(subhalo_ids_matches)
-    #     self.control_pop["Mstar"].extend(Mstar_matches)
-    #     self.control_pop["Mgas"].extend(Mgas_matches)
-    #     self.control_pop["MBH"].extend(MBH_matches)
-    #     self.control_pop["Mdot"].extend(Mdot_matches)
-    #     self.control_pop["SFR"].extend(SFR_matches)
-    #     self.control_pop["z"].extend(z_matches)
-    #     self.control_pop["snap"].extend(snap_matches)    
+            self.non_merging_pop["Msubhalo"] = np.concatenate((self.non_merging_pop["Msubhalo"], subhalos['SubhaloMass'][subhalo_ids_non_merging]))   
     
     def update_pop_units(self,pop):
-        pop["Mstar"] *= 1e10/h
-        pop["Mgas"] *= (1e10/h )/ ( 0.978 * 1e9 /h)
-        pop["MBH"] *= 1e10/h
-        pop["Mdot"] *= 1e10/h
-        pop["Mstar-half"] *= 1e10/h
-        pop["Mgas-half"] *= 1e10/h 
-        pop["Msubhalo"] *= 1e10/h
+        pop["Mstar"] *= 1e10/self.h
+        pop["Mgas"] *= 1e10/self.h
+        pop["MBH"] *= 1e10/self.h
+        pop["Mdot"] *= (1e10/self.h)/ ( 0.978 * 1e9 /self.h)
+        pop["Mstar-half"] *= 1e10/self.h
+        pop["Mgas-half"] *= 1e10/self.h
+        pop["Msubhalo"] *= 1e10/self.h
         # pop["MBH1"] *= 1e10/h
         # pop["MBH2"] *= 1e10/h
     
     def save_population_to_file(self, filepath):
         """Save all cases (all merging and non-merging populations) to file."""
-        outfilename = filepath + f"/population_sort_gas-{minN_values[0]:03d}_dm-{minN_values[1]:03d}_star-{minN_values[2]:03d}_bh-{minN_values[3]:03d}_brahma.hdf5"
+        outfilename = filepath + f"/{self.runName}_population_sort_gas-{minN_values[0]:03d}_dm-{minN_values[1]:03d}_star-{minN_values[2]:03d}_bh-{minN_values[3]:03d}_brahma.hdf5"
         
         with h5py.File(outfilename, 'w') as f:
             all_merge_grp = f.create_group('merging_population')

@@ -1,7 +1,6 @@
 #!/bin/sh
-
 #SBATCH --qos=lblecha
-#SBATCH -J population_brahma
+#SBATCH -J pop_brahma_bh1_star10
 #SBATCH -n 1
 #SBATCH -N 1
 #SBATCH --mail-user=pranavsatheesh@ufl.edu
