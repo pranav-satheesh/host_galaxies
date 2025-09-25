@@ -158,7 +158,6 @@ class MergerInfo:
                                   index=index, getFullTree=getFullTree, minNdm=self.minNdm, 
                                   minNgas=self.minNgas, minNstar=self.minNstar, verbose=verbose)
         
-        
     def countMrgFromDupDesc(self, tree):
         """ Returns total # of mergers in full tree by counting duplicate descendant IDs. """
 
@@ -173,7 +172,6 @@ class MergerInfo:
     
         return np.array([d-1 for d in dup.values()]).sum()
 
-    
     def getMergerInfoSubtree(self, tree, minMassRatio=1e-10, massPartType='stars', index=0, 
                              getFullTree=True, minNdm=0, minNgas=0, minNstar=0, minNbh=0, verbose=False):
         """ Return merger snapshots in this sub-tree (optionally above some mass ratio threshold). """

@@ -1,0 +1,16 @@
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 171
+    "rsep": np.array([], dtype=float)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 171
+    "rsep": np.array([], dtype=float)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 171
+    "rsep": np.array([], dtype=float)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 171
+    "rsep": np.array([], dtype=float)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^
+SyntaxError: invalid syntax. Perhaps you forgot a comma?

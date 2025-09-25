@@ -14,8 +14,8 @@
 ml conda
 conda activate hfrl
 
-basePath=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/output_ratio10_SFMFGM5_seed5.00_bFOF_LW10_DFD_3/
 codePath=/home/pranavsatheesh/host_galaxies/py_files
+basePath=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LW10_LOWSPIN_RICH_TNG/
 savePath=/home/pranavsatheesh/host_galaxies/data/merger_files
 snapnum=32
 minNdm=0

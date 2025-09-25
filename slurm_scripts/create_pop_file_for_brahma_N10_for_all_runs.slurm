@@ -15,15 +15,10 @@
 ml conda
 conda activate hfrl
 
-
-basePath1=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/output_ratio10_SFMFGM5_seed5.00_bFOF_LW10_DFD_3
-basePath2=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/output_ratio10_SFMFGM5_seed5.00_bFOF_LW10_spin
-basePath3=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/output_ratio10_SFMFGM5_seed5.00_bFOF_LW10_spin_rich
-basePath4=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/output_Msfmp5_Mh1000_double_powerlaw_env_5_0.1_0.3_slope1.6
-basePath5=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/output_Msfmp5_Mh3000_double_powerlaw_env_5_0.1_0.3_slope1.6
-basePath6=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_TNG/
-basePath7=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_DF3_TNG/
-basePath8=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LOWSPIN_RICH_TNG/
+basePath1=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_TNG/
+basePath2=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LW10_TNG/
+basePath3=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LW10_LOWSPIN_TNG/
+basePath4=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LW10_LOWSPIN_RICH_TNG/
 codePath=/home/pranavsatheesh/host_galaxies/py_files
 merger_file_loc=/home/pranavsatheesh/host_galaxies/data/merger_files
 pop_file_path=/home/pranavsatheesh/host_galaxies/data/population_files
@@ -34,7 +29,7 @@ minNstar=10
 minNbh=1
 
 # Array of base paths
-basePaths=($basePath1 $basePath2 $basePath3 $basePath4 $basePath5 $basePath6 $basePath7 $basePath8)
+basePaths=($basePath1 $basePath2 $basePath3 $basePath4)
 
 # Loop through each base path
 for basePath in "${basePaths[@]}"; do
