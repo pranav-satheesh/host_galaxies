@@ -1,0 +1,44 @@
+Processing unique merger redshifts:   0%|          | 0/16 [00:00<?, ?it/s]Processing unique merger redshifts:   0%|          | 0/16 [00:07<?, ?it/s]
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 501, in <module>
+    pop_gen = population_generator_for_brahma(basePath,merger_file_path)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 328, in __init__
+    self.generate_population()
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 367, in generate_population
+    self.update_non_merger_details(subhalos, subhalo_ids_non_merging, self.unique_merger_z[i], self.unique_merger_snap[i])
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 431, in update_non_merger_details
+    self.non_merging_pop["Mstar-twice-half"]=np.concatenate((self.non_merging_pop["Mstar-half"], subhalos['SubhaloMassInHalfRadType'][:,4][subhalo_ids_non_merging]))
+KeyError: 'Mstar-half'
+Processing unique merger redshifts:   0%|          | 0/16 [00:00<?, ?it/s]Processing unique merger redshifts:   0%|          | 0/16 [00:10<?, ?it/s]
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 501, in <module>
+    pop_gen = population_generator_for_brahma(basePath,merger_file_path)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 328, in __init__
+    self.generate_population()
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 367, in generate_population
+    self.update_non_merger_details(subhalos, subhalo_ids_non_merging, self.unique_merger_z[i], self.unique_merger_snap[i])
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 431, in update_non_merger_details
+    self.non_merging_pop["Mstar-twice-half"]=np.concatenate((self.non_merging_pop["Mstar-half"], subhalos['SubhaloMassInHalfRadType'][:,4][subhalo_ids_non_merging]))
+KeyError: 'Mstar-half'
+Processing unique merger redshifts:   0%|          | 0/17 [00:00<?, ?it/s]Processing unique merger redshifts:   0%|          | 0/17 [00:04<?, ?it/s]
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 501, in <module>
+    pop_gen = population_generator_for_brahma(basePath,merger_file_path)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 328, in __init__
+    self.generate_population()
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 367, in generate_population
+    self.update_non_merger_details(subhalos, subhalo_ids_non_merging, self.unique_merger_z[i], self.unique_merger_snap[i])
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 431, in update_non_merger_details
+    self.non_merging_pop["Mstar-twice-half"]=np.concatenate((self.non_merging_pop["Mstar-half"], subhalos['SubhaloMassInHalfRadType'][:,4][subhalo_ids_non_merging]))
+KeyError: 'Mstar-half'
+Processing unique merger redshifts:   0%|          | 0/18 [00:00<?, ?it/s]Processing unique merger redshifts:   0%|          | 0/18 [00:02<?, ?it/s]
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 501, in <module>
+    pop_gen = population_generator_for_brahma(basePath,merger_file_path)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 328, in __init__
+    self.generate_population()
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 367, in generate_population
+    self.update_non_merger_details(subhalos, subhalo_ids_non_merging, self.unique_merger_z[i], self.unique_merger_snap[i])
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 431, in update_non_merger_details
+    self.non_merging_pop["Mstar-twice-half"]=np.concatenate((self.non_merging_pop["Mstar-half"], subhalos['SubhaloMassInHalfRadType'][:,4][subhalo_ids_non_merging]))
+KeyError: 'Mstar-half'

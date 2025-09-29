@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 514, in <module>
+    pop_gen = population_generator(merger_file_1bh,basePath,minN_values)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 51, in __init__
+    self.all_merging_population,self.non_merging_population = self.generate_population(snap_list)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 121, in generate_population
+    self.update_population_dict(all_merging_population, subhalos, subhalo_ids_merging, snap, redshifts[i],r_sep_merging)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 275, in update_population_dict
+    population["Mstar-half"]=np.concatenate((population["Mstar-half"], subhalos['SubhaloMassInHalfRadType'][:,4][subhalo_ids_non_merging]))
+KeyError: 'SubhaloMassInHalfRadType'

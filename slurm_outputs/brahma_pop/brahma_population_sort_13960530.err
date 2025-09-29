@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 496, in <module>
+    pop_gen = population_generator_for_brahma(basePath,merger_file_path)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 316, in __init__
+    self.box_length = mrg_file.attrs['box_volume_mpc']**(1/3) * 1000 #in comoving units ckpc
+NameError: name 'mrg_file' is not defined
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 496, in <module>
+    pop_gen = population_generator_for_brahma(basePath,merger_file_path)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 316, in __init__
+    self.box_length = mrg_file.attrs['box_volume_mpc']**(1/3) * 1000 #in comoving units ckpc
+NameError: name 'mrg_file' is not defined
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 496, in <module>
+    pop_gen = population_generator_for_brahma(basePath,merger_file_path)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 316, in __init__
+    self.box_length = mrg_file.attrs['box_volume_mpc']**(1/3) * 1000 #in comoving units ckpc
+NameError: name 'mrg_file' is not defined
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 496, in <module>
+    pop_gen = population_generator_for_brahma(basePath,merger_file_path)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 316, in __init__
+    self.box_length = mrg_file.attrs['box_volume_mpc']**(1/3) * 1000 #in comoving units ckpc
+NameError: name 'mrg_file' is not defined

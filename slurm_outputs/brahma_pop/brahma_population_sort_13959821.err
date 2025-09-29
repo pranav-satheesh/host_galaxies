@@ -1,0 +1,16 @@
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 495
+    print(f"Creating merger and non merger populations for BRAHMA run{basePath.split("/")[-1]}")
+                                                                                      ^
+SyntaxError: f-string: unmatched '('
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 495
+    print(f"Creating merger and non merger populations for BRAHMA run{basePath.split("/")[-1]}")
+                                                                                      ^
+SyntaxError: f-string: unmatched '('
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 495
+    print(f"Creating merger and non merger populations for BRAHMA run{basePath.split("/")[-1]}")
+                                                                                      ^
+SyntaxError: f-string: unmatched '('
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 495
+    print(f"Creating merger and non merger populations for BRAHMA run{basePath.split("/")[-1]}")
+                                                                                      ^
+SyntaxError: f-string: unmatched '('

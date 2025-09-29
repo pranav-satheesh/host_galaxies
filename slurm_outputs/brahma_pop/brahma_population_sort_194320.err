@@ -1,9 +1,0 @@
-Processing unique merger redshifts:   0%|          | 0/25 [00:00<?, ?it/s]Processing unique merger redshifts:   0%|          | 0/25 [00:01<?, ?it/s]
-Traceback (most recent call last):
-  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 413, in <module>
-    pop_gen = population_generator_for_brahma(basePath,merger_file_name)
-  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 253, in __init__
-    self.generate_population()
-  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 271, in generate_population
-    self.update_merger_details(subhalos,subhalo_ids_merging,self.unique_merger_z[i],self.unique_merger_snap[i],merger_idxs)
-AttributeError: 'population_generator_for_brahma' object has no attribute 'unique_merger_snap'. Did you mean: 'unique_merger_z'?

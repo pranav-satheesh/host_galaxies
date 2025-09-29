@@ -17,9 +17,10 @@ h = 0.6774
 
 class population_generator:
      
-    def __init__(self,merger_file,mergerfilePath,basePath,minN_values):
+    def __init__(self,merger_file,basePath,minN_values):
         
         self.base_path = basePath
+        self.simName = basePath.split('/')[-2] #TNG50-1
         self.minN_values = minN_values
         fmergers = h5py.File(merger_file, 'r')
         self.h = fmergers.attrs['HubbleParam']
@@ -44,8 +45,8 @@ class population_generator:
         self.M2_prog = BHMasses_merger[:,1]
         self.M_final = BHMasses_merger[:,2]
 
-        descendant_file = mergerfilePath+'/descendants_after_2Gyr_of_mergers.hdf5'
-        self.fdescendant = h5py.File(descendant_file, 'r')
+        # descendant_file = mergerfilePath+'/descendants_after_2Gyr_of_mergers.hdf5'
+        # self.fdescendant = h5py.File(descendant_file, 'r')
 
         self.all_merging_population,self.non_merging_population = self.generate_population(snap_list)
 
@@ -155,8 +156,8 @@ class population_generator:
                 "Mdot": np.array([], dtype=float),
                 "SFR": np.array([], dtype=float),
                 "rsep": np.array([], dtype=float),
-                "Mstar-half": np.array([], dtype=float),
-                "Mgas-half": np.array([], dtype=float)
+                "Mstar-twice-half": np.array([], dtype=float),
+                "Mgas-twice-half": np.array([], dtype=float)
             }
         else:
             return {
@@ -169,8 +170,8 @@ class population_generator:
                 "Mdot": np.array([], dtype=float),
                 "SFR": np.array([], dtype=float),
                 "rsep": np.array([], dtype=float),
-                "Mstar-half": np.array([], dtype=float),
-                "Mgas-half": np.array([], dtype=float)
+                "Mstar-twice-half": np.array([], dtype=float),
+                "Mgas-twice-half": np.array([], dtype=float)
             }
         
     def get_valid_subhalo_ids(self,subhalos,snap):
@@ -218,7 +219,9 @@ class population_generator:
 
         stellar_half_mass_radius = subhalos['SubhaloHalfmassRadType'][:,4] #ckpc/h
 
-        r_sep = r_subhalos/(stellar_half_mass_radius[particle_and_non_merger_descendent_mask]+stellar_half_mass_radius[nearest_subhalo_ids])
+        r_sep = r_subhalos/(stellar_half_mass_radius[particle_cut_mask]+stellar_half_mass_radius[nearest_subhalo_ids])
+
+        #r_sep = r_subhalos/(stellar_half_mass_radius[particle_and_non_merger_descendent_mask]+stellar_half_mass_radius[nearest_subhalo_ids])
 
         #r_sep = r_subhalos/(stellar_half_mass_radius[valid_subhalo_ids]+stellar_half_mass_radius[nearest_subhalo_ids])
 
@@ -269,8 +272,8 @@ class population_generator:
         population["Mdot"] = np.concatenate((population["Mdot"], subhalos['SubhaloBHMdot'][subhalo_ids]))
         population["SFR"] = np.concatenate((population["SFR"], subhalos['SubhaloSFR'][subhalo_ids]))
         population["rsep"] = np.concatenate((population["rsep"], r_sep))
-        population["Mstar-half"]=np.concatenate((self.non_merging_pop["Mstar-half"], subhalos['SubhaloMassInHalfRadType'][:,4][subhalo_ids_non_merging]))
-        population["Mgas-half"] = np.concatenate((self.non_merging_pop["Mgas-half"], subhalos['SubhaloMassInHalfRadType'][:,0][subhalo_ids_non_merging]))
+        population["Mstar-twice-half"]=np.concatenate((population["Mstar-twice-half"], subhalos['SubhaloMassInRadType'][subhalo_ids,4]))
+        population["Mgas-twice-half"] = np.concatenate((population["Mgas-twice-half"], subhalos['SubhaloMassInRadType'][subhalo_ids,0]))
 
         
         # population["SubhaloPos"] = np.concatenate((population["SubhaloPos"], subhalos['SubhaloPos'][subhalo_ids]))
@@ -281,10 +284,12 @@ class population_generator:
         population['Mgas'] *= 1e10 / self.h
         population['MBH'] *= 1e10 / self.h
         population['Mdot'] *= (1e10 / self.h) / (0.978 * 1e9 / self.h)
+        population["Mstar-twice-half"] *= 1e10/self.h
+        population["Mgas-twice-half"] *= 1e10/self.h
           
     def save_population_to_file(self, filepath):
         """Save all cases (all merging and non-merging populations) to file."""
-        outfilename = filepath + f"/population_sort_gas-{minN_values[0]:03d}_dm-{minN_values[1]:03d}_star-{minN_values[2]:03d}_bh-{minN_values[3]:03d}_w_rsep_cut_1bh.hdf5"
+        outfilename = filepath + f"/{self.simName}_population_sort_gas-{minN_values[0]:03d}_dm-{minN_values[1]:03d}_star-{minN_values[2]:03d}_bh-{minN_values[3]:03d}_w_rsep_cut_1bh.hdf5"
 
         with h5py.File(outfilename, 'w') as f:
             all_merge_grp = f.create_group('merging_population')
@@ -313,7 +318,7 @@ class population_generator_for_brahma:
         #self.h = arepo.get_cosmology(self.basePath)[2]  #h parameter associated with this run
         self.N_snaps = 32 #should change this later for different runs
         self.mrg_file = h5py.File(self.merger_file_path, 'r')
-        self.box_length = mrg_file.attrs['box_volume_mpc']**(1/3) * 1000 #in comoving units ckpc
+        self.box_length = self.mrg_file.attrs['box_volume_mpc']**(1/3) * 1000 #in comoving units ckpc
         
         brahma_snapshots,brahma_redshifts = arepo.get_snapshot_redshift_correspondence(self.basePath)
 
@@ -376,8 +381,8 @@ class population_generator_for_brahma:
                 "MBH": np.array([], dtype=float),
                 "Mdot": np.array([], dtype=float),
                 "SFR": np.array([], dtype=float),
-                "Mstar-half": np.array([], dtype=float),
-                "Mgas-half": np.array([], dtype=float),
+                "Mstar-twice-half": np.array([], dtype=float),
+                "Mgas-twice-half": np.array([], dtype=float),
                 "Msubhalo": np.array([], dtype=float)
                 # "MBH1": np.array([], dtype=float),
                 # "MBH2": np.array([], dtype=float)
@@ -392,8 +397,8 @@ class population_generator_for_brahma:
                 "MBH": [],
                 "Mdot": [],
                 "SFR": [],
-                "Mstar-half": [],
-                "Mgas-half": [],
+                "Mstar-twice-half": [],
+                "Mgas-twice-half": [],
                 "Msubhalo": []
             }
 
@@ -408,8 +413,8 @@ class population_generator_for_brahma:
         self.merging_pop["MBH"] = np.concatenate((self.merging_pop["MBH"], subhalos['SubhaloBHMass'][subhalo_ids_merging]))
         self.merging_pop["Mdot"] = np.concatenate((self.merging_pop["Mdot"], subhalos['SubhaloBHMdot'][subhalo_ids_merging]))
         self.merging_pop["SFR"] = np.concatenate((self.merging_pop["SFR"], subhalos['SubhaloSFR'][subhalo_ids_merging]))
-        self.merging_pop["Mstar-half"] = np.concatenate((self.merging_pop["Mstar-half"], subhalos['SubhaloMassInHalfRadType'][:,4][subhalo_ids_merging]))
-        self.merging_pop["Mgas-half"] = np.concatenate((self.merging_pop["Mgas-half"], subhalos['SubhaloMassInHalfRadType'][:,0][subhalo_ids_merging]))
+        self.merging_pop["Mstar-twice-half"] = np.concatenate((self.merging_pop["Mstar-twice-half"], subhalos['SubhaloMassInHalfRadType'][:,4][subhalo_ids_merging]))
+        self.merging_pop["Mgas-twice-half"] = np.concatenate((self.merging_pop["Mgas-twice-half"], subhalos['SubhaloMassInHalfRadType'][:,0][subhalo_ids_merging]))
         self.merging_pop["Msubhalo"] = np.concatenate((self.merging_pop["Msubhalo"], subhalos['SubhaloMass'][subhalo_ids_merging]))
 
     def update_non_merger_details(self,subhalos,subhalo_ids_non_merging,redshift,snapnum):
@@ -423,8 +428,8 @@ class population_generator_for_brahma:
             self.non_merging_pop["MBH"] = np.concatenate((self.non_merging_pop["MBH"], subhalos['SubhaloBHMass'][subhalo_ids_non_merging]))
             self.non_merging_pop["Mdot"] = np.concatenate((self.non_merging_pop["Mdot"], subhalos['SubhaloBHMdot'][subhalo_ids_non_merging]))
             self.non_merging_pop["SFR"] = np.concatenate((self.non_merging_pop["SFR"], subhalos['SubhaloSFR'][subhalo_ids_non_merging]))
-            self.non_merging_pop["Mstar-half"]=np.concatenate((self.non_merging_pop["Mstar-half"], subhalos['SubhaloMassInHalfRadType'][:,4][subhalo_ids_non_merging]))
-            self.non_merging_pop["Mgas-half"] = np.concatenate((self.non_merging_pop["Mgas-half"], subhalos['SubhaloMassInHalfRadType'][:,0][subhalo_ids_non_merging]))
+            self.non_merging_pop["Mstar-twice-half"]=np.concatenate((self.non_merging_pop["Mstar-twice-half"], subhalos['SubhaloMassInHalfRadType'][:,4][subhalo_ids_non_merging]))
+            self.non_merging_pop["Mgas-twice-half"] = np.concatenate((self.non_merging_pop["Mgas-twice-half"], subhalos['SubhaloMassInHalfRadType'][:,0][subhalo_ids_non_merging]))
             self.non_merging_pop["Msubhalo"] = np.concatenate((self.non_merging_pop["Msubhalo"], subhalos['SubhaloMass'][subhalo_ids_non_merging]))   
     
     def update_pop_units(self,pop):
@@ -432,8 +437,8 @@ class population_generator_for_brahma:
         pop["Mgas"] *= 1e10/self.h
         pop["MBH"] *= 1e10/self.h
         pop["Mdot"] *= (1e10/self.h)/ ( 0.978 * 1e9 /self.h)
-        pop["Mstar-half"] *= 1e10/self.h
-        pop["Mgas-half"] *= 1e10/self.h
+        pop["Mstar-twice-half"] *= 1e10/self.h
+        pop["Mgas-twice-half"] *= 1e10/self.h
         pop["Msubhalo"] *= 1e10/self.h
         # pop["MBH1"] *= 1e10/h
         # pop["MBH2"] *= 1e10/h
@@ -492,6 +497,7 @@ if __name__ == "__main__":
         merger_file_name = f'/galaxy-mergers_brahma_{basePath.split("/")[-1]}_gas-{minN_values[0]:03d}_dm-{minN_values[1]:03d}_star-{minN_values[2]:03d}_bh-{minN_values[3]:03d}.hdf5'
         merger_file_path = merger_file_loc + merger_file_name
 
+        print(f"Creating merger and non merger populations for BRAHMA run"+basePath.split("/")[-1])
         pop_gen = population_generator_for_brahma(basePath,merger_file_path)
         pop_gen.save_population_to_file(pop_file_save_loc)
 
@@ -506,8 +512,8 @@ if __name__ == "__main__":
 
         merger_file_1bh = merger_file_path + f'/galaxy-mergers_TNG50-1_gas-{minN_values[0]:03d}_dm-{minN_values[1]:03d}_star-{minN_values[2]:03d}_bh-{minN_values[3]:03d}.hdf5'
 
-        pop_gen = population_generator(merger_file_1bh,merger_file_path,basePath,minN_values)
-
+        print(f"Creating merger and non merger populations for TNG50-1 run")
+        pop_gen = population_generator(merger_file_1bh,basePath,minN_values)
         pop_gen.save_population_to_file(population_file_path)
     
     # fmergers = h5py.File(merger_file_1bh, 'r')

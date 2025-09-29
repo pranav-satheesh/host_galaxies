@@ -46,7 +46,9 @@ class control_samples_TNG:
         self.N_mergers = len(self.pop['merging_population']['z'])
 
         self.merger_control_index_pairs = self.find_control_samples_strict()
-        print("Number of cases where a close enough match is not found within the acceptable tolerance:",len(np.argwhere(self.merger_control_index_pairs)[:,1] == -1))
+        print(f"Number of available mergers in this population is {self.N_mergers:03d}")
+        print("Number of cases where a close enough match is not found within the acceptable tolerance:",np.sum(self.merger_control_index_pairs[:,1] == -1))
+        
 
         # self.control_file_loc = control_file_loc
         # self.control_name = control_name
@@ -63,9 +65,9 @@ class control_samples_TNG:
         # self.control_sample_ids = np.array(self.control_indices).flatten()
         #self.compute_population_properties()
 
-        MBH_not_zero_flag = self.pop['merging_population']['MBH'][:][self.merger_control_index_pairs[:,0]]!=0
-        control_available_flag = self.merger_control_index_pairs[:,1]!=-1
-        self.valid_control_available_flag  = MBH_not_zero_flag&control_available_flag
+        self.MBH_not_zero_flag = self.pop['merging_population']['MBH'][:][self.merger_control_index_pairs[:,0]]!=0
+        self.control_available_flag = self.merger_control_index_pairs[:,1]!=-1
+        self.valid_control_mask  = self.MBH_not_zero_flag&self.control_available_flag
 
         self.compute_population_properties(verbose)
 
@@ -265,8 +267,14 @@ class control_samples_TNG:
         self.Mgas_merging_pop = self.pop['merging_population']['Mgas'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
         self.Mgas_control_pop = self.pop['non_merging_population']['Mgas'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]
 
-        self.fgas_merging_pop = self.Mgas_merging_pop/(self.Mgas_merging_pop+self.Mstar_merging_pop)
-        self.fgas_control_pop = self.Mgas_control_pop/(self.Mgas_control_pop+self.Mstar_control_pop)
+        self.Mgas_rstellar_merging_pop = self.pop['merging_population']['Mgas-twice-half'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
+        self.Mgas_rstellar_control_pop = self.pop['non_merging_population']['Mgas-twice-half'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]
+
+        self.Mstar_rstellar_merging_pop = self.pop['merging_population']['Mstar-twice-half'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
+        self.Mstar_rstellar_control_pop = self.pop['non_merging_population']['Mstar-twice-half'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]
+
+        self.fgas_merging_pop = self.Mgas_rstellar_merging_pop/(self.Mgas_rstellar_merging_pop+self.Mstar_rstellar_merging_pop)
+        self.fgas_control_pop = self.Mgas_rstellar_control_pop/(self.Mgas_rstellar_control_pop+self.Mstar_rstellar_control_pop)
 
         self.sBHAR_merging_pop = self.Mdot_merging_pop/self.MBH_merging_pop
         self.sBHAR_control_pop = self.Mdot_control_pop/self.MBH_control_pop
@@ -582,14 +590,15 @@ class control_sample_brahma:
         self.N_mergers = len(self.pop['merging_population']['z'])
 
         #self.control_indices = self.find_control_samples()
-        self.merger_control_index_pairs = self.find_control_samples_strict()
+        merger_control_index_pairs = self.find_control_samples_strict()
+        self.merger_control_index_pairs = np.array(merger_control_index_pairs)
 
         print("Number of cases where a close enough match is not found within the acceptable tolerance:",np.sum(np.array(self.merger_control_index_pairs)[:,1]==-1))
 
-        mergers_with_MBH_not_zero = self.pop['merging_population']['MBH'] != 0 
-        mergers_with_Mstar_not_zero = self.pop['merging_population']['Mstar'] != 0
-        mergers_with_controls_found = np.array(self.merger_control_index_pairs)[:,1] != -1
-        self.valid_control_mask = mergers_with_MBH_not_zero & mergers_with_Mstar_not_zero & mergers_with_controls_found
+
+        self.MBH_not_zero_flag = self.pop['merging_population']['MBH'][:][self.merger_control_index_pairs[:,0]]!=0
+        self.control_available_flag = self.merger_control_index_pairs[:,1]!=-1
+        self.valid_control_mask  = self.MBH_not_zero_flag&self.control_available_flag
 
         self.N_mergers_w_controls = np.sum(self.valid_control_mask)
         print("number of processable mergers with valid controls:")
@@ -671,15 +680,14 @@ class control_sample_brahma:
             for Mstar_merger_i in merger_Mstars:
                  closest_non_merger_ix = np.argmin(np.abs(nonmerger_Mstars - Mstar_merger_i))
                  mass_diff = np.abs(np.log(nonmerger_Mstars[closest_non_merger_ix]) - np.log(Mstar_merger_i))
-                
+                 merger_index = np.where(merging_pop_Mstar==Mstar_merger_i)[0][0]
+
                  if mass_diff < 0.1:
-                     
-                     merger_index = np.where(merging_pop_Mstar==Mstar_merger_i)[0][0]
-                     non_merger_index = np.where(non_merging_pop_Mstar==nonmerger_Mstars[closest_non_merger_ix])[0][0]
-                     merger_control_index_pairs.append([merger_index,non_merger_index])
-                     used[non_merger_index] = True #mark this non-merging galaxy as used
+                    non_merger_index = np.where(non_merging_pop_Mstar==nonmerger_Mstars[closest_non_merger_ix])[0][0]
+                    merger_control_index_pairs.append([merger_index,non_merger_index])
+                    used[non_merger_index] = True #mark this non-merging galaxy as used
                  else:
-                     merger_control_index_pairs.append([merger_index,-1]) #no suitable control found
+                    merger_control_index_pairs.append([merger_index,-1]) #no suitable control found
 
         return merger_control_index_pairs
 

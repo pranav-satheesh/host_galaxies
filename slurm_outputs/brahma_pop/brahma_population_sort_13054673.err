@@ -1,14 +1,0 @@
-Processing unique merger redshifts:   0%|          | 0/16 [00:00<?, ?it/s]Processing unique merger redshifts:   6%|▋         | 1/16 [00:01<00:23,  1.59s/it]Processing unique merger redshifts:  12%|█▎        | 2/16 [00:03<00:22,  1.60s/it]Processing unique merger redshifts:  19%|█▉        | 3/16 [00:04<00:20,  1.57s/it]Processing unique merger redshifts:  25%|██▌       | 4/16 [00:06<00:19,  1.59s/it]Processing unique merger redshifts:  31%|███▏      | 5/16 [00:08<00:17,  1.63s/it]Processing unique merger redshifts:  38%|███▊      | 6/16 [00:10<00:17,  1.74s/it]Processing unique merger redshifts:  44%|████▍     | 7/16 [00:11<00:15,  1.68s/it]Processing unique merger redshifts:  50%|█████     | 8/16 [00:13<00:13,  1.66s/it]Processing unique merger redshifts:  56%|█████▋    | 9/16 [00:14<00:11,  1.66s/it]Processing unique merger redshifts:  62%|██████▎   | 10/16 [00:16<00:09,  1.65s/it]Processing unique merger redshifts:  69%|██████▉   | 11/16 [00:18<00:08,  1.64s/it]Processing unique merger redshifts:  75%|███████▌  | 12/16 [00:19<00:06,  1.67s/it]Processing unique merger redshifts:  81%|████████▏ | 13/16 [00:21<00:04,  1.62s/it]Processing unique merger redshifts:  88%|████████▊ | 14/16 [00:23<00:03,  1.67s/it]Processing unique merger redshifts:  94%|█████████▍| 15/16 [00:24<00:01,  1.72s/it]Processing unique merger redshifts: 100%|██████████| 16/16 [00:26<00:00,  1.68s/it]Processing unique merger redshifts: 100%|██████████| 16/16 [00:26<00:00,  1.66s/it]
-Traceback (most recent call last):
-  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 542, in <module>
-    pop_gen.save_population_to_file(pop_file_save_loc)
-  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 513, in save_population_to_file
-    with h5py.File(outfilename, 'w') as f:
-  File "/blue/lblecha/pranavsatheesh/.conda/envs/hfrl/lib/python3.10/site-packages/h5py/_hl/files.py", line 561, in __init__
-    fid = make_fid(name, mode, userblock_size, fapl, fcpl, swmr=swmr)
-  File "/blue/lblecha/pranavsatheesh/.conda/envs/hfrl/lib/python3.10/site-packages/h5py/_hl/files.py", line 241, in make_fid
-    fid = h5f.create(name, h5f.ACC_TRUNC, fapl=fapl, fcpl=fcpl)
-  File "h5py/_objects.pyx", line 54, in h5py._objects.with_phil.wrapper
-  File "h5py/_objects.pyx", line 55, in h5py._objects.with_phil.wrapper
-  File "h5py/h5f.pyx", line 122, in h5py.h5f.create
-FileNotFoundError: [Errno 2] Unable to synchronously create file (unable to open file: name = '/home/pranavsatheesh/host_galaxies/data/population_filesoutput_ratio10_SFMFGM5_seed5.00_bFOF_LW10_DFD_3/population_sort_gas-000_dm-000_star-010_bh-001_brahma.hdf5', errno = 2, error message = 'No such file or directory', flags = 13, o_flags = 242)

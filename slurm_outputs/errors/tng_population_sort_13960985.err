@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 511, in <module>
+    pop_gen = population_generator(merger_file_1bh,basePath,minN_values)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 50, in __init__
+    self.all_merging_population,self.non_merging_population = self.generate_population(snap_list)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 84, in generate_population
+    valid_subhalo_ids,r_sep_valid_subhalos = self.get_valid_subhalo_ids(subhalos,snap)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_by_mergers.py", line 221, in get_valid_subhalo_ids
+    r_sep = r_subhalos/(stellar_half_mass_radius[particle_and_non_merger_descendent_mask]+stellar_half_mass_radius[nearest_subhalo_ids])
+NameError: name 'particle_and_non_merger_descendent_mask' is not defined
