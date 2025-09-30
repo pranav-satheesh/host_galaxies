@@ -267,14 +267,14 @@ class control_samples_TNG:
         self.Mgas_merging_pop = self.pop['merging_population']['Mgas'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
         self.Mgas_control_pop = self.pop['non_merging_population']['Mgas'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]
 
-        self.Mgas_rstellar_merging_pop = self.pop['merging_population']['Mgas-twice-half'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
-        self.Mgas_rstellar_control_pop = self.pop['non_merging_population']['Mgas-twice-half'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]
+        # self.Mgas_rstellar_merging_pop = self.pop['merging_population']['Mgas-twice-half'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
+        # self.Mgas_rstellar_control_pop = self.pop['non_merging_population']['Mgas-twice-half'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]
 
-        self.Mstar_rstellar_merging_pop = self.pop['merging_population']['Mstar-twice-half'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
-        self.Mstar_rstellar_control_pop = self.pop['non_merging_population']['Mstar-twice-half'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]
+        # self.Mstar_rstellar_merging_pop = self.pop['merging_population']['Mstar-twice-half'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
+        # self.Mstar_rstellar_control_pop = self.pop['non_merging_population']['Mstar-twice-half'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]
 
-        self.fgas_merging_pop = self.Mgas_rstellar_merging_pop/(self.Mgas_rstellar_merging_pop+self.Mstar_rstellar_merging_pop)
-        self.fgas_control_pop = self.Mgas_rstellar_control_pop/(self.Mgas_rstellar_control_pop+self.Mstar_rstellar_control_pop)
+        # self.fgas_merging_pop = self.Mgas_rstellar_merging_pop/(self.Mgas_rstellar_merging_pop+self.Mstar_rstellar_merging_pop)
+        # self.fgas_control_pop = self.Mgas_rstellar_control_pop/(self.Mgas_rstellar_control_pop+self.Mstar_rstellar_control_pop)
 
         self.sBHAR_merging_pop = self.Mdot_merging_pop/self.MBH_merging_pop
         self.sBHAR_control_pop = self.Mdot_control_pop/self.MBH_control_pop
@@ -1049,7 +1049,10 @@ class control_sample_brahma:
 def load_pop_file(basePath,pop_file_path,minN_values):
 
     simName = basePath.split('/')[-2]
-    pop_file_name = pop_file_path+ f"{simName}_population_sort_gas-{minN_values[0]:03d}_dm-{minN_values[1]:03d}_star-{minN_values[2]:03d}_bh-{minN_values[3]:03d}_brahma.hdf5"
+    if(simName=='TNG50-1'):
+        pop_file_name = pop_file_path+ f"population_sort_gas-{minN_values[0]:03d}_dm-{minN_values[1]:03d}_star-{minN_values[2]:03d}_bh-{minN_values[3]:03d}_w_rsep_cut_1bh.hdf5"
+    else:    
+        pop_file_name = pop_file_path+ f"{simName}_population_sort_gas-{minN_values[0]:03d}_dm-{minN_values[1]:03d}_star-{minN_values[2]:03d}_bh-{minN_values[3]:03d}_brahma.hdf5"
     #pop_file_name = pop_file_path+'population_sort'+'_gas-'+f'{minN_values[0]:03d}'+'_dm-'+f'{minN_values[1]:03d}'+'_star-'+f'{minN_values[2]:03d}'+'_bh-'+f'{minN_values[3]:03d}'+'_brahma.hdf5'
     return h5py.File(pop_file_name,'r')
 

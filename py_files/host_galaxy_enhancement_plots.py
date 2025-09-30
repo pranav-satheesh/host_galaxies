@@ -27,8 +27,8 @@ def sSFR_evolution_comparison_plot(ax,control_obj,z_min=0,z_max=8,z_binsize=1):
     # Loop through redshift bins
     for i in range(len(z_bins) - 1):
         # Create masks for merging and control populations within each redshift bin
-        merger_z_mask = (control_obj.z_merging_pop > z_bins[i]) & (control_obj.z_merging_pop < z_bins[i+1])
-        control_z_mask = (control_obj.z_control_pop > z_bins[i]) & (control_obj.z_control_pop < z_bins[i+1])
+        merger_z_mask = (control_obj.z_merging_pop >= z_bins[i]) & (control_obj.z_merging_pop < z_bins[i+1])
+        control_z_mask = (control_obj.z_control_pop >= z_bins[i]) & (control_obj.z_control_pop < z_bins[i+1])
 
         sSFR_merging_pop_filtered = control_obj.sSFR_merging_pop[merger_z_mask]
         sSFR_control_pop_filtered = control_obj.sSFR_control_pop[control_z_mask]
@@ -55,8 +55,37 @@ def sSFR_evolution_comparison_plot(ax,control_obj,z_min=0,z_max=8,z_binsize=1):
         
     return ax
 
+def sSFR_enhancement_calculate(control_obj,z_bins):
 
-def match_z_Mstar_plot(self,Mstar_binsize = 0.5,Mstar_min = 7,Mstar_max = 12,z_binsize = 0.8,z_min = 0,z_max = 15):
+    # Nbins_z = int((z_max - z_min) / z_binsize)
+    # z_bins = np.linspace(z_min, z_max, Nbins_z)
+
+    avg_sSFR_log_enhancement = []
+    std_sSFR_log_enhancement = []
+
+    # Loop through redshift bins
+    for i in range(len(z_bins) - 1):
+        # Create masks for merging and control populations within each redshift bin
+        merger_z_mask = (control_obj.z_merging_pop >= z_bins[i]) & (control_obj.z_merging_pop < z_bins[i+1])
+        control_z_mask = (control_obj.z_control_pop >= z_bins[i]) & (control_obj.z_control_pop < z_bins[i+1])
+
+        sSFR_merging_pop_filtered = control_obj.sSFR_merging_pop[merger_z_mask]
+        sSFR_control_pop_filtered = control_obj.sSFR_control_pop[control_z_mask]
+
+        sSFR_log_enhancement = []
+        for i in range(len(sSFR_control_pop_filtered)):
+            if sSFR_merging_pop_filtered[i]>0 and sSFR_control_pop_filtered[i]>0:
+                sSFR_log_enhancement.append(np.log10(sSFR_merging_pop_filtered[i]) - np.log10(sSFR_control_pop_filtered[i]))
+        
+        avg_sSFR_log_enhancement.append(np.mean(sSFR_log_enhancement))
+        std_sSFR_log_enhancement.append(np.std(sSFR_log_enhancement)/ np.sqrt(len(sSFR_log_enhancement)))
+
+    avg_sSFR_log_enhancement = np.array(avg_sSFR_log_enhancement)
+    std_sSFR_log_enhancement = np.array(std_sSFR_log_enhancement)
+
+    return avg_sSFR_log_enhancement,std_sSFR_log_enhancement,z_bins
+
+def match_z_Mstar_plot(ax,control_obj,Mstar_binsize = 0.5,Mstar_min = 7,Mstar_max = 12,z_binsize = 0.8,z_min = 0,z_max = 15):
 
         Nbins_Ms = int((Mstar_max-Mstar_min)/Mstar_binsize)
         Mstar_bins = np.linspace(Mstar_min,Mstar_max,Nbins_Ms)
@@ -66,19 +95,19 @@ def match_z_Mstar_plot(self,Mstar_binsize = 0.5,Mstar_min = 7,Mstar_max = 12,z_b
 
         #control_sample_ids = np.array(self.control_indices).flatten()
 
-        fig,ax = plt.subplots(1,2,figsize=(10,4))
+        #fig,ax = plt.subplots(1,2,figsize=(10,4))
 
-        # merging_z = self.pop['merging_population']['z'][:][self.valid_control_mask]
-        # control_z = self.pop['non_merging_population']['z'][:][self.control_indices[0][self.valid_control_mask]]
-        ax[0].hist(self.z_control_pop, bins=z_bins, color="black", histtype="step",linewidth=2,density=True)
-        ax[0].hist(self.z_merging_pop, bins=z_bins, histtype="step",color="Darkorange",linestyle="--",linewidth=2,density=True)
+        # merging_z = control_obj.pop['merging_population']['z'][:][control_obj.valid_control_mask]
+        # control_z = control_obj.pop['non_merging_population']['z'][:][control_obj.control_indices[0][control_obj.valid_control_mask]]
+        ax[0].hist(control_obj.z_control_pop, bins=z_bins, color="black", histtype="step",linewidth=2,density=True)
+        ax[0].hist(control_obj.z_merging_pop, bins=z_bins, histtype="step",color="Darkorange",linestyle="--",linewidth=2,density=True)
         ax[0].set_xlabel("z",fontsize=25)
         ax[0].set_ylabel("pdf",fontsize=25)
         #ax[0].set_xticks([0,1,2,3,4,5])
-        # merging_Mstar = self.pop['merging_population']['Mstar'][:][self.valid_control_mask]
-        # control_Mstar = self.pop['non_merging_population']['Mstar'][:][self.control_indices[0][self.valid_control_mask]]
-        ax[1].hist(np.log10(self.Mstar_control_pop), bins=Mstar_bins,histtype="step",color="black",label="Control",linewidth=2,density=True)
-        ax[1].hist(np.log10(self.Mstar_merging_pop),bins=Mstar_bins,histtype="step",label="PM",color="Darkorange",linestyle="--",linewidth=2,density=True)
+        # merging_Mstar = control_obj.pop['merging_population']['Mstar'][:][control_obj.valid_control_mask]
+        # control_Mstar = control_obj.pop['non_merging_population']['Mstar'][:][control_obj.control_indices[0][control_obj.valid_control_mask]]
+        ax[1].hist(np.log10(control_obj.Mstar_control_pop), bins=Mstar_bins,histtype="step",color="black",label="Control",linewidth=2,density=True)
+        ax[1].hist(np.log10(control_obj.Mstar_merging_pop),bins=Mstar_bins,histtype="step",label="PM",color="Darkorange",linestyle="--",linewidth=2,density=True)
         #ax[1].set_xticks([7,8,9,10,11,12])
         ax[1].legend(fontsize=15)
         ax[1].set_xlabel("$\log(M_{\star}/M_{\odot})$",fontsize=25)
@@ -88,7 +117,7 @@ def match_z_Mstar_plot(self,Mstar_binsize = 0.5,Mstar_min = 7,Mstar_max = 12,z_b
         #fig.savefig(fig_name)
         #print("Figure saved in %s"%(fig_name))
 
-        return fig,ax
+        return ax
 
 
 
