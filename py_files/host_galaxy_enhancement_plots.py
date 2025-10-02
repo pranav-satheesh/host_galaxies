@@ -11,6 +11,24 @@ import scienceplots
 plt.style.use('science')
 
 
+def find_best_z_width(z_dist,z_min,z_max,z_width_initial):
+    z_bins = np.arange(z_min,z_max,z_width_initial)
+
+    while True:
+        z_bins = np.arange(z_min,z_max,zbin_width)
+        N_values,z_bin_edges = np.histogram(z_dist,bins=z_bins)
+        if np.min(N_values>=2):
+            break
+        else:
+            zbin_width+=0.1
+            continue
+    
+    print(zbin_width)
+    return zbin_width,np.arange(z_min,z_max,zbin_width)
+
+
+
+
 def sSFR_evolution_comparison_plot(ax,control_obj,z_min=0,z_max=8,z_binsize=1):
 
     Nbins_z = int((z_max - z_min) / z_binsize)
