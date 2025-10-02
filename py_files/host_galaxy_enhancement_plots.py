@@ -55,6 +55,96 @@ def sSFR_evolution_comparison_plot(ax,control_obj,z_min=0,z_max=8,z_binsize=1):
         
     return ax
 
+def Mdot_evolution_comparison_plot(ax,control_obj,z_min=0, z_max=5,z_binsize=0.3):
+        # Initialize lists to store the results
+
+        Nbins_z = int((z_max - z_min) / z_binsize)
+        z_bins = np.linspace(z_min, z_max, Nbins_z)
+
+        #avg_logMdot_control = []
+        avg_Mdot_control = []
+        std_Mdot_control = []
+
+        #avg_logMdot_merger = []
+        avg_Mdot_merger = []
+        std_Mdot_merger = []
+
+        # Loop through redshift bins
+        for i in range(len(z_bins) - 1):
+            # Create masks for merging and control populations within each redshift bin
+            merger_z_mask = (control_obj.z_merging_pop > z_bins[i]) & (control_obj.z_merging_pop < z_bins[i+1])
+            control_z_mask = (control_obj.z_control_pop > z_bins[i]) & (control_obj.z_control_pop < z_bins[i+1])
+
+            # Get the Mdot for each population
+            Mdot_merging_pop_filtered = control_obj.Mdot_merging_pop[merger_z_mask]
+            Mdot_control_pop_filtered = control_obj.Mdot_control_pop[control_z_mask]
+
+            avg_Mdot_merger.append(np.mean(Mdot_merging_pop_filtered))
+            std_Mdot_merger.append(np.std(Mdot_merging_pop_filtered)/ np.sqrt(len(Mdot_merging_pop_filtered)))
+
+            #avg_logMdot_control.append(np.mean(log_Mdot_control_filtered))
+            avg_Mdot_control.append(np.mean(Mdot_control_pop_filtered))
+            std_Mdot_control.append(np.std(Mdot_control_pop_filtered)/ np.sqrt(len(Mdot_control_pop_filtered)))
+
+
+        avg_Mdot_merger = np.array(avg_Mdot_merger)
+        std_Mdot_merger = np.array(std_Mdot_merger)
+        avg_Mdot_control = np.array(avg_Mdot_control)
+        std_Mdot_control = np.array(std_Mdot_control)
+
+
+        ax.plot(z_bins[:-1] + z_binsize / 2, np.log10(avg_Mdot_merger[avg_Mdot_merger>0]), label='Merger host', color='dodgerblue')
+        ax.fill_between(z_bins[:-1] + z_binsize / 2, np.log10(avg_Mdot_merger-std_Mdot_merger), np.log10(avg_Mdot_merger+std_Mdot_merger), alpha=0.3,color='dodgerblue')
+        ax.plot(z_bins[:-1] + z_binsize / 2, np.log10(avg_Mdot_control[avg_Mdot_control>0]), label='Control', color="orange")
+        ax.fill_between(z_bins[:-1] + z_binsize / 2, np.log10(avg_Mdot_control-std_Mdot_control), np.log10(avg_Mdot_control+std_Mdot_control), alpha=0.3,color='orange')
+
+        return ax
+
+def sBHAR_evolution_comparison_plot(ax,control_obj,z_min=0, z_max=5,z_binsize=0.3):
+        # Initialize lists to store the results
+
+        Nbins_z = int((z_max - z_min) / z_binsize)
+        z_bins = np.linspace(z_min, z_max, Nbins_z)
+
+        #avg_logsBHAR_control = []
+        avg_sBHAR_control = []
+        std_sBHAR_control = []
+
+        #avg_logsBHAR_merger = []
+        avg_sBHAR_merger = []
+        std_sBHAR_merger = []
+
+        # Loop through redshift bins
+        for i in range(len(z_bins) - 1):
+            # Create masks for merging and control populations within each redshift bin
+            merger_z_mask = (control_obj.z_merging_pop > z_bins[i]) & (control_obj.z_merging_pop < z_bins[i+1])
+            control_z_mask = (control_obj.z_control_pop > z_bins[i]) & (control_obj.z_control_pop < z_bins[i+1])
+
+            # Get the sBHAR for each population
+            sBHAR_merging_pop_filtered = control_obj.sBHAR_merging_pop[merger_z_mask]
+            sBHAR_control_pop_filtered = control_obj.sBHAR_control_pop[control_z_mask]
+
+            avg_sBHAR_merger.append(np.mean(sBHAR_merging_pop_filtered))
+            std_sBHAR_merger.append(np.std(sBHAR_merging_pop_filtered)/ np.sqrt(len(sBHAR_merging_pop_filtered)))
+
+            #avg_logsBHAR_control.append(np.mean(log_sBHAR_control_filtered))
+            avg_sBHAR_control.append(np.mean(sBHAR_control_pop_filtered))
+            std_sBHAR_control.append(np.std(sBHAR_control_pop_filtered)/ np.sqrt(len(sBHAR_control_pop_filtered)))
+
+
+        avg_sBHAR_merger = np.array(avg_sBHAR_merger)
+        std_sBHAR_merger = np.array(std_sBHAR_merger)
+        avg_sBHAR_control = np.array(avg_sBHAR_control)
+        std_sBHAR_control = np.array(std_sBHAR_control)
+
+
+        ax.plot(z_bins[:-1] + z_binsize / 2, np.log10(avg_sBHAR_merger[avg_sBHAR_merger>0]), label='Merger host', color='dodgerblue')
+        ax.fill_between(z_bins[:-1] + z_binsize / 2, np.log10(avg_sBHAR_merger-std_sBHAR_merger), np.log10(avg_sBHAR_merger+std_sBHAR_merger), alpha=0.3,color='dodgerblue')
+        ax.plot(z_bins[:-1] + z_binsize / 2, np.log10(avg_sBHAR_control[avg_sBHAR_control>0]), label='Control', color="orange")
+        ax.fill_between(z_bins[:-1] + z_binsize / 2, np.log10(avg_sBHAR_control-std_sBHAR_control), np.log10(avg_sBHAR_control+std_sBHAR_control), alpha=0.3,color='orange')
+
+        return ax
+
 def sSFR_enhancement_calculate(control_obj,z_bins):
 
     # Nbins_z = int((z_max - z_min) / z_binsize)
@@ -83,7 +173,64 @@ def sSFR_enhancement_calculate(control_obj,z_bins):
     avg_sSFR_log_enhancement = np.array(avg_sSFR_log_enhancement)
     std_sSFR_log_enhancement = np.array(std_sSFR_log_enhancement)
 
-    return avg_sSFR_log_enhancement,std_sSFR_log_enhancement,z_bins
+    return avg_sSFR_log_enhancement,std_sSFR_log_enhancement
+
+def Mdot_enhancement_calculate(control_obj,z_bins):
+
+    # Nbins_z = int((z_max - z_min) / z_binsize)
+    # z_bins = np.linspace(z_min, z_max, Nbins_z)
+
+    avg_Mdot_log_enhancement = []
+    std_Mdot_log_enhancement = []
+
+    # Loop through redshift bins
+    for i in range(len(z_bins) - 1):
+        # Create masks for merging and control populations within each redshift bin
+        merger_z_mask = (control_obj.z_merging_pop >= z_bins[i]) & (control_obj.z_merging_pop < z_bins[i+1])
+        control_z_mask = (control_obj.z_control_pop >= z_bins[i]) & (control_obj.z_control_pop < z_bins[i+1])
+
+        Mdot_merging_pop_filtered = control_obj.Mdot_merging_pop[merger_z_mask]
+        Mdot_control_pop_filtered = control_obj.Mdot_control_pop[control_z_mask]
+
+        Mdot_log_enhancement = []
+        for i in range(len(Mdot_control_pop_filtered)):
+            if Mdot_merging_pop_filtered[i]>0 and Mdot_control_pop_filtered[i]>0:
+                Mdot_log_enhancement.append(np.log10(Mdot_merging_pop_filtered[i]) - np.log10(Mdot_control_pop_filtered[i]))
+        
+        avg_Mdot_log_enhancement.append(np.mean(Mdot_log_enhancement))
+        std_Mdot_log_enhancement.append(np.std(Mdot_log_enhancement)/ np.sqrt(len(Mdot_log_enhancement)))
+
+    return np.array(avg_Mdot_log_enhancement),np.array(std_Mdot_log_enhancement)
+
+def sBHAR_enhancement_calculate(control_obj,z_bins):
+
+    # Nbins_z = int((z_max - z_min) / z_binsize)
+    # z_bins = np.linspace(z_min, z_max, Nbins_z)
+
+    avg_sBHAR_log_enhancement = []
+    std_sBHAR_log_enhancement = []
+
+    # Loop through redshift bins
+    for i in range(len(z_bins) - 1):
+        # Create masks for merging and control populations within each redshift bin
+        merger_z_mask = (control_obj.z_merging_pop >= z_bins[i]) & (control_obj.z_merging_pop < z_bins[i+1])
+        control_z_mask = (control_obj.z_control_pop >= z_bins[i]) & (control_obj.z_control_pop < z_bins[i+1])
+
+        sBHAR_merging_pop_filtered = control_obj.sBHAR_merging_pop[merger_z_mask]
+        sBHAR_control_pop_filtered = control_obj.sBHAR_control_pop[control_z_mask]
+
+        sBHAR_log_enhancement = []
+        for i in range(len(sBHAR_control_pop_filtered)):
+            if sBHAR_merging_pop_filtered[i]>0 and sBHAR_control_pop_filtered[i]>0:
+                sBHAR_log_enhancement.append(np.log10(sBHAR_merging_pop_filtered[i]) - np.log10(sBHAR_control_pop_filtered[i]))
+        
+        avg_sBHAR_log_enhancement.append(np.mean(sBHAR_log_enhancement))
+        std_sBHAR_log_enhancement.append(np.std(sBHAR_log_enhancement)/ np.sqrt(len(sBHAR_log_enhancement)))
+
+    return np.array(avg_sBHAR_log_enhancement),np.array(std_sBHAR_log_enhancement)
+
+
+
 
 def match_z_Mstar_plot(ax,control_obj,Mstar_binsize = 0.5,Mstar_min = 7,Mstar_max = 12,z_binsize = 0.8,z_min = 0,z_max = 15):
 
@@ -118,7 +265,6 @@ def match_z_Mstar_plot(ax,control_obj,Mstar_binsize = 0.5,Mstar_min = 7,Mstar_ma
         #print("Figure saved in %s"%(fig_name))
 
         return ax
-
 
 
 def set_plot_style(linewidth=3, titlesize=20,labelsize=25,ticksize=20,legendsize=20):
