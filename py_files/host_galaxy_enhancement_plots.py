@@ -11,13 +11,13 @@ import scienceplots
 plt.style.use('science')
 
 
-def find_best_z_width(z_dist,z_min,z_max,z_width_initial):
-    z_bins = np.arange(z_min,z_max,z_width_initial)
+def find_best_z_width(z_dist,z_min,z_max,z_width_initial=0.1,min_N_values=2):
 
+    zbin_width = z_width_initial
     while True:
         z_bins = np.arange(z_min,z_max,zbin_width)
         N_values,z_bin_edges = np.histogram(z_dist,bins=z_bins)
-        if np.min(N_values>=2):
+        if np.min(N_values>=min_N_values):
             break
         else:
             zbin_width+=0.1
@@ -27,12 +27,59 @@ def find_best_z_width(z_dist,z_min,z_max,z_width_initial):
     return zbin_width,np.arange(z_min,z_max,zbin_width)
 
 
+def find_adaptive_z_bins(z_dist,z_min,z_max,zbin_width=0.1,min_N_values=5):
+    
+    z_bins=[]
+    N_vals=[]
+    z_lower = z_min
+    while True:
+        z_upper = z_lower + zbin_width
+        if z_upper > z_max:
+            break
+        else:
+            N_values = np.where((z_dist>z_lower)&(z_dist<z_upper))[0].shape[0]
+            if N_values>=min_N_values:
+                N_vals.append(N_values)
+                z_bins.append([z_lower,z_upper])
+                z_lower = z_upper
+            else:
+            #print(z_lower,z_upper,N_values)
+                zbin_width += 0.1
+    z_bins = np.array(z_bins)
+    z_bins = np.unique(z_bins.flatten())
+    print(N_vals)
+    return z_bins
+
+def find_brahma_adaptive_z_bins(brahma_sim_obj,brahma_simName_array,z_lower=0,z_max=12,zbin_width=0.3,min_N_values=5):
+    
+    z_bins=[]
+
+    while True:
+        z_upper = z_lower + zbin_width
+        if z_upper > z_max:
+            break
+        else:
+        #print(z_lower,z_upper)
+            Nval_sims = []
+            for i,sim in enumerate(brahma_simName_array):
+                N_values = np.where((brahma_sim_obj[sim].z_merging_pop>z_lower)&(brahma_sim_obj[sim].z_merging_pop<z_upper))[0].shape[0]
+                Nval_sims.append(N_values)
+            
+            if np.min(np.array(Nval_sims))>=min_N_values:
+                z_bins.append([z_lower,z_upper])
+                z_lower = z_upper
+            else:
+            #print(z_lower,z_upper,N_values)
+                zbin_width += 0.1
+    z_bins = np.array(z_bins)
+    z_bins = np.unique(z_bins.flatten())
+    return z_bins
 
 
-def sSFR_evolution_comparison_plot(ax,control_obj,z_min=0,z_max=8,z_binsize=1):
+def sSFR_evolution_comparison_plot(ax,control_obj,z_bins):
 
-    Nbins_z = int((z_max - z_min) / z_binsize)
-    z_bins = np.linspace(z_min, z_max, Nbins_z)
+    # Nbins_z = int((z_max - z_min) / z_binsize)
+    # z_bins = np.linspace(z_min, z_max, Nbins_z)
 
     #avg_logSFR_control = []
     avg_sSFR_control = []
@@ -65,10 +112,10 @@ def sSFR_evolution_comparison_plot(ax,control_obj,z_min=0,z_max=8,z_binsize=1):
     if ax is None:
         fig, ax = plt.subplots(2, 1, figsize=(10, 10), sharex=True)
     else:
-        ax.plot(z_bins[:-1] + z_binsize / 2, np.log10(avg_sSFR_merger[avg_sSFR_merger>0]), label='Merger host', color="dodgerblue")
-        ax.fill_between(z_bins[:-1] + z_binsize / 2, np.log10(avg_sSFR_merger-std_sSFR_merger), np.log10(avg_sSFR_merger+std_sSFR_merger), alpha=0.3,color='dodgerblue')
-        ax.plot(z_bins[:-1] + z_binsize / 2, np.log10(avg_sSFR_control[avg_sSFR_control>0]), label='Control', color='orange')
-        ax.fill_between(z_bins[:-1] + z_binsize / 2, np.log10(avg_sSFR_control-std_sSFR_control), np.log10(avg_sSFR_control+std_sSFR_control), alpha=0.3,color='orange')
+        ax.plot(z_bins[:-1], np.log10(avg_sSFR_merger[avg_sSFR_merger>0]), label='Merger host', color="dodgerblue")
+        ax.fill_between(z_bins[:-1], np.log10(avg_sSFR_merger-std_sSFR_merger), np.log10(avg_sSFR_merger+std_sSFR_merger), alpha=0.3,color='dodgerblue')
+        ax.plot(z_bins[:-1], np.log10(avg_sSFR_control[avg_sSFR_control>0]), label='Control', color='orange')
+        ax.fill_between(z_bins[:-1], np.log10(avg_sSFR_control-std_sSFR_control), np.log10(avg_sSFR_control+std_sSFR_control), alpha=0.3,color='orange')
         #ax[0].legend()
         
     return ax
@@ -247,9 +294,6 @@ def sBHAR_enhancement_calculate(control_obj,z_bins):
 
     return np.array(avg_sBHAR_log_enhancement),np.array(std_sBHAR_log_enhancement)
 
-
-
-
 def match_z_Mstar_plot(ax,control_obj,Mstar_binsize = 0.5,Mstar_min = 7,Mstar_max = 12,z_binsize = 0.8,z_min = 0,z_max = 15):
 
         Nbins_Ms = int((Mstar_max-Mstar_min)/Mstar_binsize)
@@ -284,7 +328,6 @@ def match_z_Mstar_plot(ax,control_obj,Mstar_binsize = 0.5,Mstar_min = 7,Mstar_ma
 
         return ax
 
-
 def set_plot_style(linewidth=3, titlesize=20,labelsize=25,ticksize=20,legendsize=20):
     '''Set the plotting style for matplotlib plots.
     Parameters:
@@ -309,7 +352,9 @@ def set_plot_style(linewidth=3, titlesize=20,labelsize=25,ticksize=20,legendsize
             'xtick.labelsize': ticksize,
             'ytick.labelsize': ticksize,
             'legend.fontsize': legendsize,
-            'figure.titlesize': titlesize
+            'figure.titlesize': titlesize,
+            "font.family": "Serif",  # Replace "Arial" with your desired font name
+            "font.sans-serif": ["Arial", "Helvetica", "DejaVu Sans", "Liberation Sans", "Bitstream Vera Sans", "sans-serif"]
         })
     
     return None
@@ -340,3 +385,116 @@ def calculate_sSFR_enhancements(merging_pop,control_pop):
 def sSFR_returns(z_l,z_u,Mstar_l,Mstar_u):
     sSFR_enhancements_per_zbins = sSFR_enhancements[(sSFR_enhancement_z>=z_l)&(sSFR_enhancement_z<z_u)&(sSFR_enhancement_Mstar>=Mstar_l)&(sSFR_enhancement_Mstar<Mstar_u)]
     return sSFR_enhancements_per_zbins
+
+def sBHAR_z_evolve_plot(ax,z_bins,brahma_sim_obj,brahma_simName_array,brahma_sim_colors):
+
+        for i,sim in enumerate(brahma_simName_array): 
+            avg_sBHAR_merger = []
+            std_sBHAR_merger = []
+
+            # Loop through redshift bins
+            for i in range(len(z_bins) - 1):
+
+                merger_z_mask = (brahma_sim_obj[sim].z_merging_pop > z_bins[i]) & (brahma_sim_obj[sim].z_merging_pop < z_bins[i+1])
+                sBHAR_merging_pop_filtered = brahma_sim_obj[sim].sBHAR_merging_pop[merger_z_mask]
+            
+                avg_sBHAR_merger.append(np.mean(sBHAR_merging_pop_filtered))
+                std_sBHAR_merger.append(np.std(sBHAR_merging_pop_filtered)/ np.sqrt(len(sBHAR_merging_pop_filtered)))
+
+            avg_sBHAR_merger = np.array(avg_sBHAR_merger)
+            std_sBHAR_merger = np.array(std_sBHAR_merger)
+
+            ax.plot(z_bins[:-1] + np.diff(z_bins) / 2, np.log10(avg_sBHAR_merger), label=sim, color=brahma_sim_colors[sim])
+            ax.fill_between(z_bins[:-1] + np.diff(z_bins) / 2, np.log10(avg_sBHAR_merger-std_sBHAR_merger), np.log10(avg_sBHAR_merger+std_sBHAR_merger), alpha=0.1,color=brahma_sim_colors[sim])
+        
+        return ax
+
+def Mgas_z_evolve_plot(ax,z_bins,brahma_sim_obj,brahma_simName_array,brahma_sim_colors):
+
+        for i,sim in enumerate(brahma_simName_array): 
+            avg_Mgas_merger = []
+            std_Mgas_merger = []
+
+            # Loop through redshift bins
+            for i in range(len(z_bins) - 1):
+
+                merger_z_mask = (brahma_sim_obj[sim].z_merging_pop > z_bins[i]) & (brahma_sim_obj[sim].z_merging_pop < z_bins[i+1])
+                Mgas_merging_pop_filtered = brahma_sim_obj[sim].Mgas_merging_pop[merger_z_mask]
+            
+                avg_Mgas_merger.append(np.mean(Mgas_merging_pop_filtered))
+                std_Mgas_merger.append(np.std(Mgas_merging_pop_filtered)/ np.sqrt(len(Mgas_merging_pop_filtered)))
+
+            avg_Mgas_merger = np.array(avg_Mgas_merger)
+            std_Mgas_merger = np.array(std_Mgas_merger)
+
+            ax.plot(z_bins[:-1] + np.diff(z_bins) / 2, np.log10(avg_Mgas_merger), label=sim, color=brahma_sim_colors[sim])
+            ax.fill_between(z_bins[:-1] + np.diff(z_bins) / 2, np.log10(avg_Mgas_merger-std_Mgas_merger), np.log10(avg_Mgas_merger+std_Mgas_merger), alpha=0.1,color=brahma_sim_colors[sim])
+        
+        return ax
+
+
+def SFR_z_evolve_plot(ax,z_bins,brahma_sim_obj,brahma_simName_array,brahma_sim_colors):
+
+        for i,sim in enumerate(brahma_simName_array): 
+            avg_SFR_merger = []
+            std_SFR_merger = []
+
+            # Loop through redshift bins
+            for i in range(len(z_bins) - 1):
+
+                merger_z_mask = (brahma_sim_obj[sim].z_merging_pop > z_bins[i]) & (brahma_sim_obj[sim].z_merging_pop < z_bins[i+1])
+                SFR_merging_pop_filtered = brahma_sim_obj[sim].SFR_merging_pop[merger_z_mask]
+            
+                avg_SFR_merger.append(np.mean(SFR_merging_pop_filtered))
+                std_SFR_merger.append(np.std(SFR_merging_pop_filtered)/ np.sqrt(len(SFR_merging_pop_filtered)))
+
+            avg_SFR_merger = np.array(avg_SFR_merger)
+            std_SFR_merger = np.array(std_SFR_merger)
+
+            ax.plot(z_bins[:-1] + np.diff(z_bins) / 2, np.log10(avg_SFR_merger), label=sim, color=brahma_sim_colors[sim])
+            ax.fill_between(z_bins[:-1] + np.diff(z_bins) / 2, np.log10(avg_SFR_merger-std_SFR_merger), np.log10(avg_SFR_merger+std_SFR_merger), alpha=0.1,color=brahma_sim_colors[sim])
+        
+        return ax
+
+
+def sSFR_dist_brahma(ax,brahma_simName_array,brahma_sim_obj,brahma_sim_colors, SFR_log_min = -13,SFR_log_max = -7,N_bins=15):
+    
+    SFR_log_bins = np.linspace(SFR_log_min,SFR_log_max,N_bins)
+
+    print("Median sSFR in mergers:")
+    for i,sim in enumerate(brahma_simName_array):
+        SFR_mergers = brahma_sim_obj[sim].sSFR_merging_pop
+        print(f"{sim},{np.median(SFR_mergers[SFR_mergers>0]):2.2e}")
+        ax.hist(np.log10(SFR_mergers[SFR_mergers>0]),bins=SFR_log_bins,label=sim,histtype='step',density=True,color=brahma_sim_colors[sim])
+    ax.set_xlabel("log sSFR")
+    #ax.legend()
+    #plt.show()
+    return ax
+
+def sBHAR_dist_brahma(ax,brahma_simName_array,brahma_sim_obj,brahma_sim_colors, sBHAR_log_min = -15,sBHAR_log_max = -7,N_bins=15):
+    
+    sBHAR_log_bins = np.linspace(sBHAR_log_min,sBHAR_log_max,N_bins)
+
+    print("Median sBHAR in mergers:")
+    for i,sim in enumerate(brahma_simName_array):
+        sBHAR_mergers = brahma_sim_obj[sim].sBHAR_merging_pop
+        print(f"{sim},{np.median(sBHAR_mergers[sBHAR_mergers>0]):2.2e}")
+        ax.hist(np.log10(sBHAR_mergers),bins=sBHAR_log_bins,label=sim,histtype='step',density=True,color=brahma_sim_colors[sim])
+    ax.set_xlabel("log sBHAR")
+    #ax.legend()
+    #plt.show()
+    return ax
+
+def Mgas_dist_brahma(ax,brahma_simName_array,brahma_sim_obj,brahma_sim_colors,Mgas_log_min = 7,Mgas_log_max = 11,N_bins=15):
+    
+    Mgas_log_bins = np.linspace(Mgas_log_min,Mgas_log_max,N_bins)
+
+    print("Median Mgas in mergers:")
+    for i,sim in enumerate(brahma_simName_array):
+        Mgas_mergers = brahma_sim_obj[sim].Mgas_merging_pop
+        print(f"{sim},{np.median(Mgas_mergers[Mgas_mergers>0]):2.2e}")
+        ax.hist(np.log10(Mgas_mergers[Mgas_mergers>0]),bins=Mgas_log_bins,label=sim,histtype='step',density=True,color=brahma_sim_colors[sim])
+    ax.set_xlabel("log Mgas")
+    #ax.legend()
+    #plt.show()
+    return ax
