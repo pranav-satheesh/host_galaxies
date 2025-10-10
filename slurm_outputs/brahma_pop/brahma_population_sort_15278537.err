@@ -1,0 +1,46 @@
+/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py:193: RuntimeWarning: invalid value encountered in scalar divide
+  q_merger = prog2_info["Mstar"]/prog1_info["Mstar"]
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 330, in <module>
+    pop_gen = pop_generator(basePath,merger_file_loc,minN_values,brahma_key)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 63, in __init__
+    self.generate_population()
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 165, in generate_population
+    self.update_merger_details(subhalos, subhalo_ids_merger_remnants, self.unique_redshifts[i], snap)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 176, in update_merger_details
+    self.merging_pop["Mstar"] = np.concatenate((self.merging_pop["Mstar"], subhalos['SubhaloMassType'][:,4][subhalo_ids_merging]))
+IndexError: index 525 is out of bounds for axis 0 with size 499
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 330, in <module>
+    pop_gen = pop_generator(basePath,merger_file_loc,minN_values,brahma_key)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 63, in __init__
+    self.generate_population()
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 165, in generate_population
+    self.update_merger_details(subhalos, subhalo_ids_merger_remnants, self.unique_redshifts[i], snap)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 176, in update_merger_details
+    self.merging_pop["Mstar"] = np.concatenate((self.merging_pop["Mstar"], subhalos['SubhaloMassType'][:,4][subhalo_ids_merging]))
+IndexError: index 1108 is out of bounds for axis 0 with size 1035
+/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py:193: RuntimeWarning: invalid value encountered in scalar divide
+  q_merger = prog2_info["Mstar"]/prog1_info["Mstar"]
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 330, in <module>
+    pop_gen = pop_generator(basePath,merger_file_loc,minN_values,brahma_key)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 63, in __init__
+    self.generate_population()
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 165, in generate_population
+    self.update_merger_details(subhalos, subhalo_ids_merger_remnants, self.unique_redshifts[i], snap)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 176, in update_merger_details
+    self.merging_pop["Mstar"] = np.concatenate((self.merging_pop["Mstar"], subhalos['SubhaloMassType'][:,4][subhalo_ids_merging]))
+IndexError: index 1570 is out of bounds for axis 0 with size 1034
+/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py:193: RuntimeWarning: invalid value encountered in scalar divide
+  q_merger = prog2_info["Mstar"]/prog1_info["Mstar"]
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 330, in <module>
+    pop_gen = pop_generator(basePath,merger_file_loc,minN_values,brahma_key)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 63, in __init__
+    self.generate_population()
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 165, in generate_population
+    self.update_merger_details(subhalos, subhalo_ids_merger_remnants, self.unique_redshifts[i], snap)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 176, in update_merger_details
+    self.merging_pop["Mstar"] = np.concatenate((self.merging_pop["Mstar"], subhalos['SubhaloMassType'][:,4][subhalo_ids_merging]))
+IndexError: index 590 is out of bounds for axis 0 with size 491

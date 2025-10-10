@@ -24,6 +24,6 @@ minNgas=0
 minNstar=1000
 minNbh=1
 
-python ${codePath}/population_sort_by_mergers.py $basePath $merger_file_path $pop_file_path $minNdm $minNgas $minNstar $minNbh
+python ${codePath}/population_sort_mergers_and_non_mergers.py TNG $basePath $merger_file_path $pop_file_path $minNgas $minNdm $minNstar $minNbh
 
  

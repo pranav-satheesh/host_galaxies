@@ -1,0 +1,40 @@
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 321, in <module>
+    pop_gen = pop_generator(basePath,merger_file_loc,minN_values,brahma_key)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 66, in __init__
+    self.all_merging_population,self.non_merging_population = self.generate_population()
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 160, in generate_population
+    self.update_merger_details(subhalos, subhalo_ids_merger_remnants, self.unique_redshifts[i], snap)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 176, in update_merger_details
+    self.merging_pop["Msubhalo"] = np.concatenate((self.merging_pop["Msubhalo"], subhalos['SubhaloMass'][subhalo_ids_merging]))
+KeyError: 'Msubhalo'
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 321, in <module>
+    pop_gen = pop_generator(basePath,merger_file_loc,minN_values,brahma_key)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 66, in __init__
+    self.all_merging_population,self.non_merging_population = self.generate_population()
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 160, in generate_population
+    self.update_merger_details(subhalos, subhalo_ids_merger_remnants, self.unique_redshifts[i], snap)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 176, in update_merger_details
+    self.merging_pop["Msubhalo"] = np.concatenate((self.merging_pop["Msubhalo"], subhalos['SubhaloMass'][subhalo_ids_merging]))
+KeyError: 'Msubhalo'
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 321, in <module>
+    pop_gen = pop_generator(basePath,merger_file_loc,minN_values,brahma_key)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 66, in __init__
+    self.all_merging_population,self.non_merging_population = self.generate_population()
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 160, in generate_population
+    self.update_merger_details(subhalos, subhalo_ids_merger_remnants, self.unique_redshifts[i], snap)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 176, in update_merger_details
+    self.merging_pop["Msubhalo"] = np.concatenate((self.merging_pop["Msubhalo"], subhalos['SubhaloMass'][subhalo_ids_merging]))
+KeyError: 'Msubhalo'
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 321, in <module>
+    pop_gen = pop_generator(basePath,merger_file_loc,minN_values,brahma_key)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 66, in __init__
+    self.all_merging_population,self.non_merging_population = self.generate_population()
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 160, in generate_population
+    self.update_merger_details(subhalos, subhalo_ids_merger_remnants, self.unique_redshifts[i], snap)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 176, in update_merger_details
+    self.merging_pop["Msubhalo"] = np.concatenate((self.merging_pop["Msubhalo"], subhalos['SubhaloMass'][subhalo_ids_merging]))
+KeyError: 'Msubhalo'

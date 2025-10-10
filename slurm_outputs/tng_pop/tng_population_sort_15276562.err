@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 321, in <module>
+    
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 66, in __init__
+    self.all_merging_population,self.non_merging_population = self.generate_population()
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 160, in generate_population
+    valid_subhalo_ids = subhalo_ids[particle_cut_mask][valid_sep_mask]
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 176, in update_merger_details
+    self.merging_pop["Mdot"] = np.concatenate((self.merging_pop["Mdot"], subhalos['SubhaloBHMdot'][subhalo_ids_merging]))
+KeyError: 'Msubhalo'

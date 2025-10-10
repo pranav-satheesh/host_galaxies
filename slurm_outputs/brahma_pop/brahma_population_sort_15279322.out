@@ -1,0 +1,113 @@
+/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_TNG /home/pranavsatheesh/host_galaxies/data/merger_files
+Creating merger and non merger populations for sim runAREPO
+8.012172948865935 17 17 8.012172948865935
+4
+subhalos in this snap: 73463
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 255
+73463 255 252
+252 4
+7.005417045544533 18 18 7.005417045544533
+6
+subhalos in this snap: 85778
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 450
+85778 450 441
+441 6
+6.0107573988449 19 19 6.0107573988449
+19
+subhalos in this snap: 98486
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 695
+98486 695 680
+680 19
+/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LW10_TNG /home/pranavsatheesh/host_galaxies/data/merger_files
+Creating merger and non merger populations for sim runAREPO
+8.012172948865935 17 17 8.012172948865935
+2
+subhalos in this snap: 73420
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 274
+73420 274 271
+271 2
+7.005417045544533 18 18 7.005417045544533
+6
+subhalos in this snap: 85750
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 450
+85750 450 441
+441 6
+6.0107573988449 19 19 6.0107573988449
+21
+subhalos in this snap: 98278
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 678
+98278 678 666
+666 21
+/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LW10_LOWSPIN_TNG /home/pranavsatheesh/host_galaxies/data/merger_files
+Creating merger and non merger populations for sim runAREPO
+9.00233985416247 16 16 9.00233985416247
+2
+subhalos in this snap: 61208
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 156
+61208 156 153
+153 2
+8.012172948865935 17 17 8.012172948865935
+4
+subhalos in this snap: 73368
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 269
+73368 269 268
+268 4
+7.005417045544533 18 18 7.005417045544533
+8
+subhalos in this snap: 85637
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 449
+85637 449 439
+439 8
+6.0107573988449 19 19 6.0107573988449
+25
+subhalos in this snap: 98216
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 686
+98216 686 674
+674 25
+/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LW10_LOWSPIN_RICH_TNG /home/pranavsatheesh/host_galaxies/data/merger_files
+Creating merger and non merger populations for sim runAREPO
+9.996590466186332 15 15 9.996590466186332
+1
+subhalos in this snap: 49210
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 72
+49210 72 72
+72 1
+9.00233985416247 16 16 9.00233985416247
+1
+subhalos in this snap: 61344
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 139
+61344 139 138
+138 1
+8.012172948865935 17 17 8.012172948865935
+5
+subhalos in this snap: 73282
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 262
+73282 262 262
+262 5
+7.005417045544533 18 18 7.005417045544533
+3
+subhalos in this snap: 85772
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 451
+85772 451 445
+445 3
+6.0107573988449 19 19 6.0107573988449
+13
+subhalos in this snap: 98590
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 702
+98590 702 685
+685 13

@@ -1,0 +1,31 @@
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 323, in <module>
+    pop_file_save_loc = sys.argv[4]
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 66, in __init__
+    self.all_merging_population,self.non_merging_population = self.generate_population()
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 162, in generate_population
+    self.update_merger_details(subhalos, subhalo_ids_merger_remnants, self.unique_redshifts[i], snap)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 182, in update_merger_details
+    self.merging_pop["SubhaloPhotoMag"] = np.concatenate((self.merging_pop["SubhaloPhotoMag"], subhalos['SubhaloStellarPhotometrics'][subhalo_ids_merging])) 
+ValueError: all the input arrays must have same number of dimensions, but the array at index 0 has 1 dimension(s) and the array at index 1 has 2 dimension(s)
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 327, in <module>
+    pop_gen = pop_generator(basePath,merger_file_loc,minN_values,brahma_key)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 66, in __init__
+    self.all_merging_population,self.non_merging_population = self.generate_population()
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 162, in generate_population
+    self.update_merger_details(subhalos, subhalo_ids_merger_remnants, self.unique_redshifts[i], snap)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 182, in update_merger_details
+    self.merging_pop["SubhaloPhotoMag"] = np.concatenate((self.merging_pop["SubhaloPhotoMag"], subhalos['SubhaloStellarPhotometrics'][subhalo_ids_merging])) 
+ValueError: all the input arrays must have same number of dimensions, but the array at index 0 has 1 dimension(s) and the array at index 1 has 2 dimension(s)
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 327, in <module>
+    pop_gen = pop_generator(basePath,merger_file_loc,minN_values,brahma_key)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 66, in __init__
+    self.all_merging_population,self.non_merging_population = self.generate_population()
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 162, in generate_population
+    self.update_merger_details(subhalos, subhalo_ids_merger_remnants, self.unique_redshifts[i], snap)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 182, in update_merger_details
+    self.merging_pop["SubhaloPhotoMag"] = np.concatenate((self.merging_pop["SubhaloPhotoMag"], subhalos['SubhaloStellarPhotometrics'][subhalo_ids_merging])) 
+ValueError: all the input arrays must have same number of dimensions, but the array at index 0 has 1 dimension(s) and the array at index 1 has 2 dimension(s)
+slurmstepd: error: *** JOB 15276954 ON c0712a-s11 CANCELLED AT 2025-10-09T18:17:30 ***

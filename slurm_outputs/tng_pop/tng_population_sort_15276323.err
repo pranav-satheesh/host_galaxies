@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 312, in <module>
+    pop_gen = pop_generator(basePath,merger_file_loc,minN_values,brahma_key)
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 67, in __init__
+    self.all_merging_population,self.non_merging_population = self.generate_population()
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 124, in generate_population
+    self.unique_redshifts = np.array([il.groupcat.loadHeader(self.base_path, snap)['Redshift'].item() 
+  File "/home/pranavsatheesh/host_galaxies/py_files/population_sort_mergers_and_non_mergers.py", line 124, in <listcomp>
+    self.unique_redshifts = np.array([il.groupcat.loadHeader(self.base_path, snap)['Redshift'].item() 
+AttributeError: 'pop_generator' object has no attribute 'base_path'. Did you mean: 'basePath'?

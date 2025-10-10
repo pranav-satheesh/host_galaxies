@@ -396,7 +396,7 @@ def sBHAR_z_evolve_plot(ax,z_bins,brahma_sim_obj,brahma_simName_array,brahma_sim
             for i in range(len(z_bins) - 1):
 
                 merger_z_mask = (brahma_sim_obj[sim].z_merging_pop > z_bins[i]) & (brahma_sim_obj[sim].z_merging_pop < z_bins[i+1])
-                sBHAR_merging_pop_filtered = brahma_sim_obj[sim].sBHAR_merging_pop[merger_z_mask]
+                sBHAR_merging_pop_filtered = brahma_sim_obj[sim].Mdot_merging_pop[merger_z_mask]
             
                 avg_sBHAR_merger.append(np.mean(sBHAR_merging_pop_filtered))
                 std_sBHAR_merger.append(np.std(sBHAR_merging_pop_filtered)/ np.sqrt(len(sBHAR_merging_pop_filtered)))
@@ -432,8 +432,7 @@ def Mgas_z_evolve_plot(ax,z_bins,brahma_sim_obj,brahma_simName_array,brahma_sim_
         
         return ax
 
-
-def SFR_z_evolve_plot(ax,z_bins,brahma_sim_obj,brahma_simName_array,brahma_sim_colors):
+def sSFR_z_evolve_plot(ax,z_bins,brahma_sim_obj,brahma_simName_array,brahma_sim_colors):
 
         for i,sim in enumerate(brahma_simName_array): 
             avg_SFR_merger = []
@@ -443,10 +442,10 @@ def SFR_z_evolve_plot(ax,z_bins,brahma_sim_obj,brahma_simName_array,brahma_sim_c
             for i in range(len(z_bins) - 1):
 
                 merger_z_mask = (brahma_sim_obj[sim].z_merging_pop > z_bins[i]) & (brahma_sim_obj[sim].z_merging_pop < z_bins[i+1])
-                SFR_merging_pop_filtered = brahma_sim_obj[sim].SFR_merging_pop[merger_z_mask]
+                sSFR_merging_pop_filtered = brahma_sim_obj[sim].sSFR_merging_pop[merger_z_mask]
             
-                avg_SFR_merger.append(np.mean(SFR_merging_pop_filtered))
-                std_SFR_merger.append(np.std(SFR_merging_pop_filtered)/ np.sqrt(len(SFR_merging_pop_filtered)))
+                avg_SFR_merger.append(np.mean(sSFR_merging_pop_filtered))
+                std_SFR_merger.append(np.std(sSFR_merging_pop_filtered)/ np.sqrt(len(sSFR_merging_pop_filtered)))
 
             avg_SFR_merger = np.array(avg_SFR_merger)
             std_SFR_merger = np.array(std_SFR_merger)
@@ -456,6 +455,73 @@ def SFR_z_evolve_plot(ax,z_bins,brahma_sim_obj,brahma_simName_array,brahma_sim_c
         
         return ax
 
+def Mgas_z_evolve_plot_TNG(ax,z_bins,tng_obj,TNG50color='purple'):
+
+
+        avg_Mgas_merger = []
+        std_Mgas_merger = []
+
+        # Loop through redshift bins
+        for i in range(len(z_bins) - 1):
+
+            merger_z_mask = (tng_obj.z_merging_pop > z_bins[i]) & (tng_obj.z_merging_pop < z_bins[i+1])
+            Mgas_merging_pop_filtered = tng_obj.Mgas_merging_pop[merger_z_mask]
+
+            avg_Mgas_merger.append(np.mean(Mgas_merging_pop_filtered))
+            std_Mgas_merger.append(np.std(Mgas_merging_pop_filtered)/ np.sqrt(len(Mgas_merging_pop_filtered)))
+
+        avg_Mgas_merger = np.array(avg_Mgas_merger)
+        std_Mgas_merger = np.array(std_Mgas_merger)
+
+        ax.plot(z_bins[:-1] + np.diff(z_bins) / 2, np.log10(avg_Mgas_merger), label='TNG-50', color=TNG50color)
+        ax.fill_between(z_bins[:-1] + np.diff(z_bins) / 2, np.log10(avg_Mgas_merger-std_Mgas_merger), np.log10(avg_Mgas_merger+std_Mgas_merger), alpha=0.1,color=TNG50color)
+
+        return ax
+
+def sSFR_z_evolve_plot_TNG(ax,z_bins,tng_obj,TNG50color='purple'):
+
+    avg_sSFR_merger = []
+    std_sSFR_merger = []
+
+    # Loop through redshift bins
+    for i in range(len(z_bins) - 1):
+
+        merger_z_mask = (tng_obj.z_merging_pop > z_bins[i]) & (tng_obj.z_merging_pop < z_bins[i+1])
+        sSFR_merging_pop_filtered = tng_obj.sSFR_merging_pop[merger_z_mask]
+
+        avg_sSFR_merger.append(np.mean(sSFR_merging_pop_filtered))
+        std_sSFR_merger.append(np.std(sSFR_merging_pop_filtered)/ np.sqrt(len(sSFR_merging_pop_filtered)))
+
+    avg_sSFR_merger = np.array(avg_sSFR_merger)
+    std_sSFR_merger = np.array(std_sSFR_merger)
+
+    ax.plot(z_bins[:-1] + np.diff(z_bins) / 2, np.log10(avg_sSFR_merger), label='TNG-50', color=TNG50color)
+    ax.fill_between(z_bins[:-1] + np.diff(z_bins) / 2, np.log10(avg_sSFR_merger-std_sSFR_merger), np.log10(avg_sSFR_merger+std_sSFR_merger), alpha=0.1,color=TNG50color)
+
+    return ax
+
+def sBHAR_z_evolve_plot_TNG(ax,z_bins,tng_obj,TNG50color='purple'):
+
+         
+    avg_sBHAR_merger = []
+    std_sBHAR_merger = []
+
+    # Loop through redshift bins
+    for i in range(len(z_bins) - 1):
+
+        merger_z_mask = (tng_obj.z_merging_pop > z_bins[i]) & (tng_obj.z_merging_pop < z_bins[i+1])
+        sBHAR_merging_pop_filtered = tng_obj.Mdot_merging_pop[merger_z_mask]
+    
+        avg_sBHAR_merger.append(np.mean(sBHAR_merging_pop_filtered))
+        std_sBHAR_merger.append(np.std(sBHAR_merging_pop_filtered)/ np.sqrt(len(sBHAR_merging_pop_filtered)))
+
+    avg_sBHAR_merger = np.array(avg_sBHAR_merger)
+    std_sBHAR_merger = np.array(std_sBHAR_merger)
+
+    ax.plot(z_bins[:-1] + np.diff(z_bins) / 2, np.log10(avg_sBHAR_merger), label='TNG50', color=TNG50color)
+    ax.fill_between(z_bins[:-1] + np.diff(z_bins) / 2, np.log10(avg_sBHAR_merger-std_sBHAR_merger), np.log10(avg_sBHAR_merger+std_sBHAR_merger), alpha=0.1,color=TNG50color)
+
+    return ax
 
 def sSFR_dist_brahma(ax,brahma_simName_array,brahma_sim_obj,brahma_sim_colors, SFR_log_min = -13,SFR_log_max = -7,N_bins=15):
     
