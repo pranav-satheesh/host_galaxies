@@ -266,18 +266,25 @@ class control_samples_TNG:
 
         self.Mgas_merging_pop = self.pop['merging_population']['Mgas'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
         self.Mgas_control_pop = self.pop['non_merging_population']['Mgas'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]
-
-        # self.Mgas_rstellar_merging_pop = self.pop['merging_population']['Mgas-twice-half'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
-        # self.Mgas_rstellar_control_pop = self.pop['non_merging_population']['Mgas-twice-half'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]
-
-        # self.Mstar_rstellar_merging_pop = self.pop['merging_population']['Mstar-twice-half'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
-        # self.Mstar_rstellar_control_pop = self.pop['non_merging_population']['Mstar-twice-half'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]
-
-        # self.fgas_merging_pop = self.Mgas_rstellar_merging_pop/(self.Mgas_rstellar_merging_pop+self.Mstar_rstellar_merging_pop)
-        # self.fgas_control_pop = self.Mgas_rstellar_control_pop/(self.Mgas_rstellar_control_pop+self.Mstar_rstellar_control_pop)
-
+ 
         self.sBHAR_merging_pop = self.Mdot_merging_pop/self.MBH_merging_pop
         self.sBHAR_control_pop = self.Mdot_control_pop/self.MBH_control_pop
+
+        self.StellarHalfmassRad_merging_pop = self.pop['merging_population']['StellarHalfmassRad'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
+        self.StellarHalfmassRad_control_pop = self.pop['non_merging_population']['StellarHalfmassRad'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]
+
+        self.q_merger = self.pop['merging_population']['q_merger'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
+
+        self.merger_progenitor_properties()
+
+        self.MgasInRad = self.pop['merging_population']['MgasInRad'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
+        self.MstarInRad = self.pop['merging_population']['MstarInRad'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
+        self.fgas_post_merger = self.MgasInRad/(self.MgasInRad + self.MstarInRad)
+
+        self.fgas_control = self.pop['non_merging_population']['MgasInRad'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]/(self.pop['non_merging_population']['MgasInRad'][:][self.merger_control_index_pairs[self.valid_control_mask,1]] + self.pop['non_merging_population']['MstarInRad'][:][self.merger_control_index_pairs[self.valid_control_mask,1]])
+        
+        self.SubhaloPhotoMag_merging_pop = self.pop['merging_population']['SubhaloPhotoMag'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
+        self.SubhaloPhotoMag_control_pop = self.pop['non_merging_population']['SubhaloPhotoMag'][:][self.merger_control_index_pairs[self.valid_control_mask,1]] 
 
         if verbose:
         #sSFR averages
@@ -301,6 +308,23 @@ class control_samples_TNG:
             print("The Mdot enhancement in post mergers is %1.3f" % (np.mean(self.Mdot_merging_pop) / np.mean(self.Mdot_control_pop)))
 
         return None
+
+    def merger_progenitor_properties(self):
+        MgasInRad_progs = self.pop['merging_population']['prog_MgasInRad'][:].reshape(self.N_mergers,2)
+        self.MgasInRad_progs = MgasInRad_progs[self.merger_control_index_pairs[self.valid_control_mask,0]]
+        MstarInRad_progs = self.pop['merging_population']['prog_MstarInRad'][:].reshape(self.N_mergers,2)
+        self.MstarInRad_progs = MstarInRad_progs[self.merger_control_index_pairs[self.valid_control_mask,0]]
+        self.fgas_progs = np.sum(self.MgasInRad_progs,axis=1)/(np.sum(self.MgasInRad_progs,axis=1)+np.sum(self.MstarInRad_progs,axis=1))
+
+        StellarHalfmassRad_progs = self.pop['merging_population']['prog_StellarHalfmassRad'][:].reshape(self.N_mergers,2)
+        self.StellarHalfmassRad_progs = StellarHalfmassRad_progs[self.merger_control_index_pairs[self.valid_control_mask,0]]
+
+        return None
+        
+
+
+
+
 
     def plot_PM_and_control_histograms(self, bin_settings=None):
     # Default bin settings if none are provided
@@ -765,35 +789,21 @@ class control_sample_brahma:
         self.sBHAR_merging_pop = self.Mdot_merging_pop/self.MBH_merging_pop
         self.sBHAR_control_pop = self.Mdot_control_pop/self.MBH_control_pop
 
-        # self.Mstar_merging_pop = self.pop['merging_population']['Mstar'][:][self.valid_control_mask]
-        # self.Mstar_control_pop = self.pop['non_merging_population']['Mstar'][:][self.control_indices[0][self.valid_control_mask]]
+        self.StellarHalfmassRad_merging_pop = self.pop['merging_population']['StellarHalfmassRad'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
+        self.StellarHalfmassRad_control_pop = self.pop['non_merging_population']['StellarHalfmassRad'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]
 
-        # self.MBH_merging_pop = self.pop['merging_population']['MBH'][:][self.valid_control_mask]
-        # self.MBH_control_pop = self.pop['non_merging_population']['MBH'][:][self.control_indices[0][self.valid_control_mask]]
+        self.q_merger = self.pop['merging_population']['q_merger'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
 
-        # self.SFR_merging_pop = self.pop['merging_population']['SFR'][:][self.valid_control_mask]
-        # self.SFR_control_pop = self.pop['non_merging_population']['SFR'][:][self.control_indices[0][self.valid_control_mask]]
+        self.merger_progenitor_properties()
 
-        # self.z_merging_pop = self.pop['merging_population']['z'][:][self.valid_control_mask]
-        # self.z_control_pop = self.pop['non_merging_population']['z'][:][self.control_indices[0][self.valid_control_mask]]
-                                                                        
-        # self.Mgas_half_merging_pop = self.pop['merging_population']['Mgas-half'][:][self.valid_control_mask]
-        # self.Mgas_half_control_pop = self.pop['non_merging_population']['Mgas-half'][:][self.control_indices[0][self.valid_control_mask]]
+        self.MgasInRad = self.pop['merging_population']['MgasInRad'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
+        self.MstarInRad = self.pop['merging_population']['MstarInRad'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
+        self.fgas_post_merger = self.MgasInRad/(self.MgasInRad + self.MstarInRad)
 
-        # self.Mdot_merging_pop = self.pop['merging_population']['Mdot'][:][self.valid_control_mask]
-        # self.Mdot_control_pop = self.pop['non_merging_population']['Mdot'][:][self.control_indices[0][self.valid_control_mask]]
-
-        # self.Mgas_merging_pop = self.pop['merging_population']['Mgas'][:][self.valid_control_mask]
-        # self.Mgas_control_pop = self.pop['non_merging_population']['Mgas'][:][self.control_indices[0][self.valid_control_mask]]
-
-        # self.Mstar_half_merging_pop = self.pop['merging_population']['Mstar-half'][:][self.valid_control_mask]
-        # self.Mstar_half_control_pop = self.pop['non_merging_population']['Mstar-half'][:][self.control_indices[0][self.valid_control_mask]]
+        self.fgas_control = self.pop['non_merging_population']['MgasInRad'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]/(self.pop['non_merging_population']['MgasInRad'][:][self.merger_control_index_pairs[self.valid_control_mask,1]] + self.pop['non_merging_population']['MstarInRad'][:][self.merger_control_index_pairs[self.valid_control_mask,1]])
         
-        # self.sSFR_merging_pop = self.SFR_merging_pop/self.Mstar_merging_pop
-        # self.sSFR_control_pop = self.SFR_control_pop/self.Mstar_control_pop
-
-        # self.fgas_merging_pop = self.Mgas_half_merging_pop/(self.Mgas_half_merging_pop+self.Mstar_half_merging_pop)
-        # self.fgas_control_pop = self.Mgas_half_control_pop/(self.Mgas_half_control_pop+self.Mstar_half_control_pop)
+        self.SubhaloPhotoMag_merging_pop = self.pop['merging_population']['SubhaloPhotoMag'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
+        self.SubhaloPhotoMag_control_pop = self.pop['non_merging_population']['SubhaloPhotoMag'][:][self.merger_control_index_pairs[self.valid_control_mask,1]] 
 
         if verbose:
         #sSFR averages
@@ -815,6 +825,18 @@ class control_sample_brahma:
             print("The average Mdot for merging galaxies is %1.3e" % (np.mean(self.Mdot_merging_pop)))
             print("The average Mdot for non-merging galaxies is %1.3e" % (np.mean(self.Mdot_control_pop)))
             print("The Mdot enhancement in post mergers is %1.3f" % (np.mean(self.Mdot_merging_pop) / np.mean(self.Mdot_control_pop)))
+
+        return None
+
+    def merger_progenitor_properties(self):
+        MgasInRad_progs = self.pop['merging_population']['prog_MgasInRad'][:].reshape(self.N_mergers,2)
+        self.MgasInRad_progs = MgasInRad_progs[self.merger_control_index_pairs[self.valid_control_mask,0]]
+        MstarInRad_progs = self.pop['merging_population']['prog_MstarInRad'][:].reshape(self.N_mergers,2)
+        self.MstarInRad_progs = MstarInRad_progs[self.merger_control_index_pairs[self.valid_control_mask,0]]
+        self.fgas_progs = np.sum(self.MgasInRad_progs,axis=1)/(np.sum(self.MgasInRad_progs,axis=1)+np.sum(self.MstarInRad_progs,axis=1))
+
+        StellarHalfmassRad_progs = self.pop['merging_population']['prog_StellarHalfmassRad'][:].reshape(self.N_mergers,2)
+        self.StellarHalfmassRad_progs = StellarHalfmassRad_progs[self.merger_control_index_pairs[self.valid_control_mask,0]]
 
         return None
     
@@ -1046,13 +1068,22 @@ class control_sample_brahma:
 
         return fig, ax
 
+
 def load_pop_file(basePath,pop_file_path,minN_values):
 
     simName = basePath.split('/')[-2]
-    if(simName=='TNG50-1'):
-        pop_file_name = pop_file_path+ f"population_sort_gas-{minN_values[0]:03d}_dm-{minN_values[1]:03d}_star-{minN_values[2]:03d}_bh-{minN_values[3]:03d}_w_rsep_cut_1bh.hdf5"
-    else:    
-        pop_file_name = pop_file_path+ f"{simName}_population_sort_gas-{minN_values[0]:03d}_dm-{minN_values[1]:03d}_star-{minN_values[2]:03d}_bh-{minN_values[3]:03d}_brahma.hdf5"
+    pop_file_name = pop_file_path+ f"{simName}_population_sort_gas-{minN_values[0]:03d}_dm-{minN_values[1]:03d}_star-{minN_values[2]:03d}_bh-{minN_values[3]:03d}.hdf5"
     #pop_file_name = pop_file_path+'population_sort'+'_gas-'+f'{minN_values[0]:03d}'+'_dm-'+f'{minN_values[1]:03d}'+'_star-'+f'{minN_values[2]:03d}'+'_bh-'+f'{minN_values[3]:03d}'+'_brahma.hdf5'
     return h5py.File(pop_file_name,'r')
+
+
+# def load_pop_file(basePath,pop_file_path,minN_values):
+
+#     simName = basePath.split('/')[-2]
+#     if(simName=='TNG50-1'):
+#         pop_file_name = pop_file_path+ f"population_sort_gas-{minN_values[0]:03d}_dm-{minN_values[1]:03d}_star-{minN_values[2]:03d}_bh-{minN_values[3]:03d}_w_rsep_cut_1bh.hdf5"
+#     else:    
+#         pop_file_name = pop_file_path+ f"{simName}_population_sort_gas-{minN_values[0]:03d}_dm-{minN_values[1]:03d}_star-{minN_values[2]:03d}_bh-{minN_values[3]:03d}_brahma.hdf5"
+#     #pop_file_name = pop_file_path+'population_sort'+'_gas-'+f'{minN_values[0]:03d}'+'_dm-'+f'{minN_values[1]:03d}'+'_star-'+f'{minN_values[2]:03d}'+'_bh-'+f'{minN_values[3]:03d}'+'_brahma.hdf5'
+#     return h5py.File(pop_file_name,'r')
 

@@ -1,0 +1,477 @@
+/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_TNG/ /home/pranavsatheesh/host_galaxies/data/merger_files
+Creating merger and non merger populations for sim runSM5_TNG
+8.012172948865935 17 17 8.012172948865935
+4
+subhalos in this snap: 73463
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 255
+73463 255 252
+252 4
+7.005417045544533 18 18 7.005417045544533
+6
+subhalos in this snap: 85778
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 450
+85778 450 441
+441 6
+6.0107573988449 19 19 6.0107573988449
+19
+subhalos in this snap: 98486
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 695
+98486 695 680
+680 19
+4.995933468164624 20 20 4.995933468164624
+33
+subhalos in this snap: 110832
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1003
+110832 1003 979
+979 33
+4.0079451114652676 21 21 4.0079451114652676
+57
+subhalos in this snap: 119881
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1381
+119881 1381 1355
+1355 57
+3.008131071630377 22 22 3.008131071630377
+126
+subhalos in this snap: 123884
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1659
+123884 1659 1635
+1635 126
+2.0020281392528516 23 23 2.0020281392528516
+200
+subhalos in this snap: 121268
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1665
+121268 1665 1653
+1653 200
+1.4955121664955557 24 24 1.4955121664955557
+114
+subhalos in this snap: 116851
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1529
+116851 1529 1515
+1515 114
+0.9972942257819404 25 25 0.9972942257819404
+98
+subhalos in this snap: 110435
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1377
+110435 1377 1366
+1366 98
+0.7001063537185233 26 26 0.7001063537185233
+58
+subhalos in this snap: 105802
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1256
+105802 1256 1251
+1251 58
+0.5030475232448832 27 27 0.5030475232448832
+37
+subhalos in this snap: 101943
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1191
+101943 1191 1180
+1180 37
+0.3999269646135635 28 28 0.3999269646135635
+11
+subhalos in this snap: 100024
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1154
+100024 1154 1145
+1145 11
+0.2977176845174465 29 29 0.2977176845174465
+10
+subhalos in this snap: 97932
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1120
+97932 1120 1115
+1115 10
+0.19728418237600986 30 30 0.19728418237600986
+7
+subhalos in this snap: 96319
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1097
+96319 1097 1089
+1089 7
+0.09940180263022191 31 31 0.09940180263022191
+8
+subhalos in this snap: 94437
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1077
+94437 1077 1072
+1072 8
+2.220446049250313e-16 32 32 2.220446049250313e-16
+8
+subhalos in this snap: 93015
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1063
+93015 1063 1051
+1051 8
+/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LW10_TNG/ /home/pranavsatheesh/host_galaxies/data/merger_files
+Creating merger and non merger populations for sim runSM5_LW10_TNG
+8.012172948865935 17 17 8.012172948865935
+2
+subhalos in this snap: 73420
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 274
+73420 274 271
+271 2
+7.005417045544533 18 18 7.005417045544533
+6
+subhalos in this snap: 85750
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 450
+85750 450 441
+441 6
+6.0107573988449 19 19 6.0107573988449
+21
+subhalos in this snap: 98278
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 678
+98278 678 666
+666 21
+4.995933468164624 20 20 4.995933468164624
+33
+subhalos in this snap: 110488
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1008
+110488 1008 974
+974 33
+4.0079451114652676 21 21 4.0079451114652676
+59
+subhalos in this snap: 119630
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1376
+119630 1376 1342
+1342 59
+3.008131071630377 22 22 3.008131071630377
+101
+subhalos in this snap: 123781
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1660
+123781 1660 1634
+1634 101
+2.0020281392528516 23 23 2.0020281392528516
+163
+subhalos in this snap: 121223
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1680
+121223 1680 1663
+1663 163
+1.4955121664955557 24 24 1.4955121664955557
+78
+subhalos in this snap: 116708
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1543
+116708 1543 1531
+1531 78
+0.9972942257819404 25 25 0.9972942257819404
+77
+subhalos in this snap: 110274
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1366
+110274 1366 1361
+1361 77
+0.7001063537185233 26 26 0.7001063537185233
+53
+subhalos in this snap: 105454
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1270
+105454 1270 1264
+1264 53
+0.5030475232448832 27 27 0.5030475232448832
+25
+subhalos in this snap: 101970
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1203
+101970 1203 1196
+1196 25
+0.3999269646135635 28 28 0.3999269646135635
+8
+subhalos in this snap: 99856
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1155
+99856 1155 1150
+1150 8
+0.2977176845174465 29 29 0.2977176845174465
+7
+subhalos in this snap: 98148
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1147
+98148 1147 1144
+1144 7
+0.19728418237600986 30 30 0.19728418237600986
+7
+subhalos in this snap: 96217
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1115
+96217 1115 1109
+1109 7
+0.09940180263022191 31 31 0.09940180263022191
+8
+subhalos in this snap: 94550
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1088
+94550 1088 1081
+1081 8
+2.220446049250313e-16 32 32 2.220446049250313e-16
+6
+subhalos in this snap: 93031
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1061
+93031 1061 1055
+1055 6
+/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LW10_LOWSPIN_TNG/ /home/pranavsatheesh/host_galaxies/data/merger_files
+Creating merger and non merger populations for sim runSM5_LW10_LOWSPIN_TNG
+9.00233985416247 16 16 9.00233985416247
+2
+subhalos in this snap: 61208
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 156
+61208 156 153
+153 2
+8.012172948865935 17 17 8.012172948865935
+4
+subhalos in this snap: 73368
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 269
+73368 269 268
+268 4
+7.005417045544533 18 18 7.005417045544533
+8
+subhalos in this snap: 85637
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 449
+85637 449 439
+439 8
+6.0107573988449 19 19 6.0107573988449
+25
+subhalos in this snap: 98216
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 686
+98216 686 674
+674 25
+4.995933468164624 20 20 4.995933468164624
+30
+subhalos in this snap: 110581
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1016
+110581 1016 993
+993 30
+4.0079451114652676 21 21 4.0079451114652676
+42
+subhalos in this snap: 119632
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1382
+119632 1382 1356
+1356 42
+3.008131071630377 22 22 3.008131071630377
+82
+subhalos in this snap: 123961
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1639
+123961 1639 1620
+1620 82
+2.0020281392528516 23 23 2.0020281392528516
+117
+subhalos in this snap: 121097
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1658
+121097 1658 1636
+1636 117
+1.4955121664955557 24 24 1.4955121664955557
+59
+subhalos in this snap: 116892
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1505
+116892 1505 1498
+1498 59
+0.9972942257819404 25 25 0.9972942257819404
+42
+subhalos in this snap: 110121
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1341
+110121 1341 1330
+1330 42
+0.7001063537185233 26 26 0.7001063537185233
+31
+subhalos in this snap: 105438
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1249
+105438 1249 1240
+1240 31
+0.5030475232448832 27 27 0.5030475232448832
+13
+subhalos in this snap: 101777
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1187
+101777 1187 1180
+1180 13
+0.3999269646135635 28 28 0.3999269646135635
+9
+subhalos in this snap: 99860
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1140
+99860 1140 1127
+1127 9
+0.2977176845174465 29 29 0.2977176845174465
+8
+subhalos in this snap: 98019
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1115
+98019 1115 1106
+1106 8
+0.19728418237600986 30 30 0.19728418237600986
+7
+subhalos in this snap: 96138
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1101
+96138 1101 1097
+1097 7
+0.09940180263022191 31 31 0.09940180263022191
+9
+subhalos in this snap: 94374
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1079
+94374 1079 1071
+1071 9
+2.220446049250313e-16 32 32 2.220446049250313e-16
+6
+subhalos in this snap: 92773
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1058
+92773 1058 1050
+1050 6
+/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LW10_LOWSPIN_RICH_TNG/ /home/pranavsatheesh/host_galaxies/data/merger_files
+Creating merger and non merger populations for sim runSM5_LW10_LOWSPIN_RICH_TNG
+9.996590466186332 15 15 9.996590466186332
+1
+subhalos in this snap: 49210
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 72
+49210 72 72
+72 1
+9.00233985416247 16 16 9.00233985416247
+1
+subhalos in this snap: 61344
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 139
+61344 139 138
+138 1
+8.012172948865935 17 17 8.012172948865935
+5
+subhalos in this snap: 73282
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 262
+73282 262 262
+262 5
+7.005417045544533 18 18 7.005417045544533
+3
+subhalos in this snap: 85772
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 451
+85772 451 445
+445 3
+6.0107573988449 19 19 6.0107573988449
+13
+subhalos in this snap: 98590
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 702
+98590 702 685
+685 13
+4.995933468164624 20 20 4.995933468164624
+14
+subhalos in this snap: 110612
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1021
+110612 1021 998
+998 14
+4.0079451114652676 21 21 4.0079451114652676
+20
+subhalos in this snap: 119691
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1379
+119691 1379 1354
+1354 20
+3.008131071630377 22 22 3.008131071630377
+22
+subhalos in this snap: 123688
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1644
+123688 1644 1617
+1617 22
+2.0020281392528516 23 23 2.0020281392528516
+38
+subhalos in this snap: 121016
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1639
+121016 1639 1615
+1615 38
+1.4955121664955557 24 24 1.4955121664955557
+16
+subhalos in this snap: 116729
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1499
+116729 1499 1491
+1491 16
+0.9972942257819404 25 25 0.9972942257819404
+17
+subhalos in this snap: 110091
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1358
+110091 1358 1347
+1347 17
+0.7001063537185233 26 26 0.7001063537185233
+8
+subhalos in this snap: 105291
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1260
+105291 1260 1253
+1253 8
+0.5030475232448832 27 27 0.5030475232448832
+4
+subhalos in this snap: 101409
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1201
+101409 1201 1197
+1197 4
+0.3999269646135635 28 28 0.3999269646135635
+3
+subhalos in this snap: 99579
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1186
+99579 1186 1175
+1175 3
+0.2977176845174465 29 29 0.2977176845174465
+1
+subhalos in this snap: 97704
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1128
+97704 1128 1120
+1120 1
+0.19728418237600986 30 30 0.19728418237600986
+4
+subhalos in this snap: 95847
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1099
+95847 1099 1096
+1096 4
+0.09940180263022191 31 31 0.09940180263022191
+3
+subhalos in this snap: 94055
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1087
+94055 1087 1079
+1079 3
+2.220446049250313e-16 32 32 2.220446049250313e-16
+4
+subhalos in this snap: 92452
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1053
+92452 1053 1045
+1045 4

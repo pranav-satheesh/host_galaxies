@@ -21,15 +21,16 @@ class pop_generator:
         self.basePath = basePath
         self.brahma_key = brahma_key
         self.merger_file_loc = merger_file_loc
+        self.simName = basePath.split('/')[-2] 
 
         if self.brahma_key:
-            merger_file_name = f'/galaxy-mergers_brahma_{basePath.split("/")[-1]}_gas-{minN_values[0]:03d}_dm-{minN_values[1]:03d}_star-{minN_values[2]:03d}_bh-{minN_values[3]:03d}.hdf5'
+            merger_file_name = f'/galaxy-mergers_brahma_{self.simName}_gas-{minN_values[0]:03d}_dm-{minN_values[1]:03d}_star-{minN_values[2]:03d}_bh-{minN_values[3]:03d}.hdf5'
         else:
             merger_file_name = f'/galaxy-mergers_TNG50-1_gas-{minN_values[0]:03d}_dm-{minN_values[1]:03d}_star-{minN_values[2]:03d}_bh-{minN_values[3]:03d}.hdf5'
 
         self.merger_file_path = merger_file_loc + merger_file_name
         fmergers = h5py.File(self.merger_file_path, 'r')
-        self.simName = basePath.split('/')[-2] 
+        
         self.box_length = fmergers.attrs['box_volume_mpc']**(1/3) * 1000
         self.minN_values = minN_values
 
@@ -285,15 +286,24 @@ class pop_generator:
             pop_dict["prog_StellarHalfmassRad"] = pop_dict["prog_StellarHalfmassRad"]/self.h #ckpc. Multiply by scale factor (can be obtained from snapnum or redshift to get physical kpc)
 
     def save_population_to_file(self,save_path):
-        if self.brahma_key:
-            outfilename = save_path + f'/{self.simName}_population_sort_gas-{self.minN_values[0]:03d}_dm-{self.minN_values[1]:03d}_star-{self.minN_values[2]:03d}_bh-{self.minN_values[3]:03d}.hdf5'
-        else:
-            outfilename = save_path + f'/{self.simName}_population_sort_gas-{self.minN_values[0]:03d}_dm-{self.minN_values[1]:03d}_star-{self.minN_values[2]:03d}_bh-{self.minN_values[3]:03d}.hdf5'
+        outfilename = save_path + f'/{self.simName}_population_sort_gas-{self.minN_values[0]:03d}_dm-{self.minN_values[1]:03d}_star-{self.minN_values[2]:03d}_bh-{self.minN_values[3]:03d}.hdf5'
 
         with h5py.File(outfilename, 'w') as f:
             all_merge_grp = f.create_group('merging_population')
+            n_mergers = len(self.merging_pop["Mstar"]) 
+
+            # List of progenitor fields that need reshaping
+            prog_fields = ["prog_snap", "prog_subhalo_id", "prog_redshift", "prog_Mstar", 
+                      "prog_Mgas", "prog_MBH", "prog_Mdot", "prog_SFR", 
+                      "prog_MgasInRad", "prog_MstarInRad", "prog_StellarHalfmassRad"]
+
             for key, value in self.merging_pop.items():
-                all_merge_grp.create_dataset(key, data=value)
+                if key in prog_fields:
+                    reshaped_value = np.array(value).reshape(n_mergers, 2)
+                    all_merge_grp.create_dataset(key, data=reshaped_value)
+                else:
+                    all_merge_grp.create_dataset(key, data=value)
+
             
             non_merge_grp = f.create_group('non_merging_population')
             for key, value in self.non_merging_pop.items():

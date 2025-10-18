@@ -310,25 +310,18 @@ def match_z_Mstar_plot(ax,control_obj,Mstar_binsize = 0.5,Mstar_min = 7,Mstar_ma
         # control_z = control_obj.pop['non_merging_population']['z'][:][control_obj.control_indices[0][control_obj.valid_control_mask]]
         ax[0].hist(control_obj.z_control_pop, bins=z_bins, color="black", histtype="step",linewidth=2,density=True)
         ax[0].hist(control_obj.z_merging_pop, bins=z_bins, histtype="step",color="Darkorange",linestyle="--",linewidth=2,density=True)
-        ax[0].set_xlabel("z",fontsize=25)
-        ax[0].set_ylabel("pdf",fontsize=25)
+        
         #ax[0].set_xticks([0,1,2,3,4,5])
         # merging_Mstar = control_obj.pop['merging_population']['Mstar'][:][control_obj.valid_control_mask]
         # control_Mstar = control_obj.pop['non_merging_population']['Mstar'][:][control_obj.control_indices[0][control_obj.valid_control_mask]]
         ax[1].hist(np.log10(control_obj.Mstar_control_pop), bins=Mstar_bins,histtype="step",color="black",label="Control",linewidth=2,density=True)
         ax[1].hist(np.log10(control_obj.Mstar_merging_pop),bins=Mstar_bins,histtype="step",label="PM",color="Darkorange",linestyle="--",linewidth=2,density=True)
         #ax[1].set_xticks([7,8,9,10,11,12])
-        ax[1].legend(fontsize=15)
-        ax[1].set_xlabel("$\log(M_{\star}/M_{\odot})$",fontsize=25)
-
-        #fig_name = fig_loc+"control-pm-z-Mstar-match.pdf"
-        #fig.show()
-        #fig.savefig(fig_name)
-        #print("Figure saved in %s"%(fig_name))
-
+    
         return ax
 
-def set_plot_style(linewidth=3, titlesize=20,labelsize=25,ticksize=20,legendsize=20):
+def set_plot_style(linewidth=3, titlesize=20,labelsize=25,ticksize=20,legendsize=20,
+                   ytick_major_size=5, xtick_major_size=5,bold=False):
     '''Set the plotting style for matplotlib plots.
     Parameters:
     -----------
@@ -349,15 +342,24 @@ def set_plot_style(linewidth=3, titlesize=20,labelsize=25,ticksize=20,legendsize
             'lines.linewidth': linewidth,
             'axes.labelsize': labelsize,
             'axes.titlesize': titlesize,
-            'xtick.labelsize': ticksize,
-            'ytick.labelsize': ticksize,
+            'xtick.labelsize': labelsize,
+            'ytick.labelsize': labelsize,
             'legend.fontsize': legendsize,
             'figure.titlesize': titlesize,
-            "font.family": "Serif",  # Replace "Arial" with your desired font name
-            "font.sans-serif": ["Arial", "Helvetica", "DejaVu Sans", "Liberation Sans", "Bitstream Vera Sans", "sans-serif"]
+            "font.family": "serif",  # Replace "Arial" with your desired font name
+            "font.sans-serif": ["Arial", "Helvetica", "DejaVu Sans", "Liberation Sans", "Bitstream Vera Sans", "sans-serif"],
+            "ytick.major.size": ticksize,
+            "xtick.major.size": ticksize
         })
-    
-    return None
+
+    if bold==True:
+        plt.rcParams.update({
+            "font.weight": "bold",
+            "axes.labelweight": "bold",
+            "axes.titleweight": "bold",
+            
+        })
+
 
 def calculate_sSFR_enhancements(merging_pop,control_pop):
     sSFR_enhancements = []
@@ -385,6 +387,60 @@ def calculate_sSFR_enhancements(merging_pop,control_pop):
 def sSFR_returns(z_l,z_u,Mstar_l,Mstar_u):
     sSFR_enhancements_per_zbins = sSFR_enhancements[(sSFR_enhancement_z>=z_l)&(sSFR_enhancement_z<z_u)&(sSFR_enhancement_Mstar>=Mstar_l)&(sSFR_enhancement_Mstar<Mstar_u)]
     return sSFR_enhancements_per_zbins
+
+
+def plot_evolution_z_for_sim(ax,sim_obj,sim_zbins_list,sim_names,sim_colors,quantity_name,plot_log10=False):
+
+    #example usage:
+    # plot_evolution_z_for_sim(ax,sim_obj,sim_zbins,sim_names,sim_colors,'sSFR_merging_pop')
+
+    for i,sim in enumerate(sim_names):
+        avg_quantity = []
+        std_quantity = []
+
+        sim_zbins = sim_zbins_list[i]
+        # Loop through redshift bins
+        for j in range(len(sim_zbins) - 1):
+            merger_z_mask = (sim_obj[sim].z_merging_pop > sim_zbins[j]) & (sim_obj[sim].z_merging_pop < sim_zbins[j+1])
+            quantity_values = getattr(sim_obj[sim], quantity_name)[merger_z_mask]
+            avg_quantity.append(np.mean(quantity_values))
+            std_quantity.append(np.std(quantity_values)/ np.sqrt(len(quantity_values)))
+
+        avg_quantity = np.array(avg_quantity)
+        std_quantity = np.array(std_quantity)
+        if plot_log10:
+            ax.plot(sim_zbins[:-1] + np.diff(sim_zbins) / 2, np.log10(avg_quantity), label=sim, color=sim_colors[i])
+            ax.fill_between(sim_zbins[:-1] + np.diff(sim_zbins) / 2, np.log10(avg_quantity-std_quantity), np.log10(avg_quantity+std_quantity), alpha=0.1,color=sim_colors[i])
+        else:
+            ax.plot(sim_zbins[:-1] + np.diff(sim_zbins) / 2, avg_quantity, label=sim, color=sim_colors[i])
+            ax.fill_between(sim_zbins[:-1] + np.diff(sim_zbins) / 2, avg_quantity-std_quantity, avg_quantity+std_quantity, alpha=0.1,color=sim_colors[i])
+
+    return ax
+
+
+def plot_dist_for_sim(ax,sim_obj,sim_names,sim_colors,quantity_name,log_bins=False,bins=30,range=None):
+    #example usage:
+    # plot_dist_for_sim(ax,sim_obj,sim_names,sim_colors,'sSFR_merging_pop',log_bins=True,bins=30,range=(-15,-5))
+
+    for i,sim in enumerate(sim_names):
+        quantity_values = getattr(sim_obj[sim], quantity_name)
+        if log_bins:
+            ax.hist(np.log10(quantity_values[quantity_values>0]), bins=bins, range=range, histtype="step", label=sim, color=sim_colors[i],density=True)
+        else:
+            ax.hist(quantity_values, bins=bins, range=range, histtype="step", label=sim, color=sim_colors[i],density=True)
+
+    return ax
+
+
+
+
+
+
+
+
+
+
+
 
 def sBHAR_z_evolve_plot(ax,z_bins,brahma_sim_obj,brahma_simName_array,brahma_sim_colors):
 
@@ -477,6 +533,30 @@ def Mgas_z_evolve_plot_TNG(ax,z_bins,tng_obj,TNG50color='purple'):
         ax.fill_between(z_bins[:-1] + np.diff(z_bins) / 2, np.log10(avg_Mgas_merger-std_Mgas_merger), np.log10(avg_Mgas_merger+std_Mgas_merger), alpha=0.1,color=TNG50color)
 
         return ax
+
+
+def fgas_z_evolve_plot_TNG(ax,sim_obj,sim_zbins,sim_names,sim_colors):
+
+    for i,sim in enumerate(sim_names):
+        avg_fgas_prog = []
+        std_fgas_prog = []
+
+        # Loop through redshift bins
+        for j in range(len(sim_zbins) - 1):
+            merger_z_mask = (sim_obj[sim].z_merging_pop > sim_zbins[j]) & (sim_obj[sim].z_merging_pop < sim_zbins[j+1])
+            fgas_progs = sim_obj[sim].fgas_progs[merger_z_mask]
+            avg_fgas_prog.append(np.mean(fgas_progs))
+            std_fgas_prog.append(np.std(fgas_progs)/ np.sqrt(len(fgas_progs)))
+
+        avg_fgas_prog = np.array(avg_fgas_prog)
+        std_fgas_prog = np.array(std_fgas_prog)
+
+        ax.plot(sim_zbins[:-1] + np.diff(sim_zbins) / 2, avg_fgas_prog, label=sim, color=sim_colors[sim])
+        ax.fill_between(sim_zbins[:-1] + np.diff(sim_zbins) / 2, avg_fgas_prog-std_fgas_prog, avg_fgas_prog+std_fgas_prog, alpha=0.1,color=sim_colors[sim]) 
+
+    return ax
+
+
 
 def sSFR_z_evolve_plot_TNG(ax,z_bins,tng_obj,TNG50color='purple'):
 
