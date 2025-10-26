@@ -275,6 +275,7 @@ class pop_generator:
         pop_dict["MgasInRad"] = pop_dict["MgasInRad"]*1e10/self.h #MSOL
         pop_dict["MstarInRad"] = pop_dict["MstarInRad"]*1e10/self.h #MSOL
         pop_dict["StellarHalfmassRad"] = pop_dict["StellarHalfmassRad"]/self.h #ckpc. Multiply by scale factor (can be obtained from snapnum or redshift to get physical kpc)
+        pop_dict["Msubhalo"] = pop_dict["Msubhalo"]*1e10/self.h  #MSOL
 
         if "prog_Mstar" in pop_dict:
             pop_dict["prog_Mstar"] = pop_dict["prog_Mstar"]*1e10/self.h #MSOL

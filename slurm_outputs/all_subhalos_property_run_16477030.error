@@ -1,0 +1,65 @@
+processing each snapshots in TNG:   0%|          | 0/2 [00:00<?, ?it/s]processing each snapshots in TNG:  50%|█████     | 1/2 [00:02<00:02,  2.32s/it]processing each snapshots in TNG: 100%|██████████| 2/2 [00:03<00:00,  1.48s/it]processing each snapshots in TNG: 100%|██████████| 2/2 [00:03<00:00,  1.60s/it]
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/sim_subhalo_property_statistics.py", line 144, in <module>
+    find_tng_subhalo_statistics(basepath, save_loc, minN_values)    
+  File "/home/pranavsatheesh/host_galaxies/py_files/sim_subhalo_property_statistics.py", line 62, in find_tng_subhalo_statistics
+    save_file(all_subhalos_data, save_loc, "TNG-50")
+  File "/home/pranavsatheesh/host_galaxies/py_files/sim_subhalo_property_statistics.py", line 130, in save_file
+    f.create_dataset(key, data=data_dict[key])
+  File "/blue/lblecha/pranavsatheesh/.conda/envs/hfrl/lib/python3.10/site-packages/h5py/_hl/group.py", line 178, in create_dataset
+    name = self._e(name)
+  File "/blue/lblecha/pranavsatheesh/.conda/envs/hfrl/lib/python3.10/site-packages/h5py/_hl/base.py", line 202, in _e
+    raise TypeError(f"A name should be string or bytes, not {type(name)}")
+TypeError: A name should be string or bytes, not <class 'numpy.int64'>
+processing each snapshots in TNG:   0%|          | 0/2 [00:00<?, ?it/s]processing each snapshots in TNG:  50%|█████     | 1/2 [00:01<00:01,  1.08s/it]processing each snapshots in TNG: 100%|██████████| 2/2 [00:01<00:00,  1.04it/s]processing each snapshots in TNG: 100%|██████████| 2/2 [00:01<00:00,  1.03it/s]
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/sim_subhalo_property_statistics.py", line 144, in <module>
+    find_tng_subhalo_statistics(basepath, save_loc, minN_values)    
+  File "/home/pranavsatheesh/host_galaxies/py_files/sim_subhalo_property_statistics.py", line 62, in find_tng_subhalo_statistics
+    save_file(all_subhalos_data, save_loc, "TNG-50")
+  File "/home/pranavsatheesh/host_galaxies/py_files/sim_subhalo_property_statistics.py", line 130, in save_file
+    f.create_dataset(key, data=data_dict[key])
+  File "/blue/lblecha/pranavsatheesh/.conda/envs/hfrl/lib/python3.10/site-packages/h5py/_hl/group.py", line 178, in create_dataset
+    name = self._e(name)
+  File "/blue/lblecha/pranavsatheesh/.conda/envs/hfrl/lib/python3.10/site-packages/h5py/_hl/base.py", line 202, in _e
+    raise TypeError(f"A name should be string or bytes, not {type(name)}")
+TypeError: A name should be string or bytes, not <class 'numpy.int64'>
+processing each snapshots in TNG:   0%|          | 0/2 [00:00<?, ?it/s]processing each snapshots in TNG:  50%|█████     | 1/2 [00:00<00:00,  1.03it/s]processing each snapshots in TNG: 100%|██████████| 2/2 [00:01<00:00,  1.12it/s]processing each snapshots in TNG: 100%|██████████| 2/2 [00:01<00:00,  1.11it/s]
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/sim_subhalo_property_statistics.py", line 144, in <module>
+    find_tng_subhalo_statistics(basepath, save_loc, minN_values)    
+  File "/home/pranavsatheesh/host_galaxies/py_files/sim_subhalo_property_statistics.py", line 62, in find_tng_subhalo_statistics
+    save_file(all_subhalos_data, save_loc, "TNG-50")
+  File "/home/pranavsatheesh/host_galaxies/py_files/sim_subhalo_property_statistics.py", line 130, in save_file
+    f.create_dataset(key, data=data_dict[key])
+  File "/blue/lblecha/pranavsatheesh/.conda/envs/hfrl/lib/python3.10/site-packages/h5py/_hl/group.py", line 178, in create_dataset
+    name = self._e(name)
+  File "/blue/lblecha/pranavsatheesh/.conda/envs/hfrl/lib/python3.10/site-packages/h5py/_hl/base.py", line 202, in _e
+    raise TypeError(f"A name should be string or bytes, not {type(name)}")
+TypeError: A name should be string or bytes, not <class 'numpy.int64'>
+processing each snapshots in TNG:   0%|          | 0/2 [00:00<?, ?it/s]processing each snapshots in TNG:  50%|█████     | 1/2 [00:00<00:00,  1.22it/s]processing each snapshots in TNG: 100%|██████████| 2/2 [00:01<00:00,  1.14it/s]processing each snapshots in TNG: 100%|██████████| 2/2 [00:01<00:00,  1.15it/s]
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/sim_subhalo_property_statistics.py", line 144, in <module>
+    find_tng_subhalo_statistics(basepath, save_loc, minN_values)    
+  File "/home/pranavsatheesh/host_galaxies/py_files/sim_subhalo_property_statistics.py", line 62, in find_tng_subhalo_statistics
+    save_file(all_subhalos_data, save_loc, "TNG-50")
+  File "/home/pranavsatheesh/host_galaxies/py_files/sim_subhalo_property_statistics.py", line 130, in save_file
+    f.create_dataset(key, data=data_dict[key])
+  File "/blue/lblecha/pranavsatheesh/.conda/envs/hfrl/lib/python3.10/site-packages/h5py/_hl/group.py", line 178, in create_dataset
+    name = self._e(name)
+  File "/blue/lblecha/pranavsatheesh/.conda/envs/hfrl/lib/python3.10/site-packages/h5py/_hl/base.py", line 202, in _e
+    raise TypeError(f"A name should be string or bytes, not {type(name)}")
+TypeError: A name should be string or bytes, not <class 'numpy.int64'>
+processing each snapshots in TNG:   0%|          | 0/2 [00:00<?, ?it/s]processing each snapshots in TNG:  50%|█████     | 1/2 [00:41<00:41, 41.74s/it]processing each snapshots in TNG: 100%|██████████| 2/2 [01:44<00:00, 54.25s/it]processing each snapshots in TNG: 100%|██████████| 2/2 [01:44<00:00, 52.37s/it]
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/sim_subhalo_property_statistics.py", line 144, in <module>
+    find_tng_subhalo_statistics(basepath, save_loc, minN_values)    
+  File "/home/pranavsatheesh/host_galaxies/py_files/sim_subhalo_property_statistics.py", line 62, in find_tng_subhalo_statistics
+    save_file(all_subhalos_data, save_loc, "TNG-50")
+  File "/home/pranavsatheesh/host_galaxies/py_files/sim_subhalo_property_statistics.py", line 130, in save_file
+    f.create_dataset(key, data=data_dict[key])
+  File "/blue/lblecha/pranavsatheesh/.conda/envs/hfrl/lib/python3.10/site-packages/h5py/_hl/group.py", line 178, in create_dataset
+    name = self._e(name)
+  File "/blue/lblecha/pranavsatheesh/.conda/envs/hfrl/lib/python3.10/site-packages/h5py/_hl/base.py", line 202, in _e
+    raise TypeError(f"A name should be string or bytes, not {type(name)}")
+TypeError: A name should be string or bytes, not <class 'numpy.int64'>

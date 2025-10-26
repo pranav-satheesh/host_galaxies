@@ -294,7 +294,7 @@ def sBHAR_enhancement_calculate(control_obj,z_bins):
 
     return np.array(avg_sBHAR_log_enhancement),np.array(std_sBHAR_log_enhancement)
 
-def match_z_Mstar_plot(ax,control_obj,Mstar_binsize = 0.5,Mstar_min = 7,Mstar_max = 12,z_binsize = 0.8,z_min = 0,z_max = 15):
+def match_z_Mstar_plot(ax,control_obj,sim_color,Mstar_binsize = 0.5,Mstar_min = 7,Mstar_max = 12,z_binsize = 0.8,z_min = 0,z_max = 15):
 
         Nbins_Ms = int((Mstar_max-Mstar_min)/Mstar_binsize)
         Mstar_bins = np.linspace(Mstar_min,Mstar_max,Nbins_Ms)
@@ -308,20 +308,20 @@ def match_z_Mstar_plot(ax,control_obj,Mstar_binsize = 0.5,Mstar_min = 7,Mstar_ma
 
         # merging_z = control_obj.pop['merging_population']['z'][:][control_obj.valid_control_mask]
         # control_z = control_obj.pop['non_merging_population']['z'][:][control_obj.control_indices[0][control_obj.valid_control_mask]]
-        ax[0].hist(control_obj.z_control_pop, bins=z_bins, color="black", histtype="step",linewidth=2,density=True)
-        ax[0].hist(control_obj.z_merging_pop, bins=z_bins, histtype="step",color="Darkorange",linestyle="--",linewidth=2,density=True)
+        ax[0].hist(control_obj.z_control_pop, bins=z_bins, color="black", histtype="step",linewidth=2,density=True,label="Control")
+        ax[0].hist(control_obj.z_merging_pop, bins=z_bins, histtype="step",color=sim_color,linestyle="--",linewidth=2,density=True,label="Merger hosts")
         
         #ax[0].set_xticks([0,1,2,3,4,5])
         # merging_Mstar = control_obj.pop['merging_population']['Mstar'][:][control_obj.valid_control_mask]
         # control_Mstar = control_obj.pop['non_merging_population']['Mstar'][:][control_obj.control_indices[0][control_obj.valid_control_mask]]
         ax[1].hist(np.log10(control_obj.Mstar_control_pop), bins=Mstar_bins,histtype="step",color="black",label="Control",linewidth=2,density=True)
-        ax[1].hist(np.log10(control_obj.Mstar_merging_pop),bins=Mstar_bins,histtype="step",label="PM",color="Darkorange",linestyle="--",linewidth=2,density=True)
+        ax[1].hist(np.log10(control_obj.Mstar_merging_pop),bins=Mstar_bins,histtype="step",label="Merger hosts",color=sim_color,linestyle="--",linewidth=2,density=True)
         #ax[1].set_xticks([7,8,9,10,11,12])
     
         return ax
 
-def set_plot_style(linewidth=3, titlesize=20,labelsize=25,ticksize=20,legendsize=20,
-                   ytick_major_size=5, xtick_major_size=5,bold=False):
+def set_plot_style(linewidth=3,spinewidth=2,titlesize=20,labelsize=25,legendsize=20,
+                   ytick_major_size=5, xtick_major_size=5,xticksize=10,yticksize=10,bold=False):
     '''Set the plotting style for matplotlib plots.
     Parameters:
     -----------
@@ -339,18 +339,25 @@ def set_plot_style(linewidth=3, titlesize=20,labelsize=25,ticksize=20,legendsize
     --------'''
     
     plt.rcParams.update({
-            'lines.linewidth': linewidth,
-            'axes.labelsize': labelsize,
-            'axes.titlesize': titlesize,
-            'xtick.labelsize': labelsize,
-            'ytick.labelsize': labelsize,
-            'legend.fontsize': legendsize,
-            'figure.titlesize': titlesize,
-            "font.family": "serif",  # Replace "Arial" with your desired font name
-            "font.sans-serif": ["Arial", "Helvetica", "DejaVu Sans", "Liberation Sans", "Bitstream Vera Sans", "sans-serif"],
-            "ytick.major.size": ticksize,
-            "xtick.major.size": ticksize
-        })
+        # general line widths
+        'lines.linewidth': linewidth,
+        # axis spine width
+        'axes.linewidth': spinewidth,
+        # font sizes
+        'axes.labelsize': labelsize,
+        'axes.titlesize': titlesize,
+        'xtick.labelsize': xticksize,
+        'ytick.labelsize': yticksize,
+        'legend.fontsize': legendsize,
+        'figure.titlesize': titlesize,
+        # tick sizes (major ticks)
+        'xtick.major.size': xtick_major_size,
+        'ytick.major.size': ytick_major_size,
+        # font family
+        "font.family": "serif",
+        "font.sans-serif": ["Arial", "Helvetica", "DejaVu Sans", "Liberation Sans", "Bitstream Vera Sans", "sans-serif"],
+    })
+
 
     if bold==True:
         plt.rcParams.update({
@@ -416,6 +423,40 @@ def plot_evolution_z_for_sim(ax,sim_obj,sim_zbins_list,sim_names,sim_colors,quan
             ax.fill_between(sim_zbins[:-1] + np.diff(sim_zbins) / 2, avg_quantity-std_quantity, avg_quantity+std_quantity, alpha=0.1,color=sim_colors[i])
 
     return ax
+
+
+def plot_evolution_z_w_Mstar_interval_for_sim(ax,Mstar_lower,Mstar_upper,sim_obj,sim_zbins_list,sim_names,sim_colors,quantity_name,plot_log10=False):
+
+    #example usage:
+    # plot_evolution_z_for_sim(ax,sim_obj,sim_zbins,sim_names,sim_colors,'sSFR_merging_pop')
+
+    for i,sim in enumerate(sim_names):
+        avg_quantity = []
+        std_quantity = []
+
+        sim_zbins = sim_zbins_list[i]
+        # Loop through redshift bins
+        for j in range(len(sim_zbins) - 1):
+            merger_z_mask = (sim_obj[sim].z_merging_pop > sim_zbins[j]) & (sim_obj[sim].z_merging_pop < sim_zbins[j+1])
+            merger_Mstar_mask = (sim_obj[sim].Mstar_merging_pop >= Mstar_lower) & (sim_obj[sim].Mstar_merging_pop < Mstar_upper)
+
+            quantity_values = getattr(sim_obj[sim], quantity_name)[merger_z_mask & merger_Mstar_mask]
+            avg_quantity.append(np.mean(quantity_values))
+            std_quantity.append(np.std(quantity_values)/ np.sqrt(len(quantity_values)))
+
+        avg_quantity = np.array(avg_quantity)
+        std_quantity = np.array(std_quantity)
+        if plot_log10:
+            ax.plot(sim_zbins[:-1] + np.diff(sim_zbins) / 2, np.log10(avg_quantity), label=sim, color=sim_colors[i])
+            ax.fill_between(sim_zbins[:-1] + np.diff(sim_zbins) / 2, np.log10(avg_quantity-std_quantity), np.log10(avg_quantity+std_quantity), alpha=0.1,color=sim_colors[i])
+        else:
+            ax.plot(sim_zbins[:-1] + np.diff(sim_zbins) / 2, avg_quantity, label=sim, color=sim_colors[i])
+            ax.fill_between(sim_zbins[:-1] + np.diff(sim_zbins) / 2, avg_quantity-std_quantity, avg_quantity+std_quantity, alpha=0.1,color=sim_colors[i])
+
+    return ax
+
+
+
 
 
 def plot_dist_for_sim(ax,sim_obj,sim_names,sim_colors,quantity_name,log_bins=False,bins=30,range=None):
@@ -644,3 +685,7 @@ def Mgas_dist_brahma(ax,brahma_simName_array,brahma_sim_obj,brahma_sim_colors,Mg
     #ax.legend()
     #plt.show()
     return ax
+
+
+
+    

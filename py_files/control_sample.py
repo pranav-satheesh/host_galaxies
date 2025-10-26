@@ -45,31 +45,18 @@ class control_samples_TNG:
         self.pop = population_file
         self.N_mergers = len(self.pop['merging_population']['z'])
 
-        self.merger_control_index_pairs = self.find_control_samples_strict()
+        self.merger_control_index_pairs = self.find_control_samples_strict_v2()
         print(f"Number of available mergers in this population is {self.N_mergers:03d}")
         print("Number of cases where a close enough match is not found within the acceptable tolerance:",np.sum(self.merger_control_index_pairs[:,1] == -1))
-        
 
-        # self.control_file_loc = control_file_loc
-        # self.control_name = control_name
-        # self.control_idx_file = self.control_file_loc + self.control_name+".txt"
-        # # self.control_idx_file = self.control_file_loc + "control_indices_for_TNG_%1.2f.txt"%(matching_threshold)
-
-        # if os.path.exists(self.control_idx_file):
-        #     self.control_indices = np.loadtxt(self.control_idx_file).astype(int)
-        # else:
-        #     self.control_indices,self.tolerances = self.find_control_samples(self.pop)
-        #     # self.control_indices,self.tolerances = self.find_control_sample_indices(self.pop,matching_threshold)
-        #     self.store_control_indices()
-
-        # self.control_sample_ids = np.array(self.control_indices).flatten()
-        #self.compute_population_properties()
 
         self.MBH_not_zero_flag = self.pop['merging_population']['MBH'][:][self.merger_control_index_pairs[:,0]]!=0
         self.control_available_flag = self.merger_control_index_pairs[:,1]!=-1
         self.valid_control_mask  = self.MBH_not_zero_flag&self.control_available_flag
 
         self.compute_population_properties(verbose)
+        self.major_merger_mask = self.q_merger >= 0.1
+        self.major_major_merger_mask = self.q_merger >= 0.25
 
     def find_control_samples_strict(self):
 
@@ -93,7 +80,6 @@ class control_samples_TNG:
                  mass_diff = np.abs(np.log(nonmerger_Mstars[closest_non_merger_ix]) - np.log(Mstar_merger_i))
                 
                  if mass_diff <= 0.1:
-                     
                      merger_index = np.where(merging_pop_Mstar==Mstar_merger_i)[0][0]
                      non_merger_index = np.where(non_merging_pop_Mstar==nonmerger_Mstars[closest_non_merger_ix])[0][0]
                      merger_control_index_pairs.append([merger_index,non_merger_index])
@@ -103,6 +89,124 @@ class control_samples_TNG:
 
         return  np.array(merger_control_index_pairs)
 
+    def find_control_samples_strict_v2(self,max_Mstar_tolerance=0.2,max_z_tolerance=0.1):
+
+        all_mrgr_z = np.unique(self.pop['merging_population']['z'][:]) #all unique redshifts where BHs/galaxies are merging
+        merging_pop_Mstar = self.pop['merging_population']['Mstar'][:]
+        non_merging_pop_Mstar = self.pop['non_merging_population']['Mstar'][:]
+
+        merger_control_index_pairs = []
+        used = np.zeros(len(non_merging_pop_Mstar),dtype=bool)
+        starting_Mstar_tol = 0.1
+
+        for i, z_i in enumerate(tqdm(all_mrgr_z, "processing each merger redshifts for controls")):
+            zi_merger_ix = np.where(self.pop['merging_population']['z'] == z_i)[0]          # global indices into merging pop
+            zi_nonmrgr_ix = np.where(self.pop['non_merging_population']['z'] == z_i)[0]    # global indices into non-merging pop
+            zi_nonmerger_ix = zi_nonmrgr_ix[~used[zi_nonmrgr_ix]]                         # available candidates (global indices)
+
+            merger_Mstars = self.pop['merging_population']['Mstar'][zi_merger_ix]
+            # note: we will read candidate masses from pop inside helper so they are always in sync
+            starting_Mstar_tol = starting_Mstar_tol  # keep existing name in scope
+            max_z_tolerance = max_z_tolerance
+
+            def _try_match(candidate_global_idx_array, merger_mass):
+                """Return global index of matched non-merger or -1."""
+                if candidate_global_idx_array.size == 0:
+                    return -1
+                cand_masses = self.pop['non_merging_population']['Mstar'][candidate_global_idx_array]
+                best_local = np.argmin(np.abs(cand_masses - merger_mass))
+                best_global = candidate_global_idx_array[best_local]
+                mass_diff = np.abs(np.log(cand_masses[best_local]) - np.log(merger_mass))
+                return best_global if mass_diff <= max_Mstar_tolerance else -1
+
+            # loop over mergers at this redshift (use global merger index directly)
+            for merger_global_idx, merger_mass in zip(zi_merger_ix, merger_Mstars):
+                matched_non_global = _try_match(zi_nonmerger_ix, merger_mass)
+
+                # if not found, try next redshift (if within tolerance) then previous
+                if matched_non_global == -1 and i < len(all_mrgr_z) - 1:
+                    next_non_idx = np.where(self.pop['non_merging_population']['z'] == all_mrgr_z[i + 1])[0]
+                    next_candidates = next_non_idx[~used[next_non_idx]]
+                    if next_candidates.size and (all_mrgr_z[i + 1] - all_mrgr_z[i]) <= max_z_tolerance:
+                        matched_non_global = _try_match(next_candidates, merger_mass)
+
+                if matched_non_global == -1 and i > 0:
+                    prev_non_idx = np.where(self.pop['non_merging_population']['z'] == all_mrgr_z[i - 1])[0]
+                    prev_candidates = prev_non_idx[~used[prev_non_idx]]
+                    if prev_candidates.size and (all_mrgr_z[i] - all_mrgr_z[i - 1]) <= max_z_tolerance:
+                        matched_non_global = _try_match(prev_candidates, merger_mass)
+
+                if matched_non_global != -1:
+                    # use global indices directly (no expensive np.where on values)
+                    merger_control_index_pairs.append([merger_global_idx, matched_non_global])
+                    used[matched_non_global] = True
+                else:
+                    merger_control_index_pairs.append([merger_global_idx, -1])
+
+        return  np.array(merger_control_index_pairs)
+    
+    def find_control_samples_strict_v3(self,max_Mstar_tolerance=0.6,max_z_tolerance=0.3):
+
+        all_mrgr_z = np.unique(self.pop['merging_population']['z'][:]) #all unique redshifts where BHs/galaxies are merging
+        merging_pop_Mstar = self.pop['merging_population']['Mstar'][:]
+        non_merging_pop_Mstar = self.pop['non_merging_population']['Mstar'][:]
+
+        merger_control_index_pairs = []
+        used = np.zeros(len(non_merging_pop_Mstar),dtype=bool)
+        starting_Mstar_tol = 0.1
+
+        for i,z_i in enumerate(tqdm(all_mrgr_z,"processing each merger redshifts for controls")):
+            zi_merger_ix = np.where(self.pop['merging_population']['z']==z_i)[0]
+            zi_nonmrgr_ix = np.where(self.pop['non_merging_population']['z']==z_i)[0]
+            zi_nonmerger_ix = zi_nonmrgr_ix[used[zi_nonmrgr_ix]==False]
+
+            merger_Mstars = self.pop['merging_population']['Mstar'][zi_merger_ix]
+            nonmerger_Mstars = self.pop['non_merging_population']['Mstar'][zi_nonmerger_ix]
+
+            for Mstar_merger_i in merger_Mstars:
+                closest_non_merger_ix = np.argmin(np.abs(nonmerger_Mstars - Mstar_merger_i))
+                mass_diff = np.abs(np.log(nonmerger_Mstars[closest_non_merger_ix]) - np.log(Mstar_merger_i))
+
+                if mass_diff <= starting_Mstar_tol:
+                    merger_index = np.where(merging_pop_Mstar==Mstar_merger_i)[0][0]
+                    non_merger_index = np.where(non_merging_pop_Mstar==nonmerger_Mstars[closest_non_merger_ix])[0][0]
+                    merger_control_index_pairs.append([merger_index,non_merger_index])
+                    used[non_merger_index] = True #mark this non-merging galaxy as used
+                else:
+                    
+
+                    zi_nonmrgr_ix = np.where(self.pop['non_merging_population']['z']==all_mrgr_z[i+1])[0]
+                    print(all_mrgr_z[i],all_mrgr_z[i+1],all_mrgr_z[i+1]-all_mrgr_z[i])
+                    zi_nonmerger_ix = zi_nonmrgr_ix[used[zi_nonmrgr_ix]==False]
+                    diff_z = all_mrgr_z[i+1]-all_mrgr_z[i]
+
+                    if zi_nonmerger_ix.size != 0 and np.abs(diff_z)<= max_z_tolerance:
+                        nonmerger_Mstars = self.pop['non_merging_population']['Mstar'][zi_nonmerger_ix]
+                        closest_non_merger_ix = np.argmin(np.abs(nonmerger_Mstars - Mstar_merger_i))
+                        mass_diff = np.abs(np.log(nonmerger_Mstars[closest_non_merger_ix]) - np.log(Mstar_merger_i))
+                        if mass_diff <= starting_Mstar_tol:
+                            merger_index = np.where(merging_pop_Mstar==Mstar_merger_i)[0][0]
+                            non_merger_index = np.where(non_merging_pop_Mstar==nonmerger_Mstars[closest_non_merger_ix])[0][0]
+                            merger_control_index_pairs.append([merger_index,non_merger_index])
+                            used[non_merger_index] = True #mark this non-merging galaxy as used
+                    elif i>0:
+                        zi_nonmrgr_ix = np.where(self.pop['non_merging_population']['z']==all_mrgr_z[i-1])[0]
+                        zi_nonmerger_ix = zi_nonmrgr_ix[used[zi_nonmrgr_ix]==False]
+                        diff_z = all_mrgr_z[i]-all_mrgr_z[i-1]
+                        if zi_nonmerger_ix.size != 0 and np.abs(diff_z)<= max_z_tolerance:
+                            nonmerger_Mstars = self.pop['non_merging_population']['Mstar'][zi_nonmerger_ix]
+                            closest_non_merger_ix = np.argmin(np.abs(nonmerger_Mstars - Mstar_merger_i))
+                            mass_diff = np.abs(np.log(nonmerger_Mstars[closest_non_merger_ix]) - np.log(Mstar_merger_i))
+                            if mass_diff <= starting_Mstar_tol:
+                                merger_index = np.where(merging_pop_Mstar==Mstar_merger_i)[0][0]
+                                non_merger_index = np.where(non_merging_pop_Mstar==nonmerger_Mstars[closest_non_merger_ix])[0][0]
+                                merger_control_index_pairs.append([merger_index,non_merger_index])
+                                used[non_merger_index] = True #mark this non-merging galaxy as used
+                        else:
+                            merger_control_index_pairs.append([merger_index,-1]) #no suitable control found 
+
+        return  np.array(merger_control_index_pairs)
+    
     def find_control_samples(self,pop,max_z_tolerance=0.6,max_Mstar_dex_tolerance=0.6):
 
         merging_points = np.column_stack((pop['merging_population']['z'], np.log10(pop['merging_population']['Mstar'])))
@@ -252,6 +356,9 @@ class control_samples_TNG:
         self.Mstar_merging_pop = self.pop['merging_population']['Mstar'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
         self.Mstar_control_pop = self.pop['non_merging_population']['Mstar'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]
 
+        self.Msubhalo_merging_pop = self.pop['merging_population']['Msubhalo'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
+        self.Msubhalo_control_pop = self.pop['non_merging_population']['Msubhalo'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]
+
         self.MBH_merging_pop = self.pop['merging_population']['MBH'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
         self.MBH_control_pop = self.pop['non_merging_population']['MBH'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]
 
@@ -321,10 +428,6 @@ class control_samples_TNG:
 
         return None
         
-
-
-
-
 
     def plot_PM_and_control_histograms(self, bin_settings=None):
     # Default bin settings if none are provided
@@ -614,11 +717,10 @@ class control_sample_brahma:
         self.N_mergers = len(self.pop['merging_population']['z'])
 
         #self.control_indices = self.find_control_samples()
-        merger_control_index_pairs = self.find_control_samples_strict()
+        merger_control_index_pairs = self.find_control_samples_strict_v2()  
         self.merger_control_index_pairs = np.array(merger_control_index_pairs)
 
         print("Number of cases where a close enough match is not found within the acceptable tolerance:",np.sum(np.array(self.merger_control_index_pairs)[:,1]==-1))
-
 
         self.MBH_not_zero_flag = self.pop['merging_population']['MBH'][:][self.merger_control_index_pairs[:,0]]!=0
         self.control_available_flag = self.merger_control_index_pairs[:,1]!=-1
@@ -629,6 +731,8 @@ class control_sample_brahma:
         print(self.N_mergers_w_controls)
 
         self.compute_population_properties(verbose)
+        self.major_merger_mask = self.q_merger >= 0.1
+        self.major_major_merger_mask = self.q_merger >= 0.25
 
     def find_control_samples(self):
         brahma_mergers_Mstar = self.pop['merging_population']['Mstar']
@@ -684,6 +788,62 @@ class control_sample_brahma:
 
         return control_indices
 
+    def find_control_samples_strict_v2(self,max_Mstar_tolerance=0.6,max_z_tolerance=0.3):
+
+        all_mrgr_z = np.unique(self.pop['merging_population']['z'][:]) #all unique redshifts where BHs/galaxies are merging
+        merging_pop_Mstar = self.pop['merging_population']['Mstar'][:]
+        non_merging_pop_Mstar = self.pop['non_merging_population']['Mstar'][:]
+
+        merger_control_index_pairs = []
+        used = np.zeros(len(non_merging_pop_Mstar),dtype=bool)
+        starting_Mstar_tol = 0.1
+
+        for i, z_i in enumerate(tqdm(all_mrgr_z, "processing each merger redshifts for controls")):
+            zi_merger_ix = np.where(self.pop['merging_population']['z'] == z_i)[0]          # global indices into merging pop
+            zi_nonmrgr_ix = np.where(self.pop['non_merging_population']['z'] == z_i)[0]    # global indices into non-merging pop
+            zi_nonmerger_ix = zi_nonmrgr_ix[~used[zi_nonmrgr_ix]]                         # available candidates (global indices)
+
+            merger_Mstars = self.pop['merging_population']['Mstar'][zi_merger_ix]
+            # note: we will read candidate masses from pop inside helper so they are always in sync
+            starting_Mstar_tol = starting_Mstar_tol  # keep existing name in scope
+            max_z_tolerance = max_z_tolerance
+
+            def _try_match(candidate_global_idx_array, merger_mass):
+                """Return global index of matched non-merger or -1."""
+                if candidate_global_idx_array.size == 0:
+                    return -1
+                cand_masses = self.pop['non_merging_population']['Mstar'][candidate_global_idx_array]
+                best_local = np.argmin(np.abs(cand_masses - merger_mass))
+                best_global = candidate_global_idx_array[best_local]
+                mass_diff = np.abs(np.log(cand_masses[best_local]) - np.log(merger_mass))
+                return best_global if mass_diff <= starting_Mstar_tol else -1
+
+            # loop over mergers at this redshift (use global merger index directly)
+            for merger_global_idx, merger_mass in zip(zi_merger_ix, merger_Mstars):
+                matched_non_global = _try_match(zi_nonmerger_ix, merger_mass)
+
+                # if not found, try next redshift (if within tolerance) then previous
+                if matched_non_global == -1 and i < len(all_mrgr_z) - 1:
+                    next_non_idx = np.where(self.pop['non_merging_population']['z'] == all_mrgr_z[i + 1])[0]
+                    next_candidates = next_non_idx[~used[next_non_idx]]
+                    if next_candidates.size and (all_mrgr_z[i + 1] - all_mrgr_z[i]) <= max_z_tolerance:
+                        matched_non_global = _try_match(next_candidates, merger_mass)
+
+                if matched_non_global == -1 and i > 0:
+                    prev_non_idx = np.where(self.pop['non_merging_population']['z'] == all_mrgr_z[i - 1])[0]
+                    prev_candidates = prev_non_idx[~used[prev_non_idx]]
+                    if prev_candidates.size and (all_mrgr_z[i] - all_mrgr_z[i - 1]) <= max_z_tolerance:
+                        matched_non_global = _try_match(prev_candidates, merger_mass)
+
+                if matched_non_global != -1:
+                    # use global indices directly (no expensive np.where on values)
+                    merger_control_index_pairs.append([merger_global_idx, matched_non_global])
+                    used[matched_non_global] = True
+                else:
+                    merger_control_index_pairs.append([merger_global_idx, -1])
+
+        return  np.array(merger_control_index_pairs)
+    
     def find_control_samples_strict(self):
 
         all_mrgr_z = np.unique(self.pop['merging_population']['z'][:]) #all unique redshifts where BHs/galaxies are merging
@@ -767,7 +927,10 @@ class control_sample_brahma:
 
         self.Mstar_merging_pop = self.pop['merging_population']['Mstar'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
         self.Mstar_control_pop = self.pop['non_merging_population']['Mstar'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]
-
+        
+        self.Msubhalo_merging_pop = self.pop['merging_population']['Msubhalo'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
+        self.Msubhalo_control_pop = self.pop['non_merging_population']['Msubhalo'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]
+        
         self.MBH_merging_pop = self.pop['merging_population']['MBH'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
         self.MBH_control_pop = self.pop['non_merging_population']['MBH'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]
 

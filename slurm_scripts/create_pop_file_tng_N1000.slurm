@@ -1,12 +1,12 @@
 #!/bin/sh
 
-#SBATCH --qos=lblecha
+#SBATCH --qos=lblecha-b
 #SBATCH -J ptng_opulation_sort
 #SBATCH -n 1
 #SBATCH -N 1
 #SBATCH --mail-user=pranavsatheesh@ufl.edu
 #SBATCH --mail-type=END,FAIL
-#SBATCH -t 48:00:00
+#SBATCH -t 50:00:00
 #SBATCH --mem-per-cpu=3200
 #SBATCH --output=/home/pranavsatheesh/host_galaxies/slurm_outputs/tng_pop/tng_population_sort_%j.out
 #SBATCH --error=/home/pranavsatheesh/host_galaxies/slurm_outputs/tng_pop/tng_population_sort_%j.err
