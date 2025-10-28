@@ -39,23 +39,23 @@ def find_tng_subhalo_statistics(tng_basepath, save_loc, minN_values):
 
     for snap in tqdm(snap_list,desc="processing each snapshots in TNG"):
         subhalos = il.groupcat.loadSubhalos(tng_basepath, snapNum=snap,fields=fields)
-    sub_lentype = subhalos['SubhaloLenType']
-    Ngas = sub_lentype[:,0]
-    Ndm = sub_lentype[:,1]
-    Nstar = sub_lentype[:,4]
-    Nbh = sub_lentype[:,5]
-    valid_subhalo_idx = np.where((Ngas > minNgas) & (Ndm > minNdm) & (Nstar > minNstar) & (Nbh > 0))
-    all_subhalos_data["snap"].append(np.full(len(valid_subhalo_idx[0]), snap))
-    all_subhalos_data["z"].append(np.full(len(valid_subhalo_idx[0]), z_list[snap-1]))
-    all_subhalos_data["SubhaloLenType"].append(sub_lentype[valid_subhalo_idx])
-    all_subhalos_data["Mstar"].append(subhalos['SubhaloMassType'][:,4][valid_subhalo_idx])  
-    all_subhalos_data["MBH"].append(subhalos['SubhaloBHMass'][valid_subhalo_idx])
-    all_subhalos_data["MgasinRad"].append(subhalos['SubhaloMassInRadType'][:,0][valid_subhalo_idx])
-    all_subhalos_data["Mgastotal"].append(subhalos['SubhaloMassType'][:,0][valid_subhalo_idx])
-    all_subhalos_data["MstarinRad"].append(subhalos['SubhaloMassInRadType'][:,4][valid_subhalo_idx])
-    all_subhalos_data["SFR"].append(subhalos['SubhaloSFR'][valid_subhalo_idx])
-    all_subhalos_data["MdotBH"].append(subhalos['SubhaloBHMdot'][valid_subhalo_idx])
-    all_subhalos_data["SubhaloHalfmassRadType"].append(subhalos['SubhaloHalfmassRadType'][valid_subhalo_idx])
+        sub_lentype = subhalos['SubhaloLenType']
+        Ngas = sub_lentype[:,0]
+        Ndm = sub_lentype[:,1]
+        Nstar = sub_lentype[:,4]
+        Nbh = sub_lentype[:,5]
+        valid_subhalo_idx = np.where((Ngas > minNgas) & (Ndm > minNdm) & (Nstar > minNstar) & (Nbh > 0))
+        all_subhalos_data["snap"].append(np.full(len(valid_subhalo_idx[0]), snap))
+        all_subhalos_data["z"].append(np.full(len(valid_subhalo_idx[0]), z_list[snap-1]))
+        all_subhalos_data["SubhaloLenType"].append(sub_lentype[valid_subhalo_idx])
+        all_subhalos_data["Mstar"].append(subhalos['SubhaloMassType'][:,4][valid_subhalo_idx])  
+        all_subhalos_data["MBH"].append(subhalos['SubhaloBHMass'][valid_subhalo_idx])
+        all_subhalos_data["MgasinRad"].append(subhalos['SubhaloMassInRadType'][:,0][valid_subhalo_idx])
+        all_subhalos_data["Mgastotal"].append(subhalos['SubhaloMassType'][:,0][valid_subhalo_idx])
+        all_subhalos_data["MstarinRad"].append(subhalos['SubhaloMassInRadType'][:,4][valid_subhalo_idx])
+        all_subhalos_data["SFR"].append(subhalos['SubhaloSFR'][valid_subhalo_idx])
+        all_subhalos_data["MdotBH"].append(subhalos['SubhaloBHMdot'][valid_subhalo_idx])
+        all_subhalos_data["SubhaloHalfmassRadType"].append(subhalos['SubhaloHalfmassRadType'][valid_subhalo_idx])
 
     update_units(all_subhalos_data,h)
     save_file(all_subhalos_data, save_loc, "TNG-50")
@@ -89,23 +89,23 @@ def find_brahma_subhalo_statistics(brahma_basepath, save_loc, minN_values):
 
     for snap in tqdm(snap_list,desc="processing each snapshots in BRAHMA"):
         subhalos = il_brahma.groupcat.loadSubhalos(brahma_basepath, snapNum=snap,fields=fields)
-    sub_lentype = subhalos['SubhaloLenType']
-    Ngas = sub_lentype[:,0]
-    Ndm = sub_lentype[:,1]
-    Nstar = sub_lentype[:,4]
-    Nbh = sub_lentype[:,5]
-    valid_subhalo_idx = np.where((Ngas > minNgas) & (Ndm > minNdm) & (Nstar > minNstar) & (Nbh > 0))
-    all_subhalos_data["snap"].append(np.full(len(valid_subhalo_idx[0]), snap))
-    all_subhalos_data["z"].append(np.full(len(valid_subhalo_idx[0]), z_list[snap-1]))
-    all_subhalos_data["SubhaloLenType"].append(sub_lentype[valid_subhalo_idx])
-    all_subhalos_data["Mstar"].append(subhalos['SubhaloMassType'][:,4][valid_subhalo_idx])  
-    all_subhalos_data["MBH"].append(subhalos['SubhaloBHMass'][valid_subhalo_idx])
-    all_subhalos_data["MgasinRad"].append(subhalos['SubhaloMassInRadType'][:,0][valid_subhalo_idx])
-    all_subhalos_data["Mgastotal"].append(subhalos['SubhaloMassType'][:,0][valid_subhalo_idx])
-    all_subhalos_data["MstarinRad"].append(subhalos['SubhaloMassInRadType'][:,4][valid_subhalo_idx])
-    all_subhalos_data["SFR"].append(subhalos['SubhaloSFR'][valid_subhalo_idx])
-    all_subhalos_data["MdotBH"].append(subhalos['SubhaloBHMdot'][valid_subhalo_idx])
-    all_subhalos_data["SubhaloHalfmassRadType"].append(subhalos['SubhaloHalfmassRadType'][valid_subhalo_idx])     
+        sub_lentype = subhalos['SubhaloLenType']
+        Ngas = sub_lentype[:,0]
+        Ndm = sub_lentype[:,1]
+        Nstar = sub_lentype[:,4]
+        Nbh = sub_lentype[:,5]
+        valid_subhalo_idx = np.where((Ngas > minNgas) & (Ndm > minNdm) & (Nstar > minNstar) & (Nbh > 0))
+        all_subhalos_data["snap"].append(np.full(len(valid_subhalo_idx[0]), snap))
+        all_subhalos_data["z"].append(np.full(len(valid_subhalo_idx[0]), z_list[snap-1]))
+        all_subhalos_data["SubhaloLenType"].append(sub_lentype[valid_subhalo_idx])
+        all_subhalos_data["Mstar"].append(subhalos['SubhaloMassType'][:,4][valid_subhalo_idx])  
+        all_subhalos_data["MBH"].append(subhalos['SubhaloBHMass'][valid_subhalo_idx])
+        all_subhalos_data["MgasinRad"].append(subhalos['SubhaloMassInRadType'][:,0][valid_subhalo_idx])
+        all_subhalos_data["Mgastotal"].append(subhalos['SubhaloMassType'][:,0][valid_subhalo_idx])
+        all_subhalos_data["MstarinRad"].append(subhalos['SubhaloMassInRadType'][:,4][valid_subhalo_idx])
+        all_subhalos_data["SFR"].append(subhalos['SubhaloSFR'][valid_subhalo_idx])
+        all_subhalos_data["MdotBH"].append(subhalos['SubhaloBHMdot'][valid_subhalo_idx])
+        all_subhalos_data["SubhaloHalfmassRadType"].append(subhalos['SubhaloHalfmassRadType'][valid_subhalo_idx])     
 
     update_units(all_subhalos_data,h)
     save_file(all_subhalos_data, save_loc, brahma_simName)

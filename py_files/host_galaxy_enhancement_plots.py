@@ -321,7 +321,7 @@ def match_z_Mstar_plot(ax,control_obj,sim_color,Mstar_binsize = 0.5,Mstar_min = 
         return ax
 
 def set_plot_style(linewidth=3,spinewidth=2,titlesize=20,labelsize=25,legendsize=20,
-                   ytick_major_size=5, xtick_major_size=5,xticksize=10,yticksize=10,bold=False):
+                   ylabelsize=10, xlabelsize=10,bold=False):
     '''Set the plotting style for matplotlib plots.
     Parameters:
     -----------
@@ -346,13 +346,15 @@ def set_plot_style(linewidth=3,spinewidth=2,titlesize=20,labelsize=25,legendsize
         # font sizes
         'axes.labelsize': labelsize,
         'axes.titlesize': titlesize,
-        'xtick.labelsize': xticksize,
-        'ytick.labelsize': yticksize,
+        'xtick.labelsize': xlabelsize,
+        'ytick.labelsize': ylabelsize,
         'legend.fontsize': legendsize,
         'figure.titlesize': titlesize,
         # tick sizes (major ticks)
-        'xtick.major.size': xtick_major_size,
-        'ytick.major.size': ytick_major_size,
+        # 'xtick.major.size': xticksize,
+        # 'xtick.minor.size': xticksize/5,
+        # 'ytick.major.size': yticksize,
+        # 'ytick.minor.size': yticksize/5,
         # font family
         "font.family": "serif",
         "font.sans-serif": ["Arial", "Helvetica", "DejaVu Sans", "Liberation Sans", "Bitstream Vera Sans", "sans-serif"],
@@ -455,6 +457,36 @@ def plot_evolution_z_w_Mstar_interval_for_sim(ax,Mstar_lower,Mstar_upper,sim_obj
 
     return ax
 
+
+def plot_evolution_z_w_Msubhalo_interval_for_sim(ax,Mstar_lower,Mstar_upper,sim_obj,sim_zbins_list,sim_names,sim_colors,quantity_name,plot_log10=False):
+
+    #example usage:
+    # plot_evolution_z_for_sim(ax,sim_obj,sim_zbins,sim_names,sim_colors,'sSFR_merging_pop')
+
+    for i,sim in enumerate(sim_names):
+        avg_quantity = []
+        std_quantity = []
+
+        sim_zbins = sim_zbins_list[i]
+        # Loop through redshift bins
+        for j in range(len(sim_zbins) - 1):
+            merger_z_mask = (sim_obj[sim].z_merging_pop >= sim_zbins[j]) & (sim_obj[sim].z_merging_pop < sim_zbins[j+1])
+            merger_Mstar_mask = (sim_obj[sim].Msubhalo_merging_pop >= Mstar_lower) & (sim_obj[sim].Msubhalo_merging_pop <= Mstar_upper)
+
+            quantity_values = getattr(sim_obj[sim], quantity_name)[merger_z_mask & merger_Mstar_mask]
+            avg_quantity.append(np.mean(quantity_values))
+            std_quantity.append(np.std(quantity_values)/ np.sqrt(len(quantity_values)))
+
+        avg_quantity = np.array(avg_quantity)
+        std_quantity = np.array(std_quantity)
+        if plot_log10:
+            ax.plot(sim_zbins[:-1] + np.diff(sim_zbins) / 2, np.log10(avg_quantity), label=sim, color=sim_colors[i])
+            ax.fill_between(sim_zbins[:-1] + np.diff(sim_zbins) / 2, np.log10(avg_quantity-std_quantity), np.log10(avg_quantity+std_quantity), alpha=0.1,color=sim_colors[i])
+        else:
+            ax.plot(sim_zbins[:-1] + np.diff(sim_zbins) / 2, avg_quantity, label=sim, color=sim_colors[i])
+            ax.fill_between(sim_zbins[:-1] + np.diff(sim_zbins) / 2, avg_quantity-std_quantity, avg_quantity+std_quantity, alpha=0.1,color=sim_colors[i])
+
+    return ax
 
 
 

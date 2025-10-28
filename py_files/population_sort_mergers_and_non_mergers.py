@@ -126,6 +126,8 @@ class pop_generator:
             self.unique_redshifts = self.brahma_redshifts[self.unique_snaps]
 
         for i, snap in enumerate(self.unique_snaps):
+            print(f"Processing snapshot number {snap}")
+            sys.stdout.flush()
             if(self.brahma_key==False):
                 subhalos = il.groupcat.loadSubhalos(self.basePath, snap,fields)
             else:
@@ -342,5 +344,6 @@ if __name__ == "__main__":
     minN_values = np.array([int(sys.argv[5]), int(sys.argv[6]), int(sys.argv[7]), int(sys.argv[8])])
     
     print(f"Creating merger and non merger populations for sim run"+basePath.split("/")[-2])
+    sys.stdout.flush()
     pop_gen = pop_generator(basePath,merger_file_loc,minN_values,brahma_key)
     pop_gen.save_population_to_file(pop_file_save_loc)

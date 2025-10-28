@@ -1,0 +1,262 @@
+/orange/lblecha/IllustrisTNG/Runs/TNG50-1/output /home/pranavsatheesh/host_galaxies/data/merger_files
+Creating merger and non merger populations for sim runTNG50-1
+Processing snapshot number 17
+4
+subhalos in this snap: 8048423
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 1926
+8048423 1926 1900
+1900 4
+Processing snapshot number 18
+2
+subhalos in this snap: 7983385
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 2456
+7983385 2456 2423
+2423 2
+Processing snapshot number 19
+2
+subhalos in this snap: 7974096
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 2903
+7974096 2903 2866
+2866 2
+Processing snapshot number 20
+2
+subhalos in this snap: 7978407
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 3409
+7978407 3409 3370
+3370 2
+Processing snapshot number 21
+3
+subhalos in this snap: 7982509
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 3804
+7982509 3804 3758
+3758 3
+Processing snapshot number 22
+6
+subhalos in this snap: 7987494
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 4537
+7987494 4537 4473
+4473 6
+Processing snapshot number 23
+11
+subhalos in this snap: 7981620
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 5108
+7981620 5108 5038
+5038 11
+Processing snapshot number 24
+5
+subhalos in this snap: 7968980
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 5630
+7968980 5630 5549
+5549 5
+Processing snapshot number 25
+21
+subhalos in this snap: 7935350
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 6336
+7935350 6336 6251
+6251 21
+Processing snapshot number 26
+1
+subhalos in this snap: 7915509
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 6642
+7915509 6642 6565
+6565 1
+Processing snapshot number 27
+6
+subhalos in this snap: 7876861
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 7075
+7876861 7075 6984
+6984 6
+Processing snapshot number 28
+22
+subhalos in this snap: 7832045
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 7486
+7832045 7486 7408
+7408 22
+Processing snapshot number 29
+11
+subhalos in this snap: 7786792
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 7814
+7786792 7814 7704
+7704 11
+Processing snapshot number 30
+14
+subhalos in this snap: 7737426
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 8075
+7737426 8075 7972
+7972 14
+Processing snapshot number 31
+10
+subhalos in this snap: 7689686
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 8301
+7689686 8301 8197
+8197 10
+Processing snapshot number 32
+14
+subhalos in this snap: 7639891
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 8573
+7639891 8573 8471
+8471 14
+Processing snapshot number 33
+17
+subhalos in this snap: 7583454
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 8713
+7583454 8713 8613
+8613 17
+Processing snapshot number 34
+18
+subhalos in this snap: 7524894
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 8885
+7524894 8885 8779
+8779 18
+Processing snapshot number 35
+11
+subhalos in this snap: 7473304
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 9030
+7473304 9030 8937
+8937 11
+Processing snapshot number 36
+11
+subhalos in this snap: 7420366
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 9163
+7420366 9163 9063
+9063 11
+Processing snapshot number 37
+11
+subhalos in this snap: 7367920
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 9301
+7367920 9301 9187
+9187 11
+Processing snapshot number 38
+9
+subhalos in this snap: 7322312
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 9376
+7322312 9376 9253
+9253 9
+Processing snapshot number 39
+9
+subhalos in this snap: 7267627
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 9451
+7267627 9451 9350
+9350 9
+Processing snapshot number 40
+4
+subhalos in this snap: 7239049
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 9493
+7239049 9493 9377
+9377 4
+Processing snapshot number 41
+18
+subhalos in this snap: 7171792
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 9580
+7171792 9580 9477
+9477 18
+Processing snapshot number 42
+9
+subhalos in this snap: 7124744
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 9636
+7124744 9636 9523
+9523 9
+Processing snapshot number 43
+6
+subhalos in this snap: 7074700
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 9722
+7074700 9722 9604
+9604 6
+Processing snapshot number 44
+10
+subhalos in this snap: 7026751
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 9725
+7026751 9725 9611
+9611 10
+Processing snapshot number 45
+10
+subhalos in this snap: 6985698
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 9752
+6985698 9752 9631
+9631 10
+Processing snapshot number 46
+7
+subhalos in this snap: 6937059
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 9813
+6937059 9813 9702
+9702 7
+Processing snapshot number 47
+7
+subhalos in this snap: 6898712
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 9860
+6898712 9860 9736
+9736 7
+Processing snapshot number 48
+6
+subhalos in this snap: 6860315
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 9849
+6860315 9849 9752
+9752 6
+Processing snapshot number 49
+5
+subhalos in this snap: 6821331
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 9875
+6821331 9875 9762
+9762 5
+Processing snapshot number 50
+6
+subhalos in this snap: 6780233
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 9907
+6780233 9907 9801
+9801 6
+Processing snapshot number 51
+8
+subhalos in this snap: 6731706
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 9928
+6731706 9928 9792
+9792 8
+Processing snapshot number 52
+5
+subhalos in this snap: 6702979
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 9966
+6702979 9966 9851
+9851 5
+Processing snapshot number 53
+6
+subhalos in this snap: 6664117
+minN_values: [   0    0 1000    1]
+subhalos with particle cut: 10010
+6664117 10010 9892
+9892 6
+Processing snapshot number 54
