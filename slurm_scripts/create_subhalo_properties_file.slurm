@@ -6,7 +6,7 @@
 #SBATCH --mail-user=pranavsatheesh@ufl.edu
 #SBATCH --mail-type=END,FAIL
 #SBATCH -t 48:00:00
-#SBATCH --mem-per-cpu=3200
+#SBATCH --mem-per-cpu=3500
 #SBATCH --output=/home/pranavsatheesh/host_galaxies/slurm_outputs/all_subhalos_property_run_%j.out
 #SBATCH --error=/home/pranavsatheesh/host_galaxies/slurm_outputs/all_subhalos_property_run_%j.error
 
