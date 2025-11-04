@@ -21,8 +21,12 @@ def find_tng_subhalo_statistics(tng_basepath, save_loc, minN_values):
     #should change this away from hard coded values later for an arbitary sim
     z_list = np.array([il.groupcat.loadHeader(tng_basepath, snap)['Redshift'].item() 
                                   for snap in snap_list])
-    fields=['SubhaloLenType', 'SubhaloMassType','SubhaloMass', 'SubhaloBHMass', 'SubhaloBHMdot', 'SubhaloSFR','SubhaloHalfmassRadType','SubhaloMassInHalfRadType','SubhaloMassInRadType']
+    fields=['SubhaloLenType', 'SubhaloMassType','SubhaloMass', 'SubhaloBHMass', 'SubhaloBHMdot', 'SubhaloSFR','SubhaloHalfmassRadType'
+            ,'SubhaloMassInHalfRadType','SubhaloMassInRadType', 'SubhaloStellarPhotometrics']
 
+    #SubhaloSFRinHalfRad
+    # gas half mass radius
+    
     all_subhalos_data={
     "snap" :  np.array([], dtype=int),
     "z" :  np.array([], dtype=float),
@@ -34,7 +38,8 @@ def find_tng_subhalo_statistics(tng_basepath, save_loc, minN_values):
     "MstarinRad": np.array([], dtype=float),
     "SFR": np.array([], dtype=float),
     "MdotBH": np.array([], dtype=float),
-    "StellarHalfmassRadType": np.array([], dtype=float)
+    "StellarHalfmassRadType": np.array([], dtype=float),
+    "SubhaloPhotoMag": np.empty((0, 8), dtype=float)
     }
 
     for snap in tqdm(snap_list,desc="processing each snapshots in TNG"):
@@ -57,9 +62,10 @@ def find_tng_subhalo_statistics(tng_basepath, save_loc, minN_values):
         all_subhalos_data["SFR"] = np.concatenate((all_subhalos_data["SFR"],subhalos['SubhaloSFR'][valid_subhalo_idx]))
         all_subhalos_data["MdotBH"] = np.concatenate((all_subhalos_data["MdotBH"],subhalos['SubhaloBHMdot'][valid_subhalo_idx]))
         all_subhalos_data["StellarHalfmassRadType"] = np.concatenate((all_subhalos_data["StellarHalfmassRadType"],subhalos['SubhaloHalfmassRadType'][:,4][valid_subhalo_idx]))
+        all_subhalos_data["SubhaloPhotoMag"] = np.concatenate((all_subhalos_data["SubhaloPhotoMag"], subhalos['SubhaloStellarPhotometrics'][valid_subhalo_idx]))
 
     update_units(all_subhalos_data,h)
-    save_file(all_subhalos_data, save_loc, "TNG-50")
+    save_file(all_subhalos_data, save_loc, "TNG50")
 
 def find_brahma_subhalo_statistics(brahma_basepath, save_loc, minN_values):
     brahma_simName = brahma_basepath.split('/')[-2]
@@ -72,8 +78,8 @@ def find_brahma_subhalo_statistics(brahma_basepath, save_loc, minN_values):
     snap_list = np.arange(1,33,1)
     z_list = np.array([il_brahma.groupcat.loadHeader(brahma_basepath, snap)['Redshift'].item() 
                                   for snap in snap_list])
-    fields=['SubhaloLenType', 'SubhaloMassType','SubhaloMass', 'SubhaloBHMass', 'SubhaloBHMdot', 'SubhaloSFR','SubhaloHalfmassRadType','SubhaloMassInHalfRadType','SubhaloMassInRadType']
-
+    fields=['SubhaloLenType', 'SubhaloMassType','SubhaloMass', 'SubhaloBHMass', 'SubhaloBHMdot', 'SubhaloSFR','SubhaloHalfmassRadType','SubhaloMassInHalfRadType','SubhaloMassInRadType','SubhaloStellarPhotometrics']
+    #fields - add SubhaloHalfmassRadType
     all_subhalos_data={
     "snap" :  np.array([], dtype=int),
     "z" :  np.array([], dtype=float),
@@ -85,7 +91,8 @@ def find_brahma_subhalo_statistics(brahma_basepath, save_loc, minN_values):
     "MstarinRad": np.array([], dtype=float),
     "SFR": np.array([], dtype=float),
     "MdotBH": np.array([], dtype=float),
-    "StellarHalfmassRadType": np.array([], dtype=float)
+    "StellarHalfmassRadType": np.array([], dtype=float),
+    "SubhaloPhotoMag": np.empty((0, 8), dtype=float)
     }
 
     for snap in tqdm(snap_list,desc="processing each snapshots in BRAHMA"):
@@ -107,6 +114,8 @@ def find_brahma_subhalo_statistics(brahma_basepath, save_loc, minN_values):
         all_subhalos_data["SFR"] = np.concatenate((all_subhalos_data["SFR"],subhalos['SubhaloSFR'][valid_subhalo_idx]))
         all_subhalos_data["MdotBH"] = np.concatenate((all_subhalos_data["MdotBH"],subhalos['SubhaloBHMdot'][valid_subhalo_idx]))
         all_subhalos_data["StellarHalfmassRadType"] = np.concatenate((all_subhalos_data["StellarHalfmassRadType"],subhalos['SubhaloHalfmassRadType'][:,4][valid_subhalo_idx]))
+        all_subhalos_data["SubhaloPhotoMag"] = np.concatenate((all_subhalos_data["SubhaloPhotoMag"], subhalos['SubhaloStellarPhotometrics'][valid_subhalo_idx]))
+
 
     update_units(all_subhalos_data,h)
     save_file(all_subhalos_data, save_loc, brahma_simName)
@@ -123,7 +132,7 @@ def update_units(data_dict,h):
     return data_dict
 
 
-def save_file(data_dict, save_loc, sim_key="TNG-50"):
+def save_file(data_dict, save_loc, sim_key="TNG50"):
     
     with h5py.File(save_loc + '/' + sim_key + '_subhalo_statistics.hdf5', 'w') as f:
         for key,value in data_dict.items():

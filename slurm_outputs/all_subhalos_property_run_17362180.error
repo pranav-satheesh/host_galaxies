@@ -1,0 +1,7 @@
+processing each snapshots in TNG:   0%|          | 0/99 [00:00<?, ?it/s]processing each snapshots in TNG:   0%|          | 0/99 [02:26<?, ?it/s]
+Traceback (most recent call last):
+  File "/home/pranavsatheesh/host_galaxies/py_files/sim_subhalo_property_statistics.py", line 151, in <module>
+    find_tng_subhalo_statistics(basepath, save_loc, minN_values)    
+  File "/home/pranavsatheesh/host_galaxies/py_files/sim_subhalo_property_statistics.py", line 61, in find_tng_subhalo_statistics
+    all_subhalos_data["SubhaloPhotoMag"] = np.concatenate((all_subhalos_data["SubhaloPhotoMag"], subhalos['SubhaloStellarPhotometrics'][valid_subhalo_idx]))
+KeyError: 'SubhaloStellarPhotometrics'

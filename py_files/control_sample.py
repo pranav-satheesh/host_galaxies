@@ -388,8 +388,8 @@ class control_samples_TNG:
         self.MstarInRad = self.pop['merging_population']['MstarInRad'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
         self.fgas_post_merger = self.MgasInRad/(self.MgasInRad + self.MstarInRad)
 
-        self.fgas_control = self.pop['non_merging_population']['MgasInRad'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]/(self.pop['non_merging_population']['MgasInRad'][:][self.merger_control_index_pairs[self.valid_control_mask,1]] + self.pop['non_merging_population']['MstarInRad'][:][self.merger_control_index_pairs[self.valid_control_mask,1]])
-        
+        self.fgas_control_pop = self.pop['non_merging_population']['MgasInRad'][:][self.merger_control_index_pairs[self.valid_control_mask,1]]/(self.pop['non_merging_population']['MgasInRad'][:][self.merger_control_index_pairs[self.valid_control_mask,1]] + self.pop['non_merging_population']['MstarInRad'][:][self.merger_control_index_pairs[self.valid_control_mask,1]])
+
         self.SubhaloPhotoMag_merging_pop = self.pop['merging_population']['SubhaloPhotoMag'][:][self.merger_control_index_pairs[self.valid_control_mask,0]]
         self.SubhaloPhotoMag_control_pop = self.pop['non_merging_population']['SubhaloPhotoMag'][:][self.merger_control_index_pairs[self.valid_control_mask,1]] 
 
