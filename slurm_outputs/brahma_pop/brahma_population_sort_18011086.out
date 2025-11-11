@@ -1,0 +1,131 @@
+/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LW10_DFD_3_TNG/ /home/pranavsatheesh/host_galaxies/data/merger_files
+Creating merger and non merger populations for sim runSM5_LW10_DFD_3_TNG
+Processing snapshot number 17
+8.012172948865935 17 17 8.012172948865935
+2
+subhalos in this snap: 73393
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 243
+73393 243 243
+243 2
+Processing snapshot number 18
+7.005417045544533 18 18 7.005417045544533
+5
+subhalos in this snap: 85958
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 435
+85958 435 429
+429 5
+Processing snapshot number 19
+6.0107573988449 19 19 6.0107573988449
+22
+subhalos in this snap: 98521
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 698
+98521 698 688
+688 22
+Processing snapshot number 20
+4.995933468164624 20 20 4.995933468164624
+30
+subhalos in this snap: 110931
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1033
+110931 1033 1004
+1004 30
+Processing snapshot number 21
+4.0079451114652676 21 21 4.0079451114652676
+82
+subhalos in this snap: 119852
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1411
+119852 1411 1370
+1370 82
+Processing snapshot number 22
+3.008131071630377 22 22 3.008131071630377
+164
+subhalos in this snap: 124103
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1672
+124103 1672 1639
+1639 164
+Processing snapshot number 23
+2.0020281392528516 23 23 2.0020281392528516
+257
+subhalos in this snap: 121446
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1707
+121446 1707 1672
+1672 257
+Processing snapshot number 24
+1.4955121664955557 24 24 1.4955121664955557
+175
+subhalos in this snap: 117164
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1553
+117164 1553 1535
+1535 175
+Processing snapshot number 25
+0.9972942257819404 25 25 0.9972942257819404
+146
+subhalos in this snap: 110571
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1366
+110571 1366 1352
+1352 146
+Processing snapshot number 26
+0.7001063537185233 26 26 0.7001063537185233
+105
+subhalos in this snap: 105885
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1268
+105885 1268 1258
+1258 105
+Processing snapshot number 27
+0.5030475232448832 27 27 0.5030475232448832
+48
+subhalos in this snap: 102417
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1204
+102417 1204 1191
+1191 48
+Processing snapshot number 28
+0.3999269646135635 28 28 0.3999269646135635
+23
+subhalos in this snap: 100538
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1175
+100538 1175 1164
+1164 23
+Processing snapshot number 29
+0.2977176845174465 29 29 0.2977176845174465
+19
+subhalos in this snap: 98580
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1125
+98580 1125 1116
+1116 19
+Processing snapshot number 30
+0.19728418237600986 30 30 0.19728418237600986
+16
+subhalos in this snap: 96802
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1110
+96802 1110 1103
+1103 16
+Processing snapshot number 31
+0.09940180263022191 31 31 0.09940180263022191
+14
+subhalos in this snap: 95032
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1091
+95032 1091 1083
+1083 14
+Processing snapshot number 32
+2.220446049250313e-16 32 32 2.220446049250313e-16
+15
+subhalos in this snap: 93317
+minN_values: [ 0  0 10  1]
+subhalos with particle cut: 1072
+93317 1072 1065
+1065 15
+Saved populations to /home/pranavsatheesh/host_galaxies/data/population_files/SM5_LW10_DFD_3_TNG_population_sort_gas-000_dm-000_star-010_bh-001.hdf5
