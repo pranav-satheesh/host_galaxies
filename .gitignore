@@ -2,10 +2,35 @@
 node_modules/
 npm-debug.log
 
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Jupyter
+.ipynb_checkpoints/
+*-checkpoint.py
+*-checkpoint.ipynb
+
+# Core dumps and debug files
+core
+core.*
+*.core
+
 # Logs
 logs/
 *.log
 *.log.*
+*.out
+*.err
+*.stdout
+*.stderr
 
 # Dependency directories
 jspm_packages/
@@ -29,3 +54,7 @@ Thumbs.db
 
 # Ignore all HDF5 files
 *.hdf5
+# SLURM outputs
+slurm_outputs/
+*.slurm.out
+*.slurm.err
