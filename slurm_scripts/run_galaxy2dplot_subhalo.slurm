@@ -1,5 +1,5 @@
 #!/bin/sh
-
+#!/bin/sh
 #SBATCH --qos=lblecha-b
 #SBATCH -J galaxy2d_subhalo
 #SBATCH --mail-type=END,FAIL
@@ -22,10 +22,10 @@ outDir=/home/pranavsatheesh/host_galaxies/figures/2d_plots
 boxLength=50
 boxWidth=50
 boxHeight=5
-nbins=100
+nbins=500
 vmin=-4
 vmax=4
-ptype=0
+ptype=1
 particle_property='Density'
 
 for snap in "${snap_list[@]}"; do

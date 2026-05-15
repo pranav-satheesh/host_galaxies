@@ -19,8 +19,8 @@ codePath=/home/pranavsatheesh/host_galaxies/py_files
 merger_file_path=/home/pranavsatheesh/host_galaxies/data/merger_files
 pop_file_path=/home/pranavsatheesh/host_galaxies/data/population_files
 
-minNdm=0               
-minNgas=0
+minNdm=10               
+minNgas=10
 minNstar=1000
 minNbh=1
 

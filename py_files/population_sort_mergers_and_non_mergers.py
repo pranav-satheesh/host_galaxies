@@ -1,6 +1,5 @@
 import numpy as np
 import illustris_python as il
-import matplotlib.pyplot as plt
 import h5py
 import sys
 from scipy.spatial import cKDTree
@@ -8,11 +7,10 @@ sys.path.append('../BH_dynamics_analysis')
 sys.path.append('/home/pranavsatheesh/arepo_package/')
 import arepo_package as arepo
 import BRAHMA_python as il_brahma
-from tqdm import tqdm
+# from tqdm import tqdm
 
 MSOL = 1.988409870698051e+33
 h = 0.6774
-
 
 class pop_generator:
 
@@ -43,7 +41,7 @@ class pop_generator:
         self.subhaloidx_prog2 = fmergers['shids_subf'][:,1]
         self.subhaloidx_remnant = fmergers['shids_subf'][:,2]
 
-        if(brahma_key):
+        if(self.brahma_key):
             self.h = fmergers.attrs['hubbleParam']
             self.N_last_snap = fmergers.attrs['snapshots'][-1]
             self.brahma_snapshots,self.brahma_redshifts = arepo.get_snapshot_redshift_correspondence(self.basePath)
@@ -51,22 +49,25 @@ class pop_generator:
             self.z_prog2 = self.brahma_redshifts[self.snap_prog2]
             self.z_remnant = self.brahma_redshifts[self.snap_remnant]
             #self.prog_mass_ratio = fmergers['ProgMassRatio_mod'][:]
-
+            self.all_snapshots = self.brahma_snapshots
         else:
             self.h = fmergers.attrs['HubbleParam'] 
             self.z_prog1 = 1/(fmergers['time'][:][:,0])-1
             self.z_prog2 = 1/(fmergers['time'][:][:,1])-1
             self.z_remnant = 1/(fmergers['time'][:][:,2])-1
+            self.all_snapshots = np.arange(0,100,1) #For TNG
+
             prog_mass_ratio = fmergers['ProgMassRatio_mod'][:]
             prog_mass_ratio[prog_mass_ratio>1] = 1/prog_mass_ratio[prog_mass_ratio>1]
             self.prog_mass_ratio = prog_mass_ratio
+
 
         self.generate_population()
         
     def initialize_population_dict(self,key="M"):
 
             if(key=="M"): #for merging population
-                return {
+                dict= {
                     "snap": np.array([], dtype=int),
                     "z": np.array([], dtype=float),
                     "subhalo_ids": np.array([], dtype=int),
@@ -91,10 +92,19 @@ class pop_generator:
                     "prog_MgasInRad": np.array([], dtype=float),
                     "prog_MstarInRad": np.array([], dtype=float),
                     "prog_StellarHalfmassRad": np.array([], dtype=float),
-                    "SubhaloPhotoMag": np.empty((0, 8), dtype=float)
+                    "SubhaloPhotoMag": np.empty((0, 8), dtype=float),
+                    "SubhaloLenType": np.empty((0, 6), dtype=int)
                 }
+
+                if self.brahma_key:
+                    #add new fields for brahma
+                    dict["MBH_massive"] = np.array([], dtype=float) #The mass of the most massive black hole in the subhalo
+                    dict["Mdot_massive"] = np.array([], dtype=float) #The accretion rate of the most massive black hole in the subhalo
+                    dict["MBH_luminous"] = np.array([], dtype=float) #The mass of the most luminous black hole in the subhalo (if different from the most massive)
+                    dict["Mdot_luminous"] = np.array([], dtype=float) #The accretion rate of the most luminous black hole in the subhalo (if different from the most massive)
+            
             else:
-                return {
+                dict = {
                     "snap": np.array([], dtype=int),
                     "z": np.array([], dtype=float),
                     "subhalo_ids": np.array([], dtype=int),
@@ -107,38 +117,50 @@ class pop_generator:
                     "MgasInRad": np.array([], dtype=float),
                     "MstarInRad": np.array([], dtype=float),
                     "StellarHalfmassRad": np.array([], dtype=float),
-                    "SubhaloPhotoMag": np.empty((0, 8), dtype=float)
+                    "SubhaloPhotoMag": np.empty((0, 8), dtype=float),
+                    "SubhaloLenType": np.empty((0, 6), dtype=int)
                 }
+
+                if self.brahma_key:
+                    #add new fields for brahma
+                    dict["MBH_massive"] = np.array([], dtype=float) #The mass of the most massive black hole in the subhalo
+                    dict["Mdot_massive"] = np.array([], dtype=float) #The accretion rate of the most massive black hole in the subhalo
+                    dict["MBH_luminous"] = np.array([], dtype=float) #The mass of the most luminous black hole in the subhalo (if different from the most massive)
+                    dict["Mdot_luminous"] = np.array([], dtype=float) #The accretion rate of the most luminous black hole in the subhalo (if different from the most massive)
+            
+            return dict
       
     def generate_population(self):
         self.unique_snaps = np.unique(self.snap_remnant)
-
         self.merging_pop = self.initialize_population_dict(key="M")
         self.non_merging_pop = self.initialize_population_dict(key="N")
 
-        fields=['SubhaloLenType', 'SubhaloMassType','SubhaloMass', 'SubhaloBHMass', 'SubhaloBHMdot', 'SubhaloSFR','SubhaloGasMetallicity','SubhaloStarMetallicity','SubhaloPos','SubhaloHalfmassRadType','SubhaloMassInHalfRadType',
+        fields=['SubhaloLenType', 'SubhaloMassType','SubhaloMass', 'SubhaloBHMass', 'SubhaloBHMdot', 'SubhaloSFR','SubhaloPos','SubhaloHalfmassRadType','SubhaloMassInHalfRadType',
                 'SubhaloMassInRadType','SubhaloStellarPhotometrics']
 
         if(self.brahma_key==False):
             self.unique_redshifts = np.array([il.groupcat.loadHeader(self.basePath, snap)['Redshift'].item() 
                               for snap in self.unique_snaps])
+            self.all_redshifts = np.array([il.groupcat.loadHeader(self.basePath, snap)['Redshift'].item()
+                              for snap in self.all_snapshots])
         else:
             self.unique_redshifts = self.brahma_redshifts[self.unique_snaps]
+            self.all_redshifts = self.brahma_redshifts[self.all_snapshots]
 
-        for i, snap in enumerate(self.unique_snaps):
+        # for i, snap in enumerate(self.unique_snaps):
+        for i,snap in enumerate(self.all_snapshots):
             print(f"Processing snapshot number {snap}")
             sys.stdout.flush()
             if(self.brahma_key==False):
                 subhalos = il.groupcat.loadSubhalos(self.basePath, snap,fields)
             else:
-                brahma_snap = np.where(self.brahma_snapshots == snap)[0][0]
-                print(self.unique_redshifts[i], snap, brahma_snap,self.brahma_redshifts[brahma_snap])
+                # brahma_snap = np.where(self.brahma_snapshots == snap)[0][0]
+                # print(self.unique_redshifts[i], snap, brahma_snap,self.brahma_redshifts[brahma_snap])
                 subhalos = il_brahma.groupcat.loadSubhalos_postprocessed(self.basePath,snap,fields)
-            
+                
             merger_indices = np.where(self.snap_remnant == snap)[0]
             print(len(merger_indices))
     
-
             if merger_indices.size > 0:
                 subhalo_ids_merger_remnants = self.subhaloidx_remnant[merger_indices]
             else:
@@ -162,15 +184,17 @@ class pop_generator:
             stellar_half_mass_radius = subhalos['SubhaloHalfmassRadType'][:,4] #ckpc/h
             r_sep = r_subhalos/(stellar_half_mass_radius[particle_cut_mask]+stellar_half_mass_radius[nearest_subhalo_ids])
             valid_sep_mask = r_sep>2
-            r_sep_valid_subhalos = r_sep[valid_sep_mask]
+            #r_sep_valid_subhalos = r_sep[valid_sep_mask]
 
             print(len(subhalo_ids), np.sum(particle_cut_mask), np.sum(valid_sep_mask))
             valid_subhalo_ids = subhalo_ids[particle_cut_mask][valid_sep_mask]
+            
             print(len(valid_subhalo_ids), len(subhalo_ids_merger_remnants))
+
             subhalo_ids_non_merging = np.setdiff1d(valid_subhalo_ids, subhalo_ids_merger_remnants)
 
-            self.update_merger_details(subhalos, subhalo_ids_merger_remnants, self.unique_redshifts[i], snap)
-            self.update_non_merger_details(subhalos, subhalo_ids_non_merging, self.unique_redshifts[i], snap)
+            self.update_merger_details(subhalos, subhalo_ids_merger_remnants, self.all_redshifts[i], snap)
+            self.update_non_merger_details(subhalos, subhalo_ids_non_merging, self.all_redshifts[i], snap)
         
         self.update_pop_units(self.merging_pop)
         self.update_pop_units(self.non_merging_pop)
@@ -189,7 +213,16 @@ class pop_generator:
         self.merging_pop["MgasInRad"] = np.concatenate((self.merging_pop["MgasInRad"], subhalos['SubhaloMassInRadType'][:,0][subhalo_ids_merging]))
         self.merging_pop["MstarInRad"] = np.concatenate((self.merging_pop["MstarInRad"], subhalos['SubhaloMassInRadType'][:,4][subhalo_ids_merging]))
         self.merging_pop["StellarHalfmassRad"] = np.concatenate((self.merging_pop["StellarHalfmassRad"], subhalos['SubhaloHalfmassRadType'][:,4][subhalo_ids_merging]))
-        self.merging_pop["SubhaloPhotoMag"] = np.concatenate((self.merging_pop["SubhaloPhotoMag"], subhalos['SubhaloStellarPhotometrics'][subhalo_ids_merging])) 
+        self.merging_pop["SubhaloPhotoMag"] = np.concatenate((self.merging_pop["SubhaloPhotoMag"], subhalos['SubhaloStellarPhotometrics'][subhalo_ids_merging]))
+        self.merging_pop["SubhaloLenType"] = np.concatenate((self.merging_pop["SubhaloLenType"], subhalos['SubhaloLenType'][subhalo_ids_merging]))
+
+        if(self.brahma_key):
+            NBHs = subhalos['SubhaloLenType'][:,5][subhalo_ids_merging]
+            MBH_massive,Mdot_massive,MBH_lumo,Mdot_lumo = self.get_most_massive_n_luminous_BH_in_subhalo(redshift,subhalo_ids_merging,NBHs)
+            self.merging_pop["MBH_massive"] = np.concatenate((self.merging_pop["MBH_massive"], MBH_massive))
+            self.merging_pop["Mdot_massive"] = np.concatenate((self.merging_pop["Mdot_massive"], Mdot_massive))
+            self.merging_pop["MBH_luminous"] = np.concatenate((self.merging_pop["MBH_luminous"], MBH_lumo))
+            self.merging_pop["Mdot_luminous"] = np.concatenate((self.merging_pop["Mdot_luminous"], Mdot_lumo))
 
         merger_indices = np.where(self.snap_remnant == snapnum)[0]
         for merger_idx in merger_indices:
@@ -214,6 +247,29 @@ class pop_generator:
             self.merging_pop["prog_MgasInRad"] = np.append(self.merging_pop["prog_MgasInRad"], [prog1_info["MgasInRad"], prog2_info["MgasInRad"]])
             self.merging_pop["prog_StellarHalfmassRad"] = np.append(self.merging_pop["prog_StellarHalfmassRad"], [prog1_info["StellarHalfmassRad"], prog2_info["StellarHalfmassRad"]])  
 
+
+    def get_most_massive_n_luminous_BH_in_subhalo(self,redshift,subhalo_ids,NBHs):
+        MBH_most_massive = []
+        Mdot_most_massive = []
+        MBH_most_luminous = []
+        Mdot_most_luminous = []
+        for i in range(len(subhalo_ids)):
+            subhalo_id = subhalo_ids[i]
+            MBH_masses_in_subhalo = arepo.get_particle_property_within_postprocessed_groups(self.basePath,particle_property=['BH_Mass'],p_type=5,desired_redshift=redshift,subhalo_index=subhalo_id,group_type='subhalo')
+            Mdot_in_subhalo = arepo.get_particle_property_within_postprocessed_groups(self.basePath,particle_property=['BH_Mdot'],p_type=5,desired_redshift=redshift,subhalo_index=subhalo_id,group_type='subhalo')
+            
+            #QUICK CHECK
+            if i==0:
+                if len(MBH_masses_in_subhalo) != NBHs[i]:
+                    print(f"Warning: Mismatch in number of BHs for subhalo {subhalo_id}")
+
+            MBH_most_massive.append(np.max(MBH_masses_in_subhalo[0]) if len(MBH_masses_in_subhalo[0]) > 0 else 0.0)
+            Mdot_most_massive.append(Mdot_in_subhalo[0][np.argmax(MBH_masses_in_subhalo[0])] if len(MBH_masses_in_subhalo[0]) > 0 else 0.0)
+            MBH_most_luminous.append(MBH_masses_in_subhalo[0][np.argmax(Mdot_in_subhalo[0])] if len(Mdot_in_subhalo[0]) > 0 else 0.0)
+            Mdot_most_luminous.append(Mdot_in_subhalo[0][np.argmax(Mdot_in_subhalo[0])] if len(Mdot_in_subhalo[0]) > 0 else 0.0)
+        return np.array(MBH_most_massive), np.array(Mdot_most_massive), np.array(MBH_most_luminous), np.array(Mdot_most_luminous)
+
+
     def update_non_merger_details(self,subhalos,subhalo_ids_non_merging,redshift,snapnum):
         
             self.non_merging_pop["subhalo_ids"] = np.concatenate((self.non_merging_pop["subhalo_ids"], subhalo_ids_non_merging))
@@ -229,6 +285,16 @@ class pop_generator:
             self.non_merging_pop["MstarInRad"] = np.concatenate((self.non_merging_pop["MstarInRad"], subhalos['SubhaloMassInRadType'][:,4][subhalo_ids_non_merging]))
             self.non_merging_pop["StellarHalfmassRad"] = np.concatenate((self.non_merging_pop["StellarHalfmassRad"], subhalos['SubhaloHalfmassRadType'][:,4][subhalo_ids_non_merging])) 
             self.non_merging_pop["SubhaloPhotoMag"] = np.concatenate((self.non_merging_pop["SubhaloPhotoMag"], subhalos['SubhaloStellarPhotometrics'][subhalo_ids_non_merging]))
+            self.non_merging_pop["SubhaloLenType"] = np.concatenate((self.non_merging_pop["SubhaloLenType"], subhalos['SubhaloLenType'][subhalo_ids_non_merging]))
+            
+            if (self.brahma_key):
+                NBHs = subhalos['SubhaloLenType'][:,5][subhalo_ids_non_merging]
+                MBH_massive,Mdot_massive,MBH_lumo,Mdot_lumo = self.get_most_massive_n_luminous_BH_in_subhalo(redshift,subhalo_ids_non_merging,NBHs)
+                self.non_merging_pop["MBH_massive"] = np.concatenate((self.non_merging_pop["MBH_massive"], MBH_massive))
+                self.non_merging_pop["Mdot_massive"] = np.concatenate((self.non_merging_pop["Mdot_massive"], Mdot_massive))
+                self.non_merging_pop["MBH_luminous"] = np.concatenate((self.non_merging_pop["MBH_luminous"], MBH_lumo))
+                self.non_merging_pop["Mdot_luminous"] = np.concatenate((self.non_merging_pop["Mdot_luminous"], Mdot_lumo))
+
 
     def load_progenitor_info(self, merger_idx, prog_number):
 
@@ -279,6 +345,12 @@ class pop_generator:
         pop_dict["StellarHalfmassRad"] = pop_dict["StellarHalfmassRad"]/self.h #ckpc. Multiply by scale factor (can be obtained from snapnum or redshift to get physical kpc)
         pop_dict["Msubhalo"] = pop_dict["Msubhalo"]*1e10/self.h  #MSOL
 
+        if self.brahma_key:
+            pop_dict["MBH_massive"] = pop_dict["MBH_massive"]*1e10/self.h #MSOL
+            pop_dict["Mdot_massive"] = pop_dict["Mdot_massive"]*1e10*self.h/(0.978e9/self.h) #MSOL/yr
+            pop_dict["MBH_luminous"] = pop_dict["MBH_luminous"]*1e10/self.h #MSOL
+            pop_dict["Mdot_luminous"] = pop_dict["Mdot_luminous"]*1e10*self.h/(0.978e9/self.h) #MSOL/yr
+
         if "prog_Mstar" in pop_dict:
             pop_dict["prog_Mstar"] = pop_dict["prog_Mstar"]*1e10/self.h #MSOL
             pop_dict["prog_Mgas"] = pop_dict["prog_Mgas"]*1e10/self.h #MSOL
@@ -323,8 +395,6 @@ class pop_generator:
                 non_merge_grp.attrs['hubble_param'] = self.h
         
         print(f"Saved populations to {outfilename}")
-
-
 
 if __name__ == "__main__":
 

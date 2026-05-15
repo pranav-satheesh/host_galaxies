@@ -1,5 +1,4 @@
 #!/bin/sh
-
 #SBATCH --qos=lblecha
 #SBATCH -J brahma_mrg_all_runs
 #SBATCH -n 1
@@ -14,14 +13,14 @@
 ml conda
 conda activate hfrl
 
-basePath1=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_TNG/
-#basePath2=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_DFD_3_TNG/
-basePath3=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LW10_TNG/
-basePath4=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LW10_DFD_3_TNG/
-basePath5=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LW10_LOWSPIN_TNG/
-basePath6=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LW10_LOWSPIN_RICH_TNG/
-basePath7=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LW10_LOWSPIN_RICH_DFD_3_TNG-SE_AGN0.01/
-basePath8=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LW10_LOWSPIN_RICH_DFD_3_TNG_AGN0.01/
+#basePath1=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_TNG/
+basePath2=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LW10_LOWSPIN_RICH_DFD_3_TNG/
+# basePath3=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LW10_TNG/
+# basePath4=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LW10_DFD_3_TNG/
+# basePath5=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LW10_LOWSPIN_TNG/
+# basePath6=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LW10_LOWSPIN_RICH_TNG/
+# basePath7=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LW10_LOWSPIN_RICH_DFD_3_TNG-SE_AGN0.01/
+# basePath8=/orange/lblecha/aklantbhowmick/GAS_BASED_SEED_MODEL_UNIFORM_RUNS/L12p5n512/AREPO/SM5_LW10_LOWSPIN_RICH_DFD_3_TNG_AGN0.01/
 
 codePath=/home/pranavsatheesh/host_galaxies/py_files
 savePath=/home/pranavsatheesh/host_galaxies/data/merger_files
@@ -32,8 +31,8 @@ minNstar=10
 minNbh=1
 
 # Array of base paths
-basePaths=($basePath1 $basePath2 $basePath3 $basePath4 $basePath5 $basePath6 $basePath7 $basePath8)
-
+#basePaths=($basePath1 $basePath2 $basePath3 $basePath4 $basePath5 $basePath6 $basePath7 $basePath8)
+basePaths=($basePath2)
 for basePath in "${basePaths[@]}"; do
     python ${codePath}/merger_file_from_brahma_tree.py $basePath $snapnum $minNdm $minNgas $minNstar $minNbh $savePath
 done

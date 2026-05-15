@@ -1,5 +1,4 @@
 #!/bin/sh
-
 #SBATCH --qos=lblecha
 #SBATCH -J mrg_file_creation_TNG50-1-N100
 #SBATCH -n 1
@@ -18,8 +17,8 @@ basePath=/orange/lblecha/IllustrisTNG/Runs/TNG50-1/output
 codePath=/home/pranavsatheesh/host_galaxies/py_files
 savePath=/home/pranavsatheesh/host_galaxies/data/merger_files
 snapnum=99
-minNdm=0
-minNgas=0
+minNdm=10
+minNgas=10
 minNstar=1000
 minNbh=1
 
